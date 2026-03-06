@@ -58,46 +58,54 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
     categoryIds: [],
     translations: {},
   })
-
-  console.log('translation-data---', productInput)
   useEffect(() => {
     if (modalType === 'edit') {
       dispatch(GetSingleProduct(selectedProduct?.dpid))
     }
   }, [])
-  useEffect(() => {
-    if (translation?.length) {
-      const formatted = {}
-      translation.forEach((item) => {
-        formatted[item.lang] = {
-          name: '',
-          productDescription: '',
-        }
-      })
-      setProductInput((prev) => ({
-        ...prev,
-        translations: formatted,
-      }))
-    }
-  }, [translation])
+
+useEffect(() => {
+  if (modalType === "create" && translation?.length) {
+    const formatted = {}
+    translation.forEach((item) => {
+      formatted[item.lang] = {
+        name: "",
+        productDescription: "",
+      }
+    })
+    setProductInput((prev) => ({
+      ...prev,
+      translations: formatted,
+    }))
+  }
+}, [translation, modalType])
 
   useEffect(() => {
-    if (productInput.name) {
-      setProductInput((prev) => ({
-        ...prev,
-        translations: {
-          ...prev.translations,
-          en: {
-            ...prev.translations?.en,
-            name: productInput.name,
-          },
+  if (productInput.name && productInput.translations?.en) {
+    setProductInput((prev) => ({
+      ...prev,
+      translations: {
+        ...prev.translations,
+        en: {
+          ...prev.translations.en,
+          name: productInput.name,
         },
-      }))
-    }
-  }, [productInput.name])
+      },
+    }))
+  }
+}, [productInput.name])
 
   useEffect(() => {
     if (modalType === 'edit' && singleProduct) {
+      const formattedTranslations = {}
+      if (singleProduct.translations) {
+        Object.entries(singleProduct.translations).forEach(([lang, value]) => {
+          formattedTranslations[lang] = {
+            name: value?.name ?? '',
+            productDescription: value?.productDescription ?? '',
+          }
+        })
+      }
       setProductInput({
         name: singleProduct.name ?? '',
         memo: singleProduct.memo ?? '',
@@ -116,6 +124,7 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
           : typeof singleProduct.categoryIds === 'string'
             ? singleProduct.categoryIds.split(',').map(Number)
             : [],
+        translations: formattedTranslations,
       })
     }
   }, [singleProduct, modalType])
@@ -205,13 +214,13 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
           imagePathNf: payload.imagePathNf,
           taxApplied: payload.taxApplied,
           categoryIds: payload.categoryIds.map((id) => Number(id)),
+          translations: payload.translations,
         }
         const data = {
           dpid: selectedProduct.dpid,
           updatedData: updatedData,
         }
         const resultAction = await dispatch(UpdatedProduct(data))
-
         if (UpdatedProduct.fulfilled.match(resultAction)) {
           setShow(false)
         } else {
@@ -354,9 +363,7 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
             {translation?.map((item) => (
               <tr key={item.translationId}>
                 <td>{item.lang}</td>
-
                 <td>{item.name}</td>
-
                 <td>
                   <FormGroup>
                     <Input
@@ -365,7 +372,6 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
                     />
                   </FormGroup>
                 </td>
-
                 <td>
                   <FormGroup>
                     <Input

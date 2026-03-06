@@ -16,6 +16,8 @@ import { Spinner } from 'react-bootstrap'
 import Select from 'react-select'
 import { allCategories, GetAllCategory } from '@/redux/slice/categories/CategorySlice'
 import Notify from '@/components/Notify'
+import { AllBranch } from '@/api/branch/branchHelperApi'
+import { allDevices, GetAllDevices } from '@/redux/slice/devicesSlice/DevicesSlice'
 
 const customSelectStyles = {
   control: (base) => ({
@@ -50,6 +52,7 @@ const customSelectStyles = {
 const Page = () => {
   const { branch, loading } = useSelector(allBranch)
   const { category } = useSelector(allCategories)
+  const { devices } = useSelector(allDevices)
   const dispatch = useDispatch()
   const [search, setSearch] = useState('')
   const [itemsPerPage, setItemsPerPage] = useState(5)
@@ -66,11 +69,14 @@ const Page = () => {
     memo: '',
     companyId: '',
     outletAddress: '',
+    vendronDeviceInfoId: '',
   })
 
+  console.log('BranchInput', BranchInput)
   useEffect(() => {
     dispatch(GetAllBranch())
     dispatch(GetAllCategory())
+    dispatch(GetAllDevices())
   }, [])
 
   const openItemCategoryBulkModal = (deviceId) => {
@@ -84,6 +90,11 @@ const Page = () => {
     label: cat.name,
   }))
 
+  const Devices = devices?.map((cat) => ({
+    value: cat.id,
+    label: cat.name,
+  }))
+
   const openModal = (type, branch = null) => {
     setModalType(type)
     if (type === 'edit' && branch) {
@@ -93,6 +104,7 @@ const Page = () => {
         companyId: branch.companyId || '',
         outletAddress: branch.outletAddress || '',
         branchId: branch.branchId,
+        vendronDeviceInfoId: branch.vendronDeviceInfoId,
       })
     } else {
       setBranchInput({
@@ -100,6 +112,7 @@ const Page = () => {
         memo: '',
         companyId: '',
         outletAddress: '',
+        vendronDeviceInfoId: '',
       })
     }
     setModalOpen(true)
@@ -110,6 +123,10 @@ const Page = () => {
       Notify('error', 'Branch name is required')
       return
     }
+    if (!BranchInput?.vendronDeviceInfoId) {
+      Notify('error', 'Vendi Device Id is required')
+      return
+    }
     try {
       let resultAction
       if (modalType === 'create') {
@@ -118,6 +135,7 @@ const Page = () => {
             name: BranchInput.name,
             memo: BranchInput.memo,
             outletAddress: BranchInput.outletAddress,
+            vendronDeviceInfoId: BranchInput.vendronDeviceInfoId,
           }),
         )
         if (PostBranchData.fulfilled.match(resultAction)) {
@@ -134,6 +152,7 @@ const Page = () => {
               name: BranchInput.name,
               memo: BranchInput.memo,
               outletAddress: BranchInput.outletAddress,
+              vendronDeviceInfoId: BranchInput.vendronDeviceInfoId,
             },
           }),
         )
@@ -193,12 +212,18 @@ const Page = () => {
     }
   }
 
+  const handleSelectChange = (option, name) => {
+    setBranchInput((prev) => ({
+      ...prev,
+      [name]: option?.value || '',
+    }))
+  }
+
   // const filteredProducts = useMemo(() => {
   //   return branch.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
   // }, [search, branch])
   // const paginated = filteredProducts.slice(0, itemsPerPage)
 
-  console.log('branch', branch)
   return (
     <Container className="mt-5">
       <Row className="mb-4 align-items-center g-2">
@@ -297,6 +322,18 @@ const Page = () => {
             <Input name="name" value={BranchInput?.name || ''} onChange={handleInputChange} />
           </FormGroup>
           <FormGroup>
+            <Label>
+              Vendi Device ID <span style={{ color: '#e57373' }}>*</span>
+            </Label>
+            <Select
+              options={Devices}
+              value={Devices.find((item) => item.value === BranchInput?.vendronDeviceInfoId)}
+              onChange={(option) => handleSelectChange(option, 'vendronDeviceInfoId')}
+              styles={customSelectStyles}
+              placeholder="Select Vendi Device..."
+            />
+          </FormGroup>
+          <FormGroup>
             <Label>Memo</Label>
             <Input name="memo" value={BranchInput?.memo || ''} onChange={handleInputChange} />
           </FormGroup>
@@ -348,7 +385,7 @@ const Page = () => {
             Cancel
           </Button>
           <Button color="primary" onClick={AssignBranches} disabled={loading}>
-               {loading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
+            {loading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
             <Icon icon="mdi:check-circle-outline" className="me-1" />
             Assign
           </Button>
@@ -382,7 +419,7 @@ const Page = () => {
             Cancel
           </Button>
           <Button color="primary" onClick={submitItemCategoryBulk} disabled={loading}>
-               {loading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
+            {loading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
             <Icon icon="mdi:check-circle-outline" className="me-1" />
             Assign
           </Button>
