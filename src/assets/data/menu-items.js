@@ -97,7 +97,7 @@ export const MENU_ITEMS = [
     key: 'sales-logs',
     label: 'Sales Logs',
     icon: 'solar:graph-up-linear',
-    url: '/sales-logs',
+    url: '/SaleLogs',
      role: ['PowerUser'],
   },
   {

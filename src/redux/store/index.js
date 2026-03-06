@@ -15,6 +15,7 @@ import AllEmployees from "../slice/Employees/EmployeeSlice";
 import allEmailReceipt from "../slice/EmailReceipt/EmailReceiptSlice";
 import allRoles from "../slice/Role/RoleSlice";
 import AllWebSocketCommandSlice from "../slice/WebSocketCommands/WebSocketSlice";
+import AllSalelogs from "../slice/SaleLogs/SaleLogSlice";
 export function makeStore() {
   return configureStore({
     reducer: {
@@ -33,7 +34,8 @@ export function makeStore() {
       AllEmployees:AllEmployees,
       allEmailReceipt:allEmailReceipt,
       allRoles:allRoles,
-      AllWebSocketCommandSlice:AllWebSocketCommandSlice
+      AllWebSocketCommandSlice:AllWebSocketCommandSlice,
+      AllSalelogs:AllSalelogs
     },
   })
 }
