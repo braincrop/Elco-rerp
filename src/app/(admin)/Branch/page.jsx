@@ -328,7 +328,7 @@ const Page = () => {
             <Label>
               Vendi Device ID <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            {!Devices?.length ? (
+            {Devices?.length ? (
               <Select
                 options={Devices}
                 value={Devices.find((item) => item.value === BranchInput?.vendronDeviceInfoId)}
