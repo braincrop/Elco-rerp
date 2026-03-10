@@ -13,6 +13,7 @@ import {
   UpdatedBranch,
 } from '@/redux/slice/Branch/branchSlice'
 import { Spinner } from 'react-bootstrap'
+import { useRouter } from 'next/navigation';
 import Select from 'react-select'
 import { allCategories, GetAllCategory } from '@/redux/slice/categories/CategorySlice'
 import Notify from '@/components/Notify'
@@ -50,6 +51,7 @@ const customSelectStyles = {
 }
 
 const Page = () => {
+  const router = useRouter()
   const { branch, loading } = useSelector(allBranch)
   const { category } = useSelector(allCategories)
   const { devices } = useSelector(allDevices)
@@ -72,7 +74,6 @@ const Page = () => {
     vendronDeviceInfoId: '',
   })
 
-  console.log('BranchInput', BranchInput)
   useEffect(() => {
     dispatch(GetAllBranch())
     dispatch(GetAllCategory())
@@ -218,7 +219,9 @@ const Page = () => {
       [name]: option?.value || '',
     }))
   }
-
+  const handleCreateDevice = () => {
+    router.push('/Devices/VendiDevice') 
+  }
   // const filteredProducts = useMemo(() => {
   //   return branch.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
   // }, [search, branch])
@@ -325,13 +328,22 @@ const Page = () => {
             <Label>
               Vendi Device ID <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Select
-              options={Devices}
-              value={Devices.find((item) => item.value === BranchInput?.vendronDeviceInfoId)}
-              onChange={(option) => handleSelectChange(option, 'vendronDeviceInfoId')}
-              styles={customSelectStyles}
-              placeholder="Select Vendi Device..."
-            />
+            {!Devices?.length ? (
+              <Select
+                options={Devices}
+                value={Devices.find((item) => item.value === BranchInput?.vendronDeviceInfoId)}
+                onChange={(option) => handleSelectChange(option, 'vendronDeviceInfoId')}
+                styles={customSelectStyles}
+                placeholder="Select Vendi Device..."
+              />
+            ) : (
+              <div className="alert alert-warning d-flex justify-content-between align-items-center">
+                <span>No Vendi device found.</span>
+                <button type="button" className="btn btn-sm btn-primary" onClick={handleCreateDevice}>
+                  Create Device First
+                </button>
+              </div>
+            )}
           </FormGroup>
           <FormGroup>
             <Label>Memo</Label>

@@ -78,7 +78,6 @@ export default function SalesLogsHistory() {
     dispatch(GetAllDevices())
   }, [])
 
-  console.log('filters', filters)
   const handleChange = (e) => {
     const { name, value } = e.target
     setFilters((prev) => ({ ...prev, [name]: value }))

@@ -4,7 +4,7 @@ import { axiosInstance, axiosLocal, } from "../axiosConfig"
 export const WsUpdateVendiSplash = async (data) => {
   const { id, updatedData } = data
   console.log("updated-data",data)
-    const response = await axiosLocal.post(`ws/${id}/update-splash`,{
+    const response = await axiosInstance.post(`ws/${id}/update-splash`,{
       ...updatedData
     })
     return response.data
