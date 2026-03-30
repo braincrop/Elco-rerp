@@ -4,6 +4,7 @@ import { Table, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, I
 import { Icon } from '@iconify/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { allCategories, DeleteCategoryData, GetAllCategory, PostCategory, UpdatedCategory } from '@/redux/slice/categories/CategorySlice'
+import { useTheme } from '@/context/BrandingContext'
 
 const Page = () => {
   const dispatch = useDispatch()
@@ -14,6 +15,7 @@ const Page = () => {
   const [deleteModal, setDeleteModal] = useState(false)
   const [categoryInput, setCategoryInput] = useState('')
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
+
 
   useEffect(() => {
     dispatch(GetAllCategory())
