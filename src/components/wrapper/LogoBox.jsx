@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const LogoBox = () => {
   const { theme } = useTheme();
-  console.log('themeColor', theme.logo)
+  // console.log('themeColor', theme.logo)
   return <div className="logo-box">
       <Link href="/dashboards" className="logo-dark">
         <Image width={28} height={28} src={logoSm} className="logo-sm" alt="logo sm" />

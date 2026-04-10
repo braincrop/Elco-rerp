@@ -4,7 +4,7 @@ import { getUserRole } from '@/utils/decodeJwt';
 export const getMenuItems = () => {
   if (typeof window === 'undefined') return []
   const userRole = getUserRole()
-  // console.log('userRole', userRole)
+  console.log('userRole', userRole)
   const normalizedRole = String(userRole || '').toLowerCase().trim()
   return MENU_ITEMS.filter(item => {
     if (normalizedRole === 'Admin' || normalizedRole === 'admin') return true
