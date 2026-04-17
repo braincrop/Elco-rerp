@@ -1,5 +1,5 @@
 'use client'
-import { axiosInstance } from '../axiosConfig'
+import { axiosInstance,axiosLocal } from '../axiosConfig'
 
 export const AllVendiSplashMachine = async () => {
   try {
@@ -9,6 +9,7 @@ export const AllVendiSplashMachine = async () => {
     throw error
   }
 }
+
 export const PostVendiSplashMachine = async (data) => {
   try {
     const response = await axiosInstance.post('v1/VmSplash', data)

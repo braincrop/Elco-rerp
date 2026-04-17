@@ -2,7 +2,7 @@ import { axiosLocal,axiosInstance } from '../axiosConfig'
 
 export const GetTranslationData = async () => {
   try {
-    const response = await axiosInstance.get('translations/base')
+    const response = await axiosLocal.get('translations/base')
     return response.data
   } catch (error) {
     throw error
@@ -11,7 +11,7 @@ export const GetTranslationData = async () => {
 
 export const GetSingleTranslation = async (data) => {
   try {
-    const response = await axiosInstance.get(`translations/${data}`)
+    const response = await axiosLocal.get(`translations/${data}`)
     return response.data
   } catch (error) {
     throw error
@@ -20,7 +20,7 @@ export const GetSingleTranslation = async (data) => {
 
 export const GetAllTranslation = async () => {
   try {
-    const response = await axiosInstance.get('translations')
+    const response = await axiosLocal.get('translations')
     return response.data
   } catch (error) {
     throw error
@@ -29,7 +29,7 @@ export const GetAllTranslation = async () => {
 
 export const PostTanslation = async (data) => {
   try {
-    const response = await axiosInstance.post('translations', data)
+    const response = await axiosLocal.post('translations', data)
     return response.data
   } catch (error) {
     throw error
@@ -38,7 +38,7 @@ export const PostTanslation = async (data) => {
 
 export const PostAssignTranslation = async (data) => {
   try {
-    const response = await axiosInstance.post('translations/assign-to-branches', data)
+    const response = await axiosLocal.post('translations/assign-to-branches', data)
     return response.data
   } catch (error) {
     throw error
@@ -49,7 +49,7 @@ export const PostAssignTranslation = async (data) => {
 export const UpdateTranlsation= async (data) => {
   const { id, updatedData } = data
   try {
-    const response = await axiosInstance.put(`translations/${id}`, {
+    const response = await axiosLocal.put(`translations/${id}`, {
       ...updatedData,
     })
     return response.data
@@ -60,7 +60,7 @@ export const UpdateTranlsation= async (data) => {
 
 export const DeleteTranslation = async (id) => {
   try {
-    const response = await axiosInstance.delete(`translations/${id}`)
+    const response = await axiosLocal.delete(`translations/${id}`)
     return response.data
   } catch (error) {
     throw error

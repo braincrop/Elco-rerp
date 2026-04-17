@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 })
 
 const loginInstance = axios.create({
-  baseURL: baseURL,
+  baseURL: localUrl,
 })
 
 const axiosLocal = axios.create({
@@ -28,6 +28,30 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+
+
+axiosLocal.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+axiosLocal.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {

@@ -92,7 +92,7 @@ const Page = () => {
   const handleAssignTranslation = () => {
     const data = {
       translationId: assignVal,
-      branchId: assignBranches
+      branchIds: assignBranches
     }
     dispatch(AssignTranslationToBranch(data)).unwrap()
     setAssignModal(false)

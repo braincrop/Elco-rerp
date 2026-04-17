@@ -10,7 +10,6 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState("");
-
   useEffect(() => {
     const fetchTheme = async () => {
       try {
@@ -20,8 +19,6 @@ export const ThemeProvider = ({ children }) => {
         }
         const data = await response.json();
         setTheme(data);
-        console.log("Fetched theme:", data);
-        // document.body.style.backgroundColor = data.themeColor;
       } catch (error) {
         console.error("Error fetching theme:", error);
       }
@@ -29,11 +26,12 @@ export const ThemeProvider = ({ children }) => {
     fetchTheme();
   }, []);
 
-  useEffect(() => {
-    if (theme && theme.secondaryColor) {
-    document.body.style.backgroundColor = theme.secondaryColor;
+ useEffect(() => {
+  if (theme?.secondaryColor) {
+    document.documentElement.style.setProperty("--taplox-secondary-bg",theme.secondaryColor);
+    document.body.style.backgroundColor = theme.backgroundColor;
   }
-  }, [theme]);
+}, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme:theme }}>

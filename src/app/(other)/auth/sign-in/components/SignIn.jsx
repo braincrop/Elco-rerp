@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { allUser, Login } from '@/redux/slice/Authentication/AuthenticationSlice'
 import Notify from '@/components/Notify'
 import { Spinner } from 'reactstrap'
+import { useTheme } from '@/context/BrandingContext'
 
 export function FullScreenLoader() {
   return (
@@ -39,6 +40,7 @@ export function FullScreenLoader() {
 const SignIn = () => {
   const dispatch = useDispatch()
   const { loading } = useSelector(allUser)
+  const { theme } = useTheme();
   const router = useRouter()
   const [routeLoading, setRouteLoading] = useState(false)
   const [data, setData] = useState({
@@ -55,6 +57,9 @@ const SignIn = () => {
       document.body.classList.remove('authentication-bg')
     }
   }, [])
+  
+  console.log("theme--",theme);
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { email, password } = data
@@ -79,12 +84,12 @@ const SignIn = () => {
         <Row className="justify-content-center">
             {showLoader && <FullScreenLoader />}
           <Col md={6} lg={5}>
-            <Card className="border-0 shadow-lg">
-              <CardBody className="p-5">
+            <div className="border-0 custom-bg">
+              <div className="p-5">
                 <div className="text-center">
                   <div className="mx-auto mb-4 text-center auth-logo">
                     <a className="logo-light">
-                      <Image src={LightLogo} height={62} alt="logo light" />
+                      <img src={theme?.logoUrl || LightLogo} height={92} alt="logo light" width={100} />
                     </a>
                   </div>
                   <h4 className="fw-bold text-dark mb-2">Welcome Back!</h4>
@@ -135,8 +140,8 @@ const SignIn = () => {
                     </button>
                   </div>
                 </form>
-              </CardBody>
-            </Card>
+              </div>
+            </div>
             {/* <p className="text-center mt-4 text-white text-opacity-50">
               Don&apos;t have an account?
               <Link href="/auth/sign-up" className="text-decoration-none text-white fw-bold">

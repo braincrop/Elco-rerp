@@ -10,9 +10,11 @@ import {
   PostWsUpdateLanguages,
   PostWsUpdateproducts,
 } from '@/redux/slice/WebSocketCommands/WebSocketSlice';
+import { useTheme } from '@/context/BrandingContext'
 
 const Page = () => {
   const dispatch = useDispatch()
+   const { theme } = useTheme();
   const [selectedDevice, setSelectedDevice] = useState('')
   const { Wsloading } = useSelector(AllWebSocketCommandSlice);
   const { devices, loading } = useSelector(allDevices)
@@ -86,10 +88,10 @@ const Page = () => {
     cursor: isCardDisabled ? 'not-allowed' : 'pointer',
     pointerEvents: isCardDisabled ? 'none' : 'auto',
   }
-
+  console.log("data--",theme)
   return (
     <div className="container py-4">
-      <Card className="p-3">
+      <div className="p-3" style={{backgroundColor:theme.primaryColor}}>
         <h5 className="mb-3">Select Devices</h5>
         <Input type="select" className="mb-4" value={selectedDevice} disabled={loading} onChange={(e) => setSelectedDevice(e.target.value)}>
           {loading ? (
@@ -149,7 +151,7 @@ const Page = () => {
             </Card>
           </Col>
         </Row>
-      </Card>
+      </div>
     </div>
   )
 }
