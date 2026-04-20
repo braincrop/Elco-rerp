@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap'
 import IconifyIcon from '@/components/wrapper/IconifyIcon'
 import Notifications from './components/Notifications'
 import { useTheme } from '@/context/BrandingContext'
-const page = () => {
+const Page = () => {
   const { theme } = useTheme()
   return (
     <header className="app-topbar" style={{ backgroundColor: theme.primaryColor }}>
@@ -33,4 +33,4 @@ const page = () => {
     </header>
   )
 }
-export default page
+export default Page;
