@@ -189,7 +189,7 @@ const Page = () => {
         </Col>
       </Row> */}
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold">Coupons</h2>
+        <h2 className="fw-bold custom-text">Coupons</h2>
         <Button color="primary" onClick={() => openModal('create')}>
           <Icon icon="mdi:plus" width="16" height="16" className="me-2" />
           Create New

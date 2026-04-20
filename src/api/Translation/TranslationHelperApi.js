@@ -1,4 +1,4 @@
-import { axiosLocal,axiosInstance } from '../axiosConfig'
+import { axiosInstance } from '../axiosConfig'
 
 export const GetTranslationData = async () => {
   try {

@@ -27,10 +27,10 @@ const User = () => {
               <table className="table mb-0">
                 <thead className="bg-light bg-opacity-50">
                   <tr>
-                    <th className="border-0 py-2">Date</th>
-                    <th className="border-0 py-2">User</th>
-                    <th className="border-0 py-2">Account</th>
-                    <th className="border-0 py-2">Username</th>
+                    <th className="border-0 py-2 custom-text">Date</th>
+                    <th className="border-0 py-2 custom-text">User</th>
+                    <th className="border-0 py-2 custom-text">Account</th>
+                    <th className="border-0 py-2 custom-text">Username</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -146,13 +146,13 @@ const User = () => {
               <table className="table mb-0">
                 <thead className="bg-light bg-opacity-50">
                   <tr>
-                    <th className="border-0 py-2">Order ID.</th>
-                    <th className="border-0 py-2">Date</th>
-                    <th className="border-0 py-2">Customer Name</th>
-                    <th className="border-0 py-2">Phone No.</th>
-                    <th className="border-0 py-2">Address</th>
-                    <th className="border-0 py-2">Payment Type</th>
-                    <th className="border-0 py-2">Status</th>
+                    <th className="border-0 py-2 custom-text">Order ID.</th>
+                    <th className="border-0 py-2 custom-text">Date</th>
+                    <th className="border-0 py-2 custom-text">C Name</th>
+                    <th className="border-0 py-2 custom-text">Phone No.</th>
+                    <th className="border-0 py-2 custom-text">Address</th>
+                    <th className="border-0 py-2 custom-text">PayType</th>
+                    <th className="border-0 py-2 custom-text">Status</th>
                   </tr>
                 </thead>
                 <tbody>

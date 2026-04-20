@@ -134,22 +134,22 @@ const Chart = () => {
                 Top Pages
               </CardTitle>
               <div>
-                <button type="button" className="btn btn-sm btn-outline-light" style={{
+                <button type="button" className="btn btn-sm btn-outline-light custom-text" style={{
                 margin: '0px 2px'
               }}>
                   ALL
                 </button>
-                <button type="button" className="btn btn-sm btn-outline-light" style={{
+                <button type="button" className="btn btn-sm btn-outline-light custom-text" style={{
                 margin: '0px 2px'
               }}>
                   1M
                 </button>
-                <button type="button" className="btn btn-sm btn-outline-light" style={{
+                <button type="button" className="btn btn-sm btn-outline-light custom-text" style={{
                 margin: '0px 2px'
               }}>
                   6M
                 </button>
-                <button type="button" className="btn btn-sm btn-outline-light active" style={{
+                <button type="button" className="btn btn-sm btn-outline-light custom-text" style={{
                 margin: '0px 2px'
               }}>
                   1Y

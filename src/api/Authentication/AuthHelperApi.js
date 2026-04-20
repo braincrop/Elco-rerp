@@ -1,17 +1,19 @@
 'use client'
-import { axiosInstance } from '../axiosConfig'
+import { loginInstance } from '../axiosConfig'
+
+const clientId = process.env.NEXT_PUBLIC_CLIENT_ID
 
 export const RegisterUser = async (data) => {
-  const response = await axiosInstance.post('Auth/register', data)
+  const response = await loginInstance.post('Auth/register', data)
   return response.data
 }
 
 export const LoginUser = async (data) => {
-  const response = await axiosInstance.post('Auth/login', data)
+  const response = await loginInstance.post(`Auth/login?clientId=${clientId}`, data)
   return response.data
 }
 
 export const ForgotUserPass = async (data) => {
-  const response = await axiosInstance.post('users/reset-password-simple', data)
+  const response = await loginInstance.post('users/reset-password-simple', data)
   return response.data
 }

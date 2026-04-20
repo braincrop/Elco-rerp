@@ -9,6 +9,7 @@ export const AllVendiSplashMachine = async () => {
     throw error
   }
 }
+
 export const PostVendiSplashMachine = async (data) => {
   try {
     const response = await axiosInstance.post('v1/VmSplash', data)

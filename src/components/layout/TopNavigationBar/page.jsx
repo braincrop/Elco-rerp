@@ -1,11 +1,15 @@
-import LeftSideBarToggle from './components/LeftSideBarToggle';
-import ProfileDropdown from './components/ProfileDropdown';
-import ThemeModeToggle from './components/ThemeModeToggle';
-import { Container } from 'react-bootstrap';
-import IconifyIcon from '@/components/wrapper/IconifyIcon';
-import Notifications from './components/Notifications';
+'use client'
+import LeftSideBarToggle from './components/LeftSideBarToggle'
+import ProfileDropdown from './components/ProfileDropdown'
+import ThemeModeToggle from './components/ThemeModeToggle'
+import { Container } from 'react-bootstrap'
+import IconifyIcon from '@/components/wrapper/IconifyIcon'
+import Notifications from './components/Notifications'
+import { useTheme } from '@/context/BrandingContext'
 const page = () => {
-  return <header className="app-topbar">
+  const { theme } = useTheme()
+  return (
+    <header className="app-topbar" style={{ backgroundColor: theme.primaryColor }}>
       <div>
         <Container fluid>
           <div className="navbar-header">
@@ -26,6 +30,7 @@ const page = () => {
           </div>
         </Container>
       </div>
-    </header>;
-};
-export default page;
+    </header>
+  )
+}
+export default page

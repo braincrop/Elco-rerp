@@ -4,6 +4,8 @@ import { DEFAULT_PAGE_TITLE } from '@/context/constants'
 import { Roboto } from 'next/font/google'
 import { ReduxProvider } from './ReduxProvider'
 import ClientToast from '@/components/ClientToast'
+import { ThemeProvider } from '../context/BrandingContext'
+
 
 const roboto = Roboto({
   display: 'swap',
@@ -26,10 +28,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head></head>
       <body className={roboto.className} data-bs-theme="dark">
-        <ReduxProvider>
-          <ClientToast />
-          <AppProvidersWrapper>{children}</AppProvidersWrapper>
-        </ReduxProvider>
+        <ThemeProvider>
+          <ReduxProvider>
+            <ClientToast />
+            <AppProvidersWrapper>{children}</AppProvidersWrapper>
+          </ReduxProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

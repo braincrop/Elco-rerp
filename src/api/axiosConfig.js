@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   baseURL: baseURL,
 })
 
-const instanceAuth = axios.create({
+const loginInstance = axios.create({
   baseURL: baseURL,
 })
 
@@ -16,9 +16,33 @@ const axiosLocal = axios.create({
   baseURL: localUrl,
 })
 
-// instanceAuth.interceptors.request.use(
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+
+
+// axiosLocal.interceptors.request.use(
 //   (config) => {
-//     const token = localStorage.getItem("_schoolware_token_userinfo_");
+//     const token = localStorage.getItem("token");
 //     if (token) {
 //       config.headers["authorization"] = `Bearer ${token}`;
 //     }
@@ -27,15 +51,15 @@ const axiosLocal = axios.create({
 //   (error) => Promise.reject(error)
 // );
 
-// instanceAuth.interceptors.response.use(
+// axiosLocal.interceptors.response.use(
 //   (response) => response,
 //   (error) => {
 //     if (error.response?.status === 401) {
-//       localStorage.removeItem("_schoolware_token_userinfo_");
+//       localStorage.removeItem("token");
 //       window.location.href = "/login";
 //     }
 //     return Promise.reject(error);
 //   }
 // );
 
-export { axiosInstance, instanceAuth, axiosLocal }
+export { axiosInstance, loginInstance, axiosLocal }

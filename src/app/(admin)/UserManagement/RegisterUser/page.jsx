@@ -135,13 +135,13 @@ const AssignRole = async () => {
       {view === 'list' && (
         <>
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="fw-bold">Users</h2>
+            <h2 className="fw-bold custom-text">Users</h2>
             <Button color="primary" onClick={openCreate}>
               Create User
             </Button>
           </div>
-          <Table bordered responsive>
-            <thead>
+          <Table bordered hover responsive className="shadow-sm rounded">
+            <thead className="table-light">
               <tr>
                 <th>Name</th>
                 <th>Email</th>

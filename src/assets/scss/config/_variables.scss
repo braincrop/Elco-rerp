@@ -1381,7 +1381,7 @@ $placeholder-opacity-min: .2;
 $card-spacer-y: $spacer;
 $card-spacer-x: $spacer;
 $card-title-spacer-y: $spacer * 0.5;
-$card-title-color: var(--#{$prefix}headings-color);
+$card-title-color: #000;
 $card-subtitle-color: null;
 $card-border-width: var(--#{$prefix}border-width);
 $card-border-radius: $border-radius;
@@ -1395,7 +1395,7 @@ $card-cap-bg: transparent;
 $card-cap-color: null;
 $card-height: null;
 $card-color: null;
-$card-bg: var(--#{$prefix}secondary-bg);
+$card-bg: #fff;
 $card-img-overlay-padding: $spacer;
 $card-group-margin: $grid-gutter-width * .5;
 

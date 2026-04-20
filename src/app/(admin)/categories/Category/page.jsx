@@ -4,6 +4,7 @@ import { Table, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, I
 import { Icon } from '@iconify/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { allCategories, DeleteCategoryData, GetAllCategory, PostCategory, UpdatedCategory } from '@/redux/slice/categories/CategorySlice'
+import { useTheme } from '@/context/BrandingContext'
 
 const Page = () => {
   const dispatch = useDispatch()
@@ -14,6 +15,7 @@ const Page = () => {
   const [deleteModal, setDeleteModal] = useState(false)
   const [categoryInput, setCategoryInput] = useState('')
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
+
 
   useEffect(() => {
     dispatch(GetAllCategory())
@@ -61,7 +63,7 @@ const Page = () => {
   return (
     <Container className="mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold">Categories</h2>
+        <h2 className="fw-bold text-black">Categories</h2>
         <Button color="primary" onClick={() => openModal('create')}>
           <Icon icon="mdi:plus" width="16" height="16" className="me-2" />
           Create New

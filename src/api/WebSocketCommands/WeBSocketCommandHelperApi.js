@@ -1,4 +1,4 @@
-import { axiosInstance, axiosLocal, } from "../axiosConfig"
+import { axiosInstance, } from "../axiosConfig"
 
 
 export const WsUpdateVendiSplash = async (data) => {
@@ -19,7 +19,6 @@ export const WsUpdateproducts = async (data) => {
     return response.data
   
 }
-
 export const WsBranchCheckout = async (data) => {
   const { id, updatedData } = data
    console.log("updated-data",data)
@@ -28,7 +27,6 @@ export const WsBranchCheckout = async (data) => {
     })
     return response.data
 }
-
 
 export const WsUpdateLanguages = async (data) => {
   const { id, updatedData } = data

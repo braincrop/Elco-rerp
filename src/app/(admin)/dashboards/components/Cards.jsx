@@ -16,8 +16,8 @@ const Cards = () => {
                   </div>
                 </Col>
                 <Col xs={6} className="text-end">
-                  <p className="text-muted mb-0 text-truncate">Clicks</p>
-                  <h3 className="text-dark mt-2 mb-0">15,352</h3>
+                  <p className="mb-0 text-truncate custom-text">Clicks</p>
+                  <h3 className="custom-text mt-2 mb-0">15,352</h3>
                 </Col>
               </Row>
             </CardBody>
@@ -29,7 +29,7 @@ const Cards = () => {
                     marginBottom: '3px'
                   }} /> 3.02%
                   </span>
-                  <span className="text-muted ms-1 fs-12"> &nbsp;From last month</span>
+                  <span className="ms-1 fs-12 custom-text"> &nbsp;From last month</span>
                 </div>
               </div>
             </CardFooter>
@@ -47,8 +47,8 @@ const Cards = () => {
                   </div>
                 </Col>
                 <Col xs={6} className="text-end">
-                  <p className="text-muted mb-0 text-truncate">Sales</p>
-                  <h3 className="text-dark mt-2 mb-0">8,764</h3>
+                  <p className="custom-text mb-0 text-truncate">Sales</p>
+                  <h3 className="custom-text mt-2 mb-0">8,764</h3>
                 </Col>
               </Row>
             </CardBody>
@@ -60,7 +60,7 @@ const Cards = () => {
                     marginBottom: '3px'
                   }} /> 1.15%
                   </span>
-                  <span className="text-muted ms-1 fs-12">&nbsp;From last month</span>
+                  <span className="custom-text ms-1 fs-12">&nbsp;From last month</span>
                 </div>
               </div>
             </CardFooter>
@@ -78,8 +78,8 @@ const Cards = () => {
                   </div>
                 </Col>
                 <Col xs={6} className="text-end">
-                  <p className="text-muted mb-0 text-truncate">Events</p>
-                  <h3 className="text-dark mt-2 mb-0">5,123</h3>
+                  <p className="custom-text mb-0 text-truncate">Events</p>
+                  <h3 className="custom-text mt-2 mb-0">5,123</h3>
                 </Col>
               </Row>
             </CardBody>
@@ -91,7 +91,7 @@ const Cards = () => {
                     marginBottom: '3px'
                   }} /> 4.78%
                   </span>
-                  <span className="text-muted ms-1 fs-12">&nbsp;From last month</span>
+                  <span className="custom-text ms-1 fs-12">&nbsp;From last month</span>
                 </div>
               </div>
             </CardFooter>
@@ -109,8 +109,8 @@ const Cards = () => {
                   </div>
                 </Col>
                 <Col xs={6} className="text-end">
-                  <p className="text-muted mb-0 text-truncate">Users</p>
-                  <h3 className="text-dark mt-2 mb-0">12,945</h3>
+                  <p className="custom-text mb-0 text-truncate">Users</p>
+                  <h3 className="custom-text mt-2 mb-0">12,945</h3>
                 </Col>
               </Row>
             </CardBody>
@@ -122,7 +122,7 @@ const Cards = () => {
                     marginBottom: '3px'
                   }} /> 2.35%
                   </span>
-                  <span className="text-muted ms-1 fs-12">&nbsp;From last month</span>
+                  <span className="custom-text ms-1 fs-12">&nbsp;From last month</span>
                 </div>
               </div>
             </CardFooter>

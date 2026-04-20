@@ -92,7 +92,7 @@ const Page = () => {
   const handleAssignTranslation = () => {
     const data = {
       translationId: assignVal,
-      branchId: assignBranches
+      branchIds: assignBranches
     }
     dispatch(AssignTranslationToBranch(data)).unwrap()
     setAssignModal(false)
@@ -103,13 +103,13 @@ const Page = () => {
       {view === 'list' && (
         <>
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="fw-bold">Translation</h2>
+            <h2 className="fw-bold custom-text">Translation</h2>
             <Button color="primary" onClick={openCreate}>
               Add New
             </Button>
           </div>
-          <Table bordered responsive>
-            <thead>
+          <Table  bordered hover responsive className="shadow-sm rounded">
+            <thead className='table-light'>
               <tr>
                 <th>Language Name</th>
                 <th>Language Code</th>

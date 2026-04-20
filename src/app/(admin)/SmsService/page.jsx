@@ -28,24 +28,30 @@ const Page = () => {
         className="border rounded p-4 shadow-sm"
         style={{ width: '100%', maxWidth: 500 }}
       >
-        <h3 className="text-center mb-4">SMS Service</h3>
+        <h3 className="text-center mb-4 custom-text">SMS Service</h3>
         <form onSubmit={handleSubmit}>
           <FormGroup>
-            <Label for="sentType">Sent Type</Label>
+            <Label for="sentType" className="custom-text">
+              Sent Type
+            </Label>
             <Input
               type="select"
               id="sentType"
               value={form.sentType}
               onChange={(e) => handleChange('sentType', e.target.value)}
             >
-              <option value="">Select Sent Type</option>
+              <option value="">
+                Select Sent Type
+              </option>
               <option value="transactional">Transactional</option>
               <option value="promotional">Promotional</option>
               <option value="otp">OTP</option>
             </Input>
           </FormGroup>
           <FormGroup>
-            <Label for="sendTo">Send To</Label>
+            <Label for="sendTo" className="custom-text">
+              Send To
+            </Label>
             <Input
               type="select"
               id="sendTo"
@@ -60,7 +66,9 @@ const Page = () => {
             </Input>
           </FormGroup>
           <FormGroup>
-            <Label for="message">Message</Label>
+            <Label for="message" className="custom-text">
+              Message
+            </Label>
             <Input
               type="textarea"
               id="message"

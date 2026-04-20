@@ -1,61 +1,72 @@
-'use client';
-import WorldVectorMap from '@/components/VectorMap/WorldMap';
-import IconifyIcon from '@/components/wrapper/IconifyIcon';
-import React from 'react';
-import { Card, CardBody, CardHeader, CardTitle, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Row } from 'react-bootstrap';
+'use client'
+import WorldVectorMap from '@/components/VectorMap/WorldMap'
+import IconifyIcon from '@/components/wrapper/IconifyIcon'
+import React from 'react'
+import { Card, CardBody, CardHeader, CardTitle, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Row } from 'react-bootstrap'
 const CountryMap = () => {
   const salesLocationOptions = {
     map: 'world',
     zoomOnScroll: true,
     zoomButtons: false,
     markersSelectable: true,
-    markers: [{
-      name: 'Canada',
-      coords: [56.1304, -106.3468]
-    }, {
-      name: 'Brazil',
-      coords: [-14.235, -51.9253]
-    }, {
-      name: 'Russia',
-      coords: [61, 105]
-    }, {
-      name: 'China',
-      coords: [35.8617, 104.1954]
-    }, {
-      name: 'United States',
-      coords: [37.0902, -95.7129]
-    }],
+    markers: [
+      {
+        name: 'Canada',
+        coords: [56.1304, -106.3468],
+      },
+      {
+        name: 'Brazil',
+        coords: [-14.235, -51.9253],
+      },
+      {
+        name: 'Russia',
+        coords: [61, 105],
+      },
+      {
+        name: 'China',
+        coords: [35.8617, 104.1954],
+      },
+      {
+        name: 'United States',
+        coords: [37.0902, -95.7129],
+      },
+    ],
     markerStyle: {
       initial: {
-        fill: '#7f56da'
+        fill: '#7f56da',
       },
       selected: {
-        fill: '#1bb394'
-      }
+        fill: '#1bb394',
+      },
     },
     labels: {
-      markers: {}
+      markers: {},
     },
     regionStyle: {
       initial: {
         fill: 'rgba(169,183,197, 0.3)',
-        fillOpacity: 1
-      }
-    }
-  };
-  return <>
+        fillOpacity: 1,
+      },
+    },
+  }
+  return (
+    <>
       <Col lg={6}>
-        <Card className=" card-height-100">
+        <Card className="card-height-100">
           <CardHeader className="d-flex  justify-content-between align-items-center border-bottom border-dashed">
             <CardTitle as={'h4'}>Sessions by Country</CardTitle>
             <Dropdown>
-              <DropdownToggle variant="secondary" className=" btn btn-sm btn-outline-light content-none">
-                View Data <IconifyIcon icon="bx:bx-chevron-down" style={{
-                marginLeft: '5px',
-                fontSize: '16px'
-              }} />
+              <DropdownToggle variant="secondary" className=" btn btn-sm btn-outline-light content-none custom-text">
+                View Data{' '}
+                <IconifyIcon
+                  icon="bx:bx-chevron-down"
+                  style={{
+                    marginLeft: '5px',
+                    fontSize: '16px',
+                  }}
+                />
               </DropdownToggle>
-              <DropdownMenu className=" dropdown-menu-end">
+              <DropdownMenu className="dropdown-menu-end">
                 <DropdownItem href="">Download</DropdownItem>
                 <DropdownItem href="">Export</DropdownItem>
                 <DropdownItem href="">Import</DropdownItem>
@@ -63,11 +74,14 @@ const CountryMap = () => {
             </Dropdown>
           </CardHeader>
           <CardBody className="pt-0">
-            <Row className=" align-items-center">
+            <Row className="align-items-center">
               <Col lg={7}>
-                <div id="world-map-markers" className="mt-3" style={{
-                height: '300px'
-              }}>
+                <div
+                  id="world-map-markers"
+                  className="mt-3"
+                  style={{
+                    height: '300px',
+                  }}>
                   <WorldVectorMap height="300px" width="100%" options={salesLocationOptions} />
                 </div>
               </Col>
@@ -82,9 +96,15 @@ const CountryMap = () => {
                   <Row className=" align-items-center mb-3">
                     <Col>
                       <div className="progress progress-soft progress-sm">
-                        <div className="progress-bar bg-secondary" role="progressbar" style={{
-                        width: '82.05%'
-                      }} aria-valuemin={0} aria-valuemax={100} />
+                        <div
+                          className="progress-bar bg-secondary"
+                          role="progressbar"
+                          style={{
+                            width: '82.05%',
+                          }}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
                       </div>
                     </Col>
                     <Col xs={'auto'}>
@@ -100,9 +120,15 @@ const CountryMap = () => {
                   <Row className=" align-items-center mb-3">
                     <Col>
                       <div className="progress progress-soft progress-sm">
-                        <div className="progress-bar bg-info" role="progressbar" style={{
-                        width: '70.5%'
-                      }} aria-valuemin={0} aria-valuemax={100} />
+                        <div
+                          className="progress-bar bg-info"
+                          role="progressbar"
+                          style={{
+                            width: '70.5%',
+                          }}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
                       </div>
                     </Col>
                     <Col xs={'auto'}>
@@ -118,9 +144,15 @@ const CountryMap = () => {
                   <Row className=" align-items-center mb-3">
                     <Col>
                       <div className="progress progress-soft progress-sm">
-                        <div className="progress-bar bg-warning" role="progressbar" style={{
-                        width: '65.8%'
-                      }} aria-valuemin={0} aria-valuemax={100} />
+                        <div
+                          className="progress-bar bg-warning"
+                          role="progressbar"
+                          style={{
+                            width: '65.8%',
+                          }}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
                       </div>
                     </Col>
                     <Col xs={'auto'}>
@@ -136,9 +168,15 @@ const CountryMap = () => {
                   <Row className=" align-items-center">
                     <Col>
                       <div className="progress progress-soft progress-sm">
-                        <div className="progress-bar bg-success" role="progressbar" style={{
-                        width: '55.8%'
-                      }} aria-valuemin={0} aria-valuemax={100} />
+                        <div
+                          className="progress-bar bg-success"
+                          role="progressbar"
+                          style={{
+                            width: '55.8%',
+                          }}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
                       </div>
                     </Col>
                     <Col xs={'auto'}>
@@ -151,6 +189,7 @@ const CountryMap = () => {
           </CardBody>
         </Card>
       </Col>
-    </>;
-};
-export default CountryMap;
+    </>
+  )
+}
+export default CountryMap
