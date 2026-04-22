@@ -115,7 +115,7 @@ const Page = () => {
         </Button>
       </div>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light align-middle">
+        <thead className="align-middle">
           <tr>
             <th>#</th>
             <th>Name</th>
@@ -174,19 +174,19 @@ const Page = () => {
             <Label>
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="name" value={DeviceInput?.name || ''} onChange={handleInputChange} />
+            <Input name="name" value={DeviceInput?.name || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Device Name</Label>
-            <Input name="deviceName" value={DeviceInput?.deviceName || ''} onChange={handleInputChange} />
+            <Input name="deviceName" value={DeviceInput?.deviceName || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Ip</Label>
-            <Input name="ip" value={DeviceInput?.ip || ''} onChange={handleInputChange} />
+            <Input name="ip" value={DeviceInput?.ip || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Is Active</Label>
-            <Input type="select" name="isActive" value={DeviceInput?.isActive ?? ''} onChange={handleInputChange}>
+            <Input type="select" name="isActive" value={DeviceInput?.isActive ?? ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}>
               <option value="">Select Status</option>
               <option value="true">True</option>
               <option value="false">False</option>

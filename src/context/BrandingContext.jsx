@@ -29,6 +29,8 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     if (theme?.secondaryColor) {
       document.documentElement.style.setProperty('--custom-text-color', theme.textColor)
+      document.documentElement.style.setProperty('--custom-bg-color', theme.primaryColor)
+      document.documentElement.style.setProperty('--custom-modal-bg', theme.primaryColor)
       document.body.style.backgroundColor = theme.backgroundColor
     }
   }, [theme])

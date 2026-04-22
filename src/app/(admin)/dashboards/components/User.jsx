@@ -158,11 +158,11 @@ const User = () => {
                 <tbody>
                   <tr>
                     <td>
-                      <Link href="">#TZ5625</Link>
+                      #TZ5625
                     </td>
                     <td>29 April {currentYear}</td>
                     <td>
-                      <Link href="">Anna M. Hines</Link>
+                      Anna M. Hines
                     </td>
                     <td>(+1)-555-1564-261</td>
                     <td>Burr Ridge/Illinois</td>
@@ -174,11 +174,11 @@ const User = () => {
                   </tr>
                   <tr>
                     <td>
-                      <Link href="">#TZ9652</Link>
+                      #TZ9652
                     </td>
                     <td>25 April {currentYear}</td>
                     <td>
-                      <Link href="">Judith H. Fritsche</Link>
+                      Judith H. Fritsche
                     </td>
                     <td>(+57)-305-5579-759</td>
                     <td>SULLIVAN/Kentucky</td>
@@ -190,11 +190,11 @@ const User = () => {
                   </tr>
                   <tr>
                     <td>
-                      <Link href="">#TZ5984</Link>
+                      #TZ5984
                     </td>
                     <td>25 April {currentYear}</td>
                     <td>
-                      <Link href="">Peter T. Smith</Link>
+                      Peter T. Smith
                     </td>
                     <td>(+33)-655-5187-93</td>
                     <td>Yreka/California</td>
@@ -206,11 +206,11 @@ const User = () => {
                   </tr>
                   <tr>
                     <td>
-                      <Link href="">#TZ3625</Link>
+                      #TZ3625
                     </td>
                     <td>21 April {currentYear}</td>
                     <td>
-                      <Link href="">Emmanuel J. Delcid</Link>
+                      Emmanuel J. Delcid
                     </td>
                     <td>(+30)-693-5553-637</td>
                     <td>Atlanta/Georgia</td>
@@ -222,11 +222,11 @@ const User = () => {
                   </tr>
                   <tr>
                     <td>
-                      <Link href="">#TZ8652</Link>
+                      #TZ8652
                     </td>
                     <td>18 April {currentYear}</td>
                     <td>
-                      <Link href="">William J. Cook</Link>
+                      William J. Cook
                     </td>
                     <td>(+91)-855-5446-150</td>
                     <td>Rosenberg/Texas</td>

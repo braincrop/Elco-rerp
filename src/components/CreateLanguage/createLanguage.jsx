@@ -172,7 +172,7 @@ const CreateLanguage = ({ mode, initialData, onBack }) => {
   return (
     <div className="mb-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4>{mode === 'create' ? 'Create Language' : 'Edit Language'}</h4>
+        <h4 className="custom-text">{mode === 'create' ? 'Create Language' : 'Edit Language'}</h4>
         <Button color="secondary" onClick={onBack}>
           View List
         </Button>
@@ -180,26 +180,25 @@ const CreateLanguage = ({ mode, initialData, onBack }) => {
       <div className="row mb-3">
         <div className="col-md-4">
           <FormGroup>
-            <Label>
+            <Label className="custom-text">
               Language Code <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="lang" placeholder="e.g  fr,ar,is" value={formData.lang} onChange={handleChange} />
+            <Input name="lang" placeholder="e.g  fr,ar,is" value={formData.lang} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
           </FormGroup>
         </div>
         <div className="col-md-4">
           <FormGroup>
-            <Label>
+            <Label className="custom-text">
               Language Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="name" value={formData.name} placeholder="e.g france, Arabic, Iceland" onChange={handleChange} />
+            <Input name="name" value={formData.name} placeholder="e.g france, Arabic, Iceland" onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text" />
           </FormGroup>
         </div>
       </div>
       <div className="row mb-3">
         <div className="d-flex justify-content-between align-items-center mb-3">
-        
           <Button size="sm" onClick={handleAddSection}>
-            <Icon icon="mdi:folder-plus" width="20" height="20" />
+            <Icon icon="mdi:folder-plus" width="20" height="20"/>
             Add Section
           </Button>
         </div>
@@ -210,13 +209,14 @@ const CreateLanguage = ({ mode, initialData, onBack }) => {
                 {section.__isNew ? (
                   <Input
                     type="text"
+                    className="custom-text"
                     value={section.name}
                     onChange={(e) => handleSectionFieldChange(sIdx, e.target.value)}
                     placeholder="Enter section name"
-                    style={{ maxWidth: 250 }}
+                    style={{ maxWidth: 250 ,backgroundColor:'transaprent'}}
                   />
                 ) : (
-                  <h5 className="text-muted mb-0" style={{ fontWeight: 'bold', textTransform: 'capitalize' }}>
+                  <h5 className="custom-text mb-0" style={{ fontWeight: 'bold', textTransform: 'capitalize' }}>
                     {section.name}
                   </h5>
                 )}
@@ -232,7 +232,7 @@ const CreateLanguage = ({ mode, initialData, onBack }) => {
                 </div>
               </div>
               <Table bordered hover responsive size="sm">
-                <thead className="bg-light">
+                <thead className="">
                   <tr>
                     <th style={{ width: '30%' }}>KEY</th>
                     <th style={{ width: '35%' }}>ENGLISH (BASE)</th>
@@ -248,6 +248,8 @@ const CreateLanguage = ({ mode, initialData, onBack }) => {
                           {item.__isNew ? (
                             <Input
                               type="text"
+                             style={{backgroundColor:'transparent'}}
+                            className="custom-text"
                               value={item.key}
                               onChange={(e) => handleKeyFieldChange(sIdx, kIdx, 'key', e.target.value)}
                               placeholder="Enter key"
@@ -261,6 +263,8 @@ const CreateLanguage = ({ mode, initialData, onBack }) => {
                             <Input
                               type="text"
                               value={item.defaultValue}
+                              style={{backgroundColor:'transparent'}}
+                            className="custom-text"
                               onChange={(e) => handleKeyFieldChange(sIdx, kIdx, 'defaultValue', e.target.value)}
                               placeholder="Enter default value"
                             />
@@ -272,6 +276,8 @@ const CreateLanguage = ({ mode, initialData, onBack }) => {
                           <Input
                             type="text"
                             value={item.translatedValue || ''}
+                            style={{backgroundColor:'transparent'}}
+                            className="custom-text"
                             onChange={(e) => handleTranslationChange(sIdx, kIdx, e.target.value)}
                             placeholder="Enter translation"
                           />

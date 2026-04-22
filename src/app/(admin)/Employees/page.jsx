@@ -112,10 +112,10 @@ const Page = () => {
     <Container className="mt-5">
       <Row className="mb-4">
         <Col md="2">
-          <Input type="text" placeholder="Search branch..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Input type="text" placeholder="Search branch..." value={search} onChange={(e) => setSearch(e.target.value)}  style={{backgroundColor:'transparent'}} className="custom-text"/>
         </Col>
         <Col md="2">
-          <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+          <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} style={{backgroundColor:'transparent'}} className="custom-text">
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -129,7 +129,7 @@ const Page = () => {
         </Col>
       </Row>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light">
+        <thead>
           <tr>
             <th>#</th>
             {/* <th>Branch</th> */}
@@ -178,7 +178,7 @@ const Page = () => {
         </tbody>
       </Table>
       <Modal isOpen={modalOpen} centered>
-        <ModalHeader toggle={() => setModalOpen(!modalOpen)}>{modalType === 'create' ? 'Create Branch' : 'Edit Branch'}</ModalHeader>
+        <ModalHeader toggle={() => setModalOpen(!modalOpen)}>{modalType === 'create' ? 'Create Employee' : 'Edit Employee'}</ModalHeader>
         <ModalBody>
           {/* <FormGroup>
             <Label>Branch</Label>
@@ -188,19 +188,19 @@ const Page = () => {
             <Label>
               EE ID <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="eeid" value={productInput.eeid} onChange={handleInputChange} />
+            <Input name="eeid" value={productInput.eeid} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="name" value={productInput.name} onChange={handleInputChange} />
+            <Input name="name" value={productInput.name} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>
               Email <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="email" value={productInput.email} onChange={handleInputChange} />
+            <Input name="email" value={productInput.email} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>
@@ -209,6 +209,7 @@ const Page = () => {
             <Input
               name="workPhone"
               value={productInput.workPhone}
+              style={{backgroundColor:'transparent'}}
               onChange={(e) => {
                 const value = e.target.value.replace(/[^0-9]/g, '')
                 setProductInput({
@@ -226,6 +227,7 @@ const Page = () => {
             <Input
               type="select"
               name="isEmployed"
+              style={{backgroundColor:'transparent'}}
               value={productInput.isEmployed ?? ''}
               onChange={(e) =>
                 handleInputChange({

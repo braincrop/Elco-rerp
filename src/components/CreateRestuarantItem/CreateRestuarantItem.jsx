@@ -177,7 +177,7 @@ const CreateRestuarantItem = ({ onBack }) => {
     <>
       <Card className="shadow-sm">
         <CardHeader className="text-white d-flex justify-content-between align-items-center flex-wrap">
-          <h4>Create Restaurant Item</h4>
+          <h4 className="custom-text">Create Restaurant Item</h4>
           <Button color="primary" onClick={() => onBack()}>
             <Icon icon="mdi:arrow-left" width="16" height="16" className="me-1" />
             Back
@@ -186,7 +186,7 @@ const CreateRestuarantItem = ({ onBack }) => {
         <CardBody>
           <Row className="g-3">
             <Col md={4}>
-              <Label>Branch</Label>
+              <Label className="custom-text">Branch</Label>
               <Input type="select" value={formData.branchId} onChange={(e) => handleChange('branch', e.target.value)}>
                 <option value="">Select Branch</option>
                 {branchOptions?.map((b) => (
@@ -197,7 +197,7 @@ const CreateRestuarantItem = ({ onBack }) => {
               </Input>
             </Col>
             <Col md={4}>
-              <Label>Categories</Label>
+              <Label className="custom-text">Categories</Label>
               <Select
                 isMulti
                 isDisabled={!formData.branchId}
@@ -209,7 +209,7 @@ const CreateRestuarantItem = ({ onBack }) => {
               />
             </Col>
             <Col md={4}>
-              <Label>Product</Label>
+              <Label className="custom-text">Product</Label>
               <Select
                 options={productOptions}
                 isSearchable
@@ -239,17 +239,19 @@ const CreateRestuarantItem = ({ onBack }) => {
               <CardBody>
                 <Row>
                   <Col md={6}>
-                    <Label>Name <span style={{ color: '#e57373' }}>*</span></Label>
+                    <Label className="custom-text">Name <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       required
+                       style={{backgroundColor:'transparent'}}
                       value={formData.editProduct.name}
                       onChange={(e) => setFormData({ ...formData, editProduct: { ...formData.editProduct, name: e.target.value } })}
                     />
                   </Col>
                   <Col md={6}>
-                    <Label>Barcode <span style={{ color: '#e57373' }}>*</span></Label>
+                    <Label className="custom-text">Barcode <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       required
+                       style={{backgroundColor:'transparent'}}
                       value={formData.editProduct.barcode}
                       onChange={(e) => setFormData({ ...formData, editProduct: { ...formData.editProduct, barcode: e.target.value } })}
                     />
@@ -257,18 +259,20 @@ const CreateRestuarantItem = ({ onBack }) => {
                 </Row>
                 <Row className="mt-3">
                   <Col md={6}>
-                    <Label>Buy Price <span style={{ color: '#e57373' }}>*</span></Label>
+                    <Label className="custom-text">Buy Price <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       type="number"
+                       style={{backgroundColor:'transparent'}}
                       required
                       value={formData.editProduct.buyPrice}
                       onChange={(e) => setFormData({ ...formData, editProduct: { ...formData.editProduct, buyPrice: e.target.value } })}
                     />
                   </Col>
                   <Col md={6}>
-                    <Label>Sell Price <span style={{ color: '#e57373' }}>*</span></Label>
+                    <Label className="custom-text">Sell Price <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       type="number"
+                      style={{backgroundColor:'transparent'}}
                       required
                       value={formData.editProduct.sellPrice}
                       onChange={(e) => setFormData({ ...formData, editProduct: { ...formData.editProduct, sellPrice: e.target.value } })}
@@ -308,14 +312,14 @@ const CreateRestuarantItem = ({ onBack }) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label>Buy Price</Label>
-                  <Input type="number" value={newProduct.buyPrice} onChange={(e) => setNewProduct({ ...newProduct, buyPrice: e.target.value })} />
+                  <Label className="custom-text">Buy Price</Label>
+                  <Input type="number" value={newProduct.buyPrice} onChange={(e) => setNewProduct({ ...newProduct, buyPrice: e.target.value })}  style={{backgroundColor:'transparent'}}/>
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label>Sell Price</Label>
-                  <Input type="number" value={newProduct.sellPrice} onChange={(e) => setNewProduct({ ...newProduct, sellPrice: e.target.value })} />
+                  <Label className="custom-text">Sell Price</Label>
+                  <Input type="number" value={newProduct.sellPrice} onChange={(e) => setNewProduct({ ...newProduct, sellPrice: e.target.value })}  style={{backgroundColor:'transparent'}}/>
                 </FormGroup>
               </Col>
             </Row>

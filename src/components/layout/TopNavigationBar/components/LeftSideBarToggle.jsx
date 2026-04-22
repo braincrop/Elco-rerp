@@ -44,7 +44,7 @@ const LeftSideBarToggle = () => {
 
   return (
     <div className="topbar-item">
-      <button type="button" onClick={handleMenuSize} className="button-toggle-menu topbar-button">
+      <button type="button" onClick={handleMenuSize} className="button-toggle-menu topbar-button" style={{backgroundColor:'transparent'}}>
         <IconifyIcon
           icon="solar:hamburger-menu-outline"
           width={24}

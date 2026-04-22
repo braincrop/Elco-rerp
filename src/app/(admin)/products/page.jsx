@@ -152,8 +152,8 @@ const Page = () => {
         {!show && (
           <Col xs="12" md="6" className="mb-2 mb-md-0">
             <div className="d-flex flex-column flex-sm-row gap-2">
-              <Input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} />
-              <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+              <Input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} style={{backgroundColor:'transparent'}} className="custom-text" />
+              <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} style={{backgroundColor:'transparent'}} className="custom-text">
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>
@@ -176,7 +176,7 @@ const Page = () => {
         <CreateProduct setShow={setShow} selectedProduct={selectedProduct} modalType={modalType} />
       ) : (
         <Table bordered hover responsive className="shadow-sm rounded">
-          <thead className="table-light align-middle">
+          <thead className="">
             <tr>
               <th>#</th>
               <th>Product</th>
@@ -199,7 +199,7 @@ const Page = () => {
             ) : paginated?.length > 0 ? (
               paginated.map((prod, index) => (
                 <tr key={prod.dpid}>
-                  <td>{index + 1}</td>
+                  <td className="custom-text">{index + 1}</td>
                   <td>
                     <div className="d-flex align-items-center">
                       {prod.imagePath && (
@@ -216,16 +216,16 @@ const Page = () => {
                         />
                       )}
                       <div>
-                        <div className="fw-bold">{prod.name}</div>
-                        <small className="text-muted">{prod.productDescription}</small>
+                        <div className="fw-bold custom-text">{prod.name}</div>
+                        <small className="custom-text">{prod.productDescription}</small>
                       </div>
                     </div>
                   </td>
-                  <td>{prod.sku || '-'}</td>
-                  <td>{prod.ingredients || '-'}</td>
-                  <td>{prod.shelfLife || '-'}</td>
-                  <td>{prod.basePrice}</td>
-                  <td>{prod.sellPrice}</td>
+                  <td className="custom-text">{prod.sku || '-'}</td>
+                  <td className="custom-text">{prod.ingredients || '-'}</td>
+                  <td className="custom-text">{prod.shelfLife || '-'}</td>
+                  <td className="custom-text">{prod.basePrice}</td>
+                  <td className="custom-text">{prod.sellPrice}</td>
                   <td className="text-center">
                     <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
                       <Button color="info" size="sm" className="text-white w-md-auto" title="View Product" onClick={() => openViewModal(prod)}>

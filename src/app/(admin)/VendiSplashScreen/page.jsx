@@ -214,8 +214,8 @@ const Page = () => {
       <Row className="mb-4 align-items-center">
         <Col xs="12" md="6" className="mb-2 mb-md-0">
           <div className="d-flex flex-column flex-sm-row gap-2">
-            <Input type="text" placeholder="Search Machine..." value={search} onChange={(e) => setSearch(e.target.value)} />
-            <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+            <Input type="text" placeholder="Search Machine..." value={search} onChange={(e) => setSearch(e.target.value)}  style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}  style={{backgroundColor:'transparent'}} className="custom-text">
               <option value={5}>5</option>
               <option value={10}>10</option>
               <option value={20}>20</option>
@@ -232,7 +232,7 @@ const Page = () => {
         </Col>
       </Row>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light">
+        <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
@@ -302,16 +302,16 @@ const Page = () => {
             <Label>
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="text" name="name" value={VendiSplashMachine.name || ''} onChange={handleInputChange} />
+            <Input type="text" name="name" value={VendiSplashMachine.name || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Memo</Label>
-            <Input type="text" name="memo" value={VendiSplashMachine.memo || ''} onChange={handleInputChange} />
+            <Input type="text" name="memo" value={VendiSplashMachine.memo || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>File</Label>
             <div className="position-relative">
-              <Input type="file" name="path" onChange={handleImageChange} disabled={uploadingField === 'path'} />
+              <Input type="file" name="path" onChange={handleImageChange} disabled={uploadingField === 'path'} style={{backgroundColor:'transparent'}}/>
               {uploadingField === 'path' && (
                 <div
                   style={{
@@ -331,13 +331,13 @@ const Page = () => {
             <Label>
               Start Time <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="datetime-local" name="starttime" value={VendiSplashMachine.starttime || ''} onChange={handleInputChange} />
+            <Input type="datetime-local" name="starttime" value={VendiSplashMachine.starttime || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>
               End Time <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="datetime-local" name="endtime" value={VendiSplashMachine.endtime || ''} onChange={handleInputChange} />
+            <Input type="datetime-local" name="endtime" value={VendiSplashMachine.endtime || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label for="vendronDeviceInfoIds">

@@ -18,7 +18,6 @@ export const PostRole = async (data) => {
 }
 
 export const AssignRole = async (data) => {
-  console.log('data---', data)
   try {
     const response = await axiosInstance.post('roles/assign', data)
     return response
@@ -39,7 +38,6 @@ export const GetRoleById = async (data) => {
 
 
 export const UpdateRole = async (data) => {
-    console.log("updated-data",data)
   const { id, updatedData } = data
   try {
     const response = await axiosInstance.put(`roles/${id}`,{

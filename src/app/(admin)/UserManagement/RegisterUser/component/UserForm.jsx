@@ -78,7 +78,7 @@ const UserForm = ({ mode, initialData, onBack }) => {
   return (
     <div className="mb-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4>{mode === 'create' ? 'Create User' : 'Edit User'}</h4>
+        <h4 className="custom-text">{mode === 'create' ? 'Create User' : 'Edit User'}</h4>
         <Button color="secondary" onClick={onBack}>
           View List
         </Button>
@@ -86,30 +86,31 @@ const UserForm = ({ mode, initialData, onBack }) => {
       <div className="row mb-3">
         <div className="col-md-4">
           <FormGroup>
-            <Label>
+            <Label className="custom-text">
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="UserName" value={formData.UserName} onChange={handleChange} />
+            <Input name="UserName" value={formData.UserName} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
           </FormGroup>
         </div>
         <div className="col-md-4">
           <FormGroup>
-            <Label>
+            <Label className="custom-text">
               Email <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="email" value={formData.email} onChange={handleChange} disabled={mode === 'edit'} />
+            <Input name="email" value={formData.email} onChange={handleChange} disabled={mode === 'edit'} style={{backgroundColor:'transparent'}} className="custom-text"/>
             {mode === 'edit' && <span className="text-muted m-1">Email cannot be changed</span>}
           </FormGroup>
         </div>
         <div className="col-md-4">
           <FormGroup>
-            <Label>
+            <Label className="custom-text">
               Phone <span style={{ color: '#e57373' }}>*</span>
             </Label>
             <Input
               type="tel"
               name="phoneNumber"
               value={formData.phoneNumber}
+              style={{backgroundColor:'transparent'}} className="custom-text"
               onChange={(e) => {
                 const value = e.target.value.replace(/[^0-9]/g, '')
                 setFormData({
@@ -127,10 +128,10 @@ const UserForm = ({ mode, initialData, onBack }) => {
         <div className="row mb-3">
           <div className="col-md-4">
             <FormGroup className="position-relative">
-              <Label>
+              <Label className="custom-text">
                 Password <span style={{ color: '#e57373' }}>*</span>
               </Label>
-              <Input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} />
+              <Input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
               <span
                 onClick={() => setShowPassword(!showPassword)}
                 style={{
@@ -146,13 +147,15 @@ const UserForm = ({ mode, initialData, onBack }) => {
           </div>
           <div className="col-md-4">
             <FormGroup className="position-relative">
-              <Label>
+              <Label className="custom-text">
                 Confirm Password <span style={{ color: '#e57373' }}>*</span>
               </Label>
               <Input
+              className="custom-text"
                 type={showConfirmPassword ? 'text' : 'password'}
                 name="ConfirmPassword"
                 value={formData.ConfirmPassword}
+                style={{backgroundColor:'transparent'}} 
                 onChange={handleChange}
               />
               <span
@@ -170,10 +173,10 @@ const UserForm = ({ mode, initialData, onBack }) => {
           </div>
           <div className="col-md-4">
             <FormGroup>
-              <Label>
+              <Label className="custom-text">
                 Role <span style={{ color: '#e57373' }}>*</span>
               </Label>
-              <Input type="select" name="role" value={formData.role} onChange={handleChange}>
+              <Input type="select" name="role" value={formData.role} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text">
                 <option value="">Select</option>
                 <option value="Admin">Admin</option>
                 <option value="PowerUser">PowerUser</option>
@@ -185,10 +188,10 @@ const UserForm = ({ mode, initialData, onBack }) => {
         <div className="row mb-3">
           <div className="col-md-4">
             <FormGroup>
-              <Label>
+              <Label className="custom-text">
                 Role <span style={{ color: '#e57373' }}>*</span>
               </Label>
-              <Input type="select" name="role" value={formData.role} onChange={handleChange}>
+              <Input type="select" name="role" value={formData.role} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text">
                 <option value="">Select</option>
                 <option value="Admin">Admin</option>
                 <option value="PowerUser">PowerUser</option>

@@ -26,8 +26,8 @@ const NotificationItem = ({
 };
 const Notifications = () => {
   const notificationList = notificationsData;
-  return <Dropdown className="topbar-item ">
-      <DropdownToggle as={'a'} type="button" className="topbar-button position-relative content-none" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  return <Dropdown className="topbar-item">
+      <DropdownToggle as={'a'} type="button" className="topbar-button position-relative content-none" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
         <IconifyIcon icon="solar:bell-bing-outline" className="fs-22 align-middle " />
         <span className="position-absolute topbar-badge fs-10 translate-middle badge bg-danger rounded-pill">
           5<span className="visually-hidden">unread messages</span>

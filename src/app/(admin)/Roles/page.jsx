@@ -68,14 +68,14 @@ const Page = () => {
   return (
     <Container className="mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold">Roles</h2>
+        <h2 className="fw-bold custom-text">Roles</h2>
         <Button color="primary" onClick={() => openModal('create')}>
           <Icon icon="mdi:plus" width="16" height="16" className="me-2" />
           Create New
         </Button>
       </div>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light">
+        <thead className="">
           <tr>
             <th>#</th>
             <th>Name</th>
@@ -123,7 +123,7 @@ const Page = () => {
             <Label>
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="text" value={Roles.name || ''} name="name" onChange={handleInputChange} />
+            <Input type="text" value={Roles.name || ''} name="name" onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
