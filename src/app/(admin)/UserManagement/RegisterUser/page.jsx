@@ -141,7 +141,7 @@ const AssignRole = async () => {
             </Button>
           </div>
           <Table bordered hover responsive className="shadow-sm rounded">
-            <thead className="table-light">
+            <thead className="">
               <tr>
                 <th>Name</th>
                 <th>Email</th>

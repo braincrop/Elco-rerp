@@ -17,14 +17,30 @@
     --#{$prefix}footer-height: 60px;
     --#{$prefix}input-border-color: #d8dfe7;
     --#{$prefix}input-focus-border-color: #b0b0bb;
+    --#{$prefix}modal-content-bg: #000;
     --taplox-secondary-bg: transparent; 
      --custom-text-color: #543536; 
+     --custom-bg-color:transparent;
+     --custom-modal-bg:#000;
     
 }
-
-
+.modal-content {
+  background-color: var(--custom-modal-bg) !important;
+}
+.custom-bg{
+     background-color:var(--custom-bg-color) !important;
+}
 .custom-text {
   color: var(--custom-text-color) !important;
+}
+tr td{
+  color: var(--custom-text-color) !important;
+}
+tr th{
+  color: #fff
+}
+Table thead{
+    background-color:var(--custom-bg-color) !important;
 }
 
 /* Dark Mode only */

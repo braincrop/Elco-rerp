@@ -70,7 +70,7 @@ const Page = () => {
         </Button>
       </div>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light">
+        <thead>
           <tr>
             <th>#</th>
             <th>Category Name</th>
@@ -112,12 +112,12 @@ const Page = () => {
       </Table>
 
       {/* Modal */}
-      <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)} centered>
+      <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)} centered >
         <ModalHeader toggle={() => setModalOpen(!modalOpen)}>{modalType === 'create' ? 'Create New Category' : 'Edit Category'}</ModalHeader>
         <ModalBody>
           <FormGroup>
             <Label>Category Name</Label>
-            <Input type="text" value={categoryInput} onChange={(e) => setCategoryInput(e.target.value)} />
+            <Input type="text" value={categoryInput} onChange={(e) => setCategoryInput(e.target.value)} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
         </ModalBody>
         <ModalFooter>

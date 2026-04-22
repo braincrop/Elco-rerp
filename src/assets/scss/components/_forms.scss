@@ -55,7 +55,6 @@ input.form-control[type="range"] {
 // Color Checkbox and Radio
 @each $color,
 $value in $theme-colors {
-
     .form-checkbox-#{$color},
     .form-radio-#{$color} {
         .form-check-input {

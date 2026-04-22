@@ -57,14 +57,14 @@ const Page = () => {
         <>
           <Row className="mb-4 align-items-center">
             <Col md="2" sm="6" className="mb-2 mb-md-0">
-              <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+              <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} style={{backgroundColor:'transparent'}} className="custom-text">
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>
               </Input>
             </Col>
             <Col md="3" sm="6" className="mb-2 mb-md-0">
-              <Input type="select" value={selectedBranchId || ''} onChange={(e) => handleBranchChange(Number(e.target.value))}>
+              <Input type="select" value={selectedBranchId || ''} onChange={(e) => handleBranchChange(Number(e.target.value))} style={{backgroundColor:'transparent'}} className="custom-text">
                 <option value="" disabled>
                   Select branch...
                 </option>
@@ -83,7 +83,7 @@ const Page = () => {
             </Col>
           </Row>
           <Table bordered hover responsive className="shadow-sm rounded">
-            <thead className="table-light">
+            <thead>
               <tr>
                 <th>#</th>
                 <th>Category Name</th>

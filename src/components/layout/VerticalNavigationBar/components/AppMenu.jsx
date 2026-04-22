@@ -27,14 +27,14 @@ const MenuItemWithChildren = ({ item, className, linkClassName, subMenuClassName
   )
   return (
     <li className={className}>
-      <div onClick={toggleMenuItem} aria-expanded={open} role="button" className={clsx(linkClassName)}>
+      <div onClick={toggleMenuItem} aria-expanded={open} role="button" className={clsx(linkClassName)} style={{backgroundColor:'transparent'}}>
         {item.icon && (
           <span className="nav-icon">
             {' '}
             <IconifyIcon icon={item.icon} />{' '}
           </span>
         )}
-        <span className="nav-text">{item.label}</span>
+        <span className="nav-text" style={{backgroundColor:'transparent'}}>{item.label}</span>
         {!item.badge ? (
           <IconifyIcon icon="bx:chevron-down" className="menu-arrow ms-auto" />
         ) : (
@@ -57,7 +57,7 @@ const MenuItemWithChildren = ({ item, className, linkClassName, subMenuClassName
                       toggleMenu={toggleMenu}
                     />
                   ) : (
-                    <MenuItem item={child} className="sub-nav-item" linkClassName={clsx('sub-nav-link', getActiveClass(child))} />
+                    <MenuItem item={child} className="sub-nav-item" linkClassName={clsx('sub-nav-link', getActiveClass(child))}/>
                   )}
                 </Fragment>
               )
@@ -70,7 +70,7 @@ const MenuItemWithChildren = ({ item, className, linkClassName, subMenuClassName
 }
 const MenuItem = ({ item, className, linkClassName }) => {
   return (
-    <li className={className}>
+    <li className={className} style={{backgroundColor:'transparent'}}>
       <MenuItemLink item={item} className={linkClassName} />
     </li>
   )
@@ -79,6 +79,7 @@ const MenuItemLink = ({ item, className }) => {
   return (
     <Link
       href={item.url ?? ''}
+      style={{backgroundColor:'transparent'}}
       target={item.target}
       className={clsx(className, {
         disabled: item.isDisabled,
@@ -156,12 +157,14 @@ const AppMenu = ({ menuItems }) => {
       className="navbar-nav "
       style={{
         textTransform: 'capitalize',
-      }}>
+      }}
+      
+      >
       {(menuItems || []).map((item, idx) => {
         return (
           <Fragment key={item.key + idx}>
             {item.isTitle ? (
-              <li className={clsx('menu-title')}>{item.label}</li>
+              <li className={clsx('menu-title')} >{item.label}</li>
             ) : (
               <>
                 {item.children ? (

@@ -14,11 +14,12 @@ const ProfileDropdown = () => {
     }
   }
   return <Dropdown className=" topbar-item">
-      <DropdownToggle type="button" className="topbar-button content-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <DropdownToggle type="button" className="topbar-button content-none" id="page-header-user-dropdown" 
+      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{backgroundColor:'transparent'}}> 
         <span className="d-flex align-items-center">
           <Image className="rounded-circle" width={32}
         // height={32}
-        src={avatar1} alt="avatar-3" />
+        src={avatar1} alt="avatar-3"/>
         </span>
       </DropdownToggle>
       <DropdownMenu className=" dropdown-menu-end">

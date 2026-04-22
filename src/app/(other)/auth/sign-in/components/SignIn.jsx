@@ -57,8 +57,6 @@ const SignIn = () => {
       document.body.classList.remove('authentication-bg')
     }
   }, [])
-  
-  console.log("theme--",theme);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -102,6 +100,7 @@ const SignIn = () => {
                         Email <span style={{ color: '#e57373' }}>*</span>
                       </Label>
                       <Input
+                      style={{backgroundColor:'transparent'}}
                         name="email"
                         label="Email"
                         value={data.email}
@@ -120,6 +119,7 @@ const SignIn = () => {
                         Password <span style={{ color: '#e57373' }}>*</span>
                       </Label>
                       <Input
+                        style={{backgroundColor:'transparent'}}
                         name="password"
                         type="password"
                         value={data.password}

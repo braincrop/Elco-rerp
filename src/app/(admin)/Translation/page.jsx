@@ -109,7 +109,7 @@ const Page = () => {
             </Button>
           </div>
           <Table  bordered hover responsive className="shadow-sm rounded">
-            <thead className='table-light'>
+            <thead className=''>
               <tr>
                 <th>Language Name</th>
                 <th>Language Code</th>

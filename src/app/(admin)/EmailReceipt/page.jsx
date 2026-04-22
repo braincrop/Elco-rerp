@@ -144,7 +144,7 @@ const Page = () => {
         </Button>
       </div>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light">
+        <thead className="">
           <tr>
             <th>#</th>
             <th>Email</th>
@@ -194,13 +194,13 @@ const Page = () => {
             <Label>
               Email<span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="text" value={EmailReceipts.email || ''} name="email" onChange={handleInputChange} />
+            <Input type="text" value={EmailReceipts.email || ''} name="email" onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>
               Memo <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="text" value={EmailReceipts.memo || ''} name="memo" onChange={handleInputChange} />
+            <Input type="text" value={EmailReceipts.memo || ''} name="memo" onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>

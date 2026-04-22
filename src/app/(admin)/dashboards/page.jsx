@@ -30,7 +30,7 @@ const Page = () => {
       <Row>
         <Col xs={12}>
           <div className="page-title-box">
-            <h4 className="mb-0">Dashboard</h4>
+            <h4 className="mb-0 custom-text">Dashboard</h4>
             <ol className="breadcrumb mb-0">
               <li className="breadcrumb-item">
                 <Link href="/">Taplox</Link>

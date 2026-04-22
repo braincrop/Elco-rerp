@@ -231,10 +231,10 @@ const Page = () => {
     <Container className="mt-5">
       <Row className="mb-4 align-items-center g-2">
         <Col xs="12" sm="6" md="3" lg="2">
-          <Input type="text" placeholder="Search branch..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Input type="text" placeholder="Search branch..." value={search} onChange={(e) => setSearch(e.target.value)}  style={{backgroundColor:'transparent'}} className="custom-text"/>
         </Col>
         <Col xs="12" sm="6" md="3" lg="2">
-          <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+          <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}  style={{backgroundColor:'transparent'}} className="custom-text">
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -249,7 +249,7 @@ const Page = () => {
         </Col>
       </Row>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light align-middle">
+        <thead className="align-middle">
           <tr>
             <th>#</th>
             <th>Branch Name</th>
@@ -322,7 +322,7 @@ const Page = () => {
             <Label>
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="name" value={BranchInput?.name || ''} onChange={handleInputChange} />
+            <Input name="name" value={BranchInput?.name || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>
@@ -347,15 +347,15 @@ const Page = () => {
           </FormGroup>
           <FormGroup>
             <Label>Memo</Label>
-            <Input name="memo" value={BranchInput?.memo || ''} onChange={handleInputChange} />
+            <Input name="memo" value={BranchInput?.memo || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>CompanyId</Label>
-            <Input name="companyId" type="number" value={BranchInput?.companyId || ''} onChange={handleInputChange} />
+            <Input name="companyId" type="number" value={BranchInput?.companyId || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>OutletAddress</Label>
-            <Input name="outletAddress" value={BranchInput?.outletAddress || ''} onChange={handleInputChange} />
+            <Input name="outletAddress" value={BranchInput?.outletAddress || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
         </ModalBody>
         <ModalFooter>

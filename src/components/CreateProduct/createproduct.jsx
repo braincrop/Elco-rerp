@@ -11,17 +11,17 @@ import { allTranslation, Translation } from '@/redux/slice/Translation/Translati
 const customSelectStyles = {
   control: (base) => ({
     ...base,
-    backgroundColor: '#22282e',
+    backgroundColor: 'transparent',
     borderColor: '#3a4551',
     color: '#fff',
   }),
   menu: (base) => ({
     ...base,
-    backgroundColor: '#22282e',
+    backgroundColor: 'transparent',
   }),
   option: (base, state) => ({
     ...base,
-    backgroundColor: state.isFocused ? '#333' : '#22282e',
+    backgroundColor: state.isFocused ? '#333' : 'transparent',
     color: '#fff',
   }),
   multiValue: (base) => ({
@@ -249,50 +249,50 @@ useEffect(() => {
       <Row className="g-2">
         <Col md={3}>
           <FormGroup>
-            <Label>
+            <Label className="custom-text">
               Product Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="name" value={productInput.name} onChange={handleChange} />
+            <Input name="name" value={productInput.name} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
           </FormGroup>
         </Col>
         <Col md={3}>
           <FormGroup>
-            <Label>Memo</Label>
-            <Input name="memo" value={productInput.memo} onChange={handleChange} />
+            <Label className="custom-text">Memo</Label>
+            <Input name="memo" value={productInput.memo} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
           </FormGroup>
         </Col>
         <Col md={3}>
           <FormGroup>
-            <Label>Product Image</Label>
-            <Input type="file" name="imagePath" onChange={handleImageChange} />
+            <Label className="custom-text">Product Image</Label>
+            <Input type="file" name="imagePath" onChange={handleImageChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
             {productInput.imagePath && <img src={productInput.imagePath} alt="product" width={60} className="mt-1 rounded" />}
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
-            <Label>Product Nf Image</Label>
-            <Input type="file" name="imagePathNf" onChange={handleImageChange} />
+            <Label className="custom-text">Product Nf Image</Label>
+            <Input type="file" name="imagePathNf" onChange={handleImageChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
             {productInput.imagePathNf && <img src={productInput.imagePathNf} alt="product-nf" width={60} className="mt-1 rounded" />}
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
-            <Label>Ingredients</Label>
-            <Input name="ingredients" value={productInput.ingredients} onChange={handleChange} />
+            <Label className="custom-text">Ingredients</Label>
+            <Input name="ingredients" value={productInput.ingredients} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
-            <Label>Product Contains</Label>
-            <Input name="productContains" value={productInput.productContains} onChange={handleChange} />
+            <Label className="custom-text">Product Contains</Label>
+            <Input name="productContains" value={productInput.productContains} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
           </FormGroup>
         </Col>
         <Col md={3}>
           <FormGroup>
-            <Label>
+            <Label className="custom-text">
               Category IDs <span style={{ color: '#e57373' }}>*</span>
             </Label>
             <Select
@@ -308,47 +308,47 @@ useEffect(() => {
 
         <Col md={3}>
           <FormGroup>
-            <Label>Shelf Life</Label>
-            <Input name="shelfLife" value={productInput.shelfLife} onChange={handleChange} placeholder="12 months" />
+            <Label className="custom-text">Shelf Life</Label>
+            <Input name="shelfLife" value={productInput.shelfLife} onChange={handleChange} placeholder="12 months" style={{backgroundColor:'transparent'}} className="custom-text"/>
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
-            <Label>Base Price</Label>
-            <Input type="number" name="basePrice" value={productInput.basePrice} onChange={handleChange} />
+            <Label className="custom-text">Base Price</Label>
+            <Input type="number" name="basePrice" value={productInput.basePrice} onChange={handleChange} style={{backgroundColor:'transparent'}}  className="custom-text"/>
           </FormGroup>
         </Col>
         <Col md={3}>
           <FormGroup>
-            <Label>Sell Price</Label>
-            <Input type="number" name="sellPrice" value={productInput.sellPrice} onChange={handleChange} />
-          </FormGroup>
-        </Col>
-
-        <Col md={3}>
-          <FormGroup>
-            <Label>sku</Label>
-            <Input name="sku" value={productInput.sku} onChange={handleChange} />
+            <Label className="custom-text">Sell Price</Label>
+            <Input type="number" name="sellPrice" value={productInput.sellPrice} onChange={handleChange} style={{backgroundColor:'transparent'}}  className="custom-text"/>
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
-            <Label>Tax Applied (%)</Label>
-            <Input type="number" name="taxApplied" value={productInput.taxApplied} onChange={handleChange} />
+            <Label className="custom-text">sku</Label>
+            <Input name="sku" value={productInput.sku} onChange={handleChange} style={{backgroundColor:'transparent'}}   className="custom-text"/>
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
-            <Label>Product Description</Label>
-            <Input type="textarea" name="productDescription" value={productInput.productDescription} onChange={handleChange} />
+            <Label className="custom-text">Tax Applied (%)</Label>
+            <Input type="number" name="taxApplied" value={productInput.taxApplied} onChange={handleChange} style={{backgroundColor:'transparent'}}/>
+          </FormGroup>
+        </Col>
+
+        <Col md={3}>
+          <FormGroup>
+            <Label className="custom-text">Product Description</Label>
+            <Input type="textarea" name="productDescription" value={productInput.productDescription} onChange={handleChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
         </Col>
       </Row>
       <Row>
-        <h2>Translations</h2>
+        <h2 className="custom-text">Translations</h2>
         <Table>
           <thead>
             <tr>
@@ -358,15 +358,16 @@ useEffect(() => {
               <th>Product Description</th>
             </tr>
           </thead>
-
           <tbody>
             {translation?.map((item) => (
               <tr key={item.translationId}>
-                <td>{item.lang}</td>
-                <td>{item.name}</td>
+                <td className="custom-text">{item.lang}</td>
+                <td className="custom-text">{item.name}</td>
                 <td>
                   <FormGroup>
                     <Input
+                    className="custom-text"
+                    style={{backgroundColor:'transparent'}}
                       value={productInput.translations?.[item.lang]?.name || ''}
                       onChange={(e) => handleTranslationChange(item.lang, 'name', e.target.value)}
                     />
@@ -376,6 +377,8 @@ useEffect(() => {
                   <FormGroup>
                     <Input
                       type="textarea"
+                      className="custom-text"
+                      style={{backgroundColor:'transparent'}}
                       value={productInput.translations?.[item.lang]?.productDescription || ''}
                       onChange={(e) => handleTranslationChange(item.lang, 'productDescription', e.target.value)}
                     />

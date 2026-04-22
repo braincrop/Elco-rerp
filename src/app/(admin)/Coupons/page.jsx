@@ -196,7 +196,7 @@ const Page = () => {
         </Button>
       </div>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light">
+        <thead>
           <tr>
             <th>#</th>
             <th>Code</th>
@@ -266,6 +266,7 @@ const Page = () => {
                 type="text"
                 name="code"
                 value={CouponsInput.code}
+                style={{backgroundColor:'transparent'}}
                 onChange={(e) =>
                   handleInputChange({
                     target: { name: 'code', value: e.target.value.toUpperCase() },
@@ -281,20 +282,21 @@ const Page = () => {
 
           <FormGroup>
             <Label>Amount <span style={{ color: '#e57373' }}>*</span></Label>
-            <Input type="number" name="amount" value={CouponsInput.amount} onChange={handleInputChange} />
+            <Input type="number" name="amount" value={CouponsInput.amount} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Max Discount <span style={{ color: '#e57373' }}>*</span></Label>
-            <Input type="number" name="maxdiscount" value={CouponsInput.maxdiscount} onChange={handleInputChange} />
+            <Input type="number" name="maxdiscount" value={CouponsInput.maxdiscount} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Min Discount <span style={{ color: '#e57373' }}>*</span></Label>
-            <Input type="number" name="mindiscount" value={CouponsInput.mindiscount} onChange={handleInputChange} />
+            <Input type="number" name="mindiscount" value={CouponsInput.mindiscount} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Expire Date <span style={{ color: '#e57373' }}>*</span></Label>
             <Input
               type="datetime-local"
+              style={{backgroundColor:'transparent'}}
               name="expiryDate"
               min={new Date().toISOString().slice(0, 16)}
               value={CouponsInput.expiryDate}

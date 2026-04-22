@@ -124,23 +124,23 @@ export default function SalesLogsHistory() {
   return (
     <Container className="mt-5">
       <Card className="p-4">
-        <h4 className="mb-4">Sales Logs History</h4>
+        <h4 className="mb-4 custom-text">Sales Logs History</h4>
         <Row>
           <Col md="6">
             <FormGroup>
-              <Label>Start Date</Label>
+              <Label className="custom-text">Start Date</Label>
               <Input type="date" name="startDate" value={filters.startDate} onChange={handleChange} />
             </FormGroup>
           </Col>
           <Col md="6">
             <FormGroup>
-              <Label>End Date</Label>
+              <Label className="custom-text">End Date</Label>
               <Input type="date" name="endDate" value={filters.endDate} onChange={handleChange} />
             </FormGroup>
           </Col>
           <Col md="6">
             <FormGroup>
-              <Label>Select Machine</Label>
+              <Label className="custom-text">Select Machine</Label>
               <Select
                 isMulti
                 styles={customStyles}
@@ -154,7 +154,7 @@ export default function SalesLogsHistory() {
           </Col>
           <Col md="6">
             <FormGroup>
-              <Label>Select Payment</Label>
+              <Label className="custom-text">Select Payment</Label>
               <Select
                 isMulti
                 styles={customStyles}

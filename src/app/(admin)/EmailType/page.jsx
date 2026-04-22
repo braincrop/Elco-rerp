@@ -81,7 +81,7 @@ const Page = () => {
         </Button>
       </div>
       <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="table-light align-middle">
+        <thead className="align-middle">
           <tr>
             <th>#</th>
             <th>Name</th>
@@ -129,11 +129,11 @@ const Page = () => {
         <ModalBody>
           <FormGroup>
             <Label>Name <span style={{ color: '#e57373' }}>*</span></Label>
-            <Input type="text" value={Emailtype.name || ''} name="name" onChange={handleInputChange} />
+            <Input type="text" value={Emailtype.name || ''} name="name" onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
           <FormGroup>
             <Label>Memo <span style={{ color: '#e57373' }}>*</span></Label>
-            <Input type="text" value={Emailtype.memo || ''} name="memo" onChange={handleInputChange} />
+            <Input type="text" value={Emailtype.memo || ''} name="memo" onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
