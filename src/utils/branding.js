@@ -5,7 +5,8 @@ const url = `https://sprucesol.com/${clientId}/branding.json`
 export async function getBrandingByClientId(clientId) {
   try {
     const res = await fetch(url, {
-      next: { revalidate: 7200 }
+    //   next: { revalidate: 7200 }
+      next: 'no-cache'
     })
     if (!res.ok) throw new Error('Branding fetch failed')
     return await res.json()
