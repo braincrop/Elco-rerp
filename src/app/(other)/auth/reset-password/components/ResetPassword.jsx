@@ -12,7 +12,9 @@ import Notify from '@/components/Notify'
 import { ForgotPassword } from '@/redux/slice/Authentication/AuthenticationSlice'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import { useTheme } from '@/context/BrandingContext'
 const ResetPassword = () => {
+  const { theme } = useTheme()
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
@@ -44,18 +46,18 @@ const ResetPassword = () => {
       console.log('failed to update password:', error)
     }
   }
- 
+
   return (
     <div className="account-pages">
       <div className="container">
         <Row className=" justify-content-center">
           <Col md={6} lg={5}>
-            <Card className=" border-0 shadow-lg">
+            <Card className="border-0 shadow-lg" style={{ backgroundColor: theme.primaryColor }}>
               <CardBody className="p-5">
                 <div className="text-center">
                   <div className="mx-auto mb-4 text-center auth-logo">
                     <a className="logo-light">
-                      <Image src={LightLogo} height={62} alt="logo light" />
+                      <img src={theme?.logoUrl || LightLogo} height={62} alt="logolight" />
                     </a>
                   </div>
                   <h4 className="fw-bold text-dark mb-2">Reset Password</h4>
@@ -69,6 +71,7 @@ const ResetPassword = () => {
                       <Input
                         name="email"
                         label="Email"
+                        style={{ backgroundColor: 'transparent' }}
                         value={data.email}
                         onChange={(e) => handleChange(e)}
                         type="text"
@@ -77,12 +80,13 @@ const ResetPassword = () => {
                     </FormGroup>
                   </div>
                   <div className="mb-3">
-                    <FormGroup className='position-relative'>
+                    <FormGroup className="position-relative">
                       <Label>
                         Password <span style={{ color: '#e57373' }}>*</span>
                       </Label>
                       <Input
                         name="newPassword"
+                        style={{ backgroundColor: 'transparent' }}
                         type={showPassword ? 'text' : 'password'}
                         value={data.newPassword}
                         onChange={handleChange}
