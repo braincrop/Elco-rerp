@@ -2,11 +2,11 @@
 
 const clientId = process.env.NEXT_PUBLIC_CLIENT_ID
 const url = `https://sprucesol.com/${clientId}/branding.json`
-export async function getBrandingByClientId(clientId) {
+export async function getBrandingByClientId() {
   try {
     const res = await fetch(url, {
     //   next: { revalidate: 7200 }
-      next: 'no-cache'
+        cache: 'no-store'
     })
     if (!res.ok) throw new Error('Branding fetch failed')
     return await res.json()
