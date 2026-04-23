@@ -14,27 +14,27 @@ const roboto = Roboto({
   weight: ['100', '300', '400', '500', '700', '900'],
 })
 export async function generateMetadata() {
-  const branding = await getBrandingByClientId()
+  const branding = await getBrandingByClientId() 
   return {
     title: {
       template: `%s | ${branding.name}`,
-      default: branding.name || 'Primi digital',
-    },
-    icons: {
-      icon: branding.faviconUrl,
+      default: branding.name || 'Primi digital'
     },
     description: DEFAULT_PAGE_TITLE,
     openGraph: {
       title: branding.name,
       description: DEFAULT_PAGE_TITLE,
-      images: [branding.faviconUrl], // social share image
+      images: [branding.faviconUrl],
     },
   }
 }
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) { 
+  const branding = await getBrandingByClientId() 
   return (
     <html lang="en">
-      <head></head>
+      <head>
+        <link rel="icon" href={branding.faviconUrl} type="image/x-icon" />
+      </head>
       <body className={roboto.className} data-bs-theme="dark">
         <ThemeProvider>
           <ReduxProvider>
