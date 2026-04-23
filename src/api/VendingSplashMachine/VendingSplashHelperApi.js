@@ -19,6 +19,16 @@ export const PostVendiSplashMachine = async (data) => {
   }
 }
 
+export const AssignVmSplashToDevice = async (data) => {
+  try {
+    const response = await axiosInstance.post('v1/VmSplash/assign-devices', data)
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+
 export const UpdateVendiSplashMachine = async (data) => {
   const { id, updatedData } = data
 

@@ -15,7 +15,7 @@ const roboto = Roboto({
 })
 export const metadata = {
   title: {
-    template: 'Elco Rerp-Project ',
+    template: 'Rerp-Project',
     default: DEFAULT_PAGE_TITLE,
   },
   icons: {

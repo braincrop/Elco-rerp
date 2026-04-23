@@ -5,6 +5,7 @@ import {
   PostVendiSplashMachine,
   UpdateVendiSplashMachine,
   DeleteVendingSplashMachine,
+  AssignVmSplashToDevice,
 } from '../../../api/VendingSplashMachine/VendingSplashHelperApi'
 
 export const GetAllVendiMachine = createAsyncThunk('VendiMachine/AllVendiMachine', async () => {
@@ -21,12 +22,20 @@ export const GetAllVendiMachine = createAsyncThunk('VendiMachine/AllVendiMachine
 })
 
 export const PostVendiMachine = createAsyncThunk('VendiMachine/postVendiMachine', async (data, { rejectWithValue }) => {
-  
   try {
     const response = await PostVendiSplashMachine(data)
     return response.data
   } catch (error) {
     return rejectWithValue('Failed to post VendiMachine')
+  }
+})
+
+export const AssignVendiMachineToDevice = createAsyncThunk('VendiMachine/assignVendiMachineToDevice', async (data, { rejectWithValue }) => {
+  try {
+    const response = await AssignVmSplashToDevice(data)
+    return response.data
+  } catch (error) {
+    return rejectWithValue('Failed to assign VendiMachine to device')
   }
 })
 
@@ -75,6 +84,23 @@ export const VendiSplashMachineSlice = createSlice({
         state.loading = false
         state.error = action.payload || action.error.message
       })
+
+    builder
+      .addCase(AssignVendiMachineToDevice.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(AssignVendiMachineToDevice.fulfilled, (state, action) => {
+        state.loading = false
+        if (action.payload?.statusCode === '200') {
+          state.error = null
+          Notify('success', action.payload.message)
+        }
+      })
+      .addCase(AssignVendiMachineToDevice.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload || action.error.message
+      })
+
     builder
       .addCase(UpdatedVendiMachine.pending, (state) => {
         state.loading = true
