@@ -5,7 +5,7 @@ export const developedBy = '';
 export const contactUs = '';
 export const buyLink = '';
 export const basePath = '';
-export const DEFAULT_PAGE_TITLE = 'Elco Rerp-Project';
+export const DEFAULT_PAGE_TITLE = 'Rerp-Project';
 
 // Replace the URL's value in env with your backend's URL or if you're using nextjs's API, add the server's origin URL
 export const API_BASE_PATH = '';

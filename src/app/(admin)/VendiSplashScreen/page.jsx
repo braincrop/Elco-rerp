@@ -8,6 +8,7 @@ import {
   GetAllVendiMachine,
   PostVendiMachine,
   UpdatedVendiMachine,
+  AssignVendiMachineToDevice,
 } from '@/redux/slice/VendingSplashMachine/VendingSplashMachine'
 import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select'
@@ -69,6 +70,7 @@ const Page = () => {
   const [deleteModal, setDeleteModal] = useState(false)
   const [showUploadSuccess, setShowUploadSuccess] = useState(false)
   const [uploadingField, setUploadingField] = useState(null)
+  const [assginDeviceModal, setassginDeviceModal] = useState(false)
   const [VendiSplashMachine, setVendiSplashMachine] = useState({
     name: '',
     memo: '',
@@ -77,7 +79,11 @@ const Page = () => {
     endtime: '',
     vendronDeviceInfoIds: [],
   })
+  const [AssignDevice, setAssignDevice] = useState({
+    vendronDeviceInfoIds: [],
+  })
 
+  console.log('AssignDevice', AssignDevice)
   useEffect(() => {
     dispatch(GetAllVendiMachine())
     dispatch(GetAllDevices())
@@ -197,11 +203,25 @@ const Page = () => {
     }
   }
 
+  const openAssignBranchesModal = (index) => {
+    console.log('index', index)
+    setSelectedIndex(index)
+    setassginDeviceModal(true)
+  }
+
   const handleImageChange = (e) => {
     const { name, files } = e.target
     if (files?.length) {
       uploadVideo(files[0], name)
     }
+  }
+  const HandleAssignDevice = async () => {
+    const data = {
+      vmSplashId: selectedIndex,
+      vendronDeviceInfoIds: AssignDevice.vendronDeviceInfoIds,
+    }
+    await dispatch(AssignVendiMachineToDevice(data)).unwrap()
+    setassginDeviceModal(false)
   }
   const isButtonDisabled = loading || uploadingField !== null
   // const filteredProducts = useMemo(() => {
@@ -214,8 +234,20 @@ const Page = () => {
       <Row className="mb-4 align-items-center">
         <Col xs="12" md="6" className="mb-2 mb-md-0">
           <div className="d-flex flex-column flex-sm-row gap-2">
-            <Input type="text" placeholder="Search Machine..." value={search} onChange={(e) => setSearch(e.target.value)}  style={{backgroundColor:'transparent'}} className="custom-text"/>
-            <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}  style={{backgroundColor:'transparent'}} className="custom-text">
+            <Input
+              type="text"
+              placeholder="Search Machine..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-text"
+            />
+            <Input
+              type="select"
+              value={itemsPerPage}
+              onChange={(e) => setItemsPerPage(Number(e.target.value))}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-text">
               <option value={5}>5</option>
               <option value={10}>10</option>
               <option value={20}>20</option>
@@ -275,6 +307,14 @@ const Page = () => {
                 </td>
                 <td className="text-center">
                   <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                    <Button
+                      color="danger"
+                      size="sm"
+                      title="Assign-Device"
+                      className="me-1 w-sm-auto"
+                      onClick={() => openAssignBranchesModal(item.vmSplashId)}>
+                      <Icon icon="mdi:laptop-account" width={16} />
+                    </Button>
                     <Button color="warning" size="sm" className="text-white w-md-auto" onClick={() => openModal('edit', item)}>
                       <Icon icon="mdi:pencil" width={16} />
                     </Button>
@@ -302,16 +342,34 @@ const Page = () => {
             <Label>
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="text" name="name" value={VendiSplashMachine.name || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              type="text"
+              name="name"
+              value={VendiSplashMachine.name || ''}
+              onChange={handleInputChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
           <FormGroup>
             <Label>Memo</Label>
-            <Input type="text" name="memo" value={VendiSplashMachine.memo || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              type="text"
+              name="memo"
+              value={VendiSplashMachine.memo || ''}
+              onChange={handleInputChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
           <FormGroup>
             <Label>File</Label>
             <div className="position-relative">
-              <Input type="file" name="path" onChange={handleImageChange} disabled={uploadingField === 'path'} style={{backgroundColor:'transparent'}}/>
+              <Input
+                type="file"
+                name="path"
+                onChange={handleImageChange}
+                disabled={uploadingField === 'path'}
+                style={{ backgroundColor: 'transparent' }}
+              />
               {uploadingField === 'path' && (
                 <div
                   style={{
@@ -331,13 +389,25 @@ const Page = () => {
             <Label>
               Start Time <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="datetime-local" name="starttime" value={VendiSplashMachine.starttime || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              type="datetime-local"
+              name="starttime"
+              value={VendiSplashMachine.starttime || ''}
+              onChange={handleInputChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
           <FormGroup>
             <Label>
               End Time <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input type="datetime-local" name="endtime" value={VendiSplashMachine.endtime || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              type="datetime-local"
+              name="endtime"
+              value={VendiSplashMachine.endtime || ''}
+              onChange={handleInputChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
           <FormGroup>
             <Label for="vendronDeviceInfoIds">
@@ -373,6 +443,46 @@ const Page = () => {
           <Button color="primary" onClick={saveVendiScreen} disabled={isButtonDisabled}>
             {(loading || uploadingField) && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
             {uploadingField ? 'Uploading...' : loading ? 'Saving...' : modalType === 'create' ? 'Create' : 'Save'}
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={assginDeviceModal} centered>
+        <ModalHeader>Assign Device</ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <Label for="vendronDeviceInfoIds">
+              Assigned Devices <span style={{ color: '#e57373' }}>*</span>
+            </Label>
+            <Select
+              isMulti
+              isSearchable={true}
+              name="vendronDeviceInfoIds"
+              options={devices?.map((device) => ({
+                value: device.id,
+                label: device.name,
+              }))}
+              value={devices
+                .filter((device) => AssignDevice?.vendronDeviceInfoIds.includes(device.id))
+                .map((device) => ({ value: device.id, label: device.name }))}
+              onChange={(selectedOptions) => {
+                setAssignDevice((prev) => ({
+                  ...prev,
+                  vendronDeviceInfoIds: selectedOptions.map((option) => option.value),
+                }))
+              }}
+              styles={customStyles}
+              classNamePrefix="select"
+              placeholder="Select Devices"
+            />
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={() => setassginDeviceModal(false)}>
+            Cancel
+          </Button>
+          <Button color="danger" onClick={HandleAssignDevice}>
+            Assign
           </Button>
         </ModalFooter>
       </Modal>
