@@ -3,6 +3,7 @@ import axios from 'axios'
 const baseURL = process.env.NEXT_PUBLIC_API_URL
 const localUrl = 'http://25.11.249.196:5007/api/'
 
+const socketURL = process.env.NEXT_PUBLIC_SOCKET_URL
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
@@ -14,6 +15,11 @@ const loginInstance = axios.create({
 
 const axiosLocal = axios.create({
   baseURL: localUrl,
+})
+
+
+const socketInstance = axios.create({
+  baseURL: socketURL,
 })
 
 axiosInstance.interceptors.request.use(
@@ -62,4 +68,4 @@ axiosInstance.interceptors.response.use(
 //   }
 // );
 
-export { axiosInstance, loginInstance, axiosLocal }
+export { axiosInstance, loginInstance, axiosLocal, socketInstance }
