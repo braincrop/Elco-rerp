@@ -235,13 +235,14 @@ const CreateRestuarantItem = ({ onBack }) => {
           </Row>
           {formData.productId && formData.branchId && formData.categoryIds.length > 0 && (
             <Card className="mt-4">
-              <CardHeader>Create Selected Product</CardHeader>
+              <CardHeader className='custom-text'>Create Selected Product</CardHeader>
               <CardBody>
                 <Row>
                   <Col md={6}>
                     <Label className="custom-text">Name <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       required
+                      className='custom-text'
                        style={{backgroundColor:'transparent'}}
                       value={formData.editProduct.name}
                       onChange={(e) => setFormData({ ...formData, editProduct: { ...formData.editProduct, name: e.target.value } })}
@@ -251,6 +252,7 @@ const CreateRestuarantItem = ({ onBack }) => {
                     <Label className="custom-text">Barcode <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       required
+                      className='custom-text'
                        style={{backgroundColor:'transparent'}}
                       value={formData.editProduct.barcode}
                       onChange={(e) => setFormData({ ...formData, editProduct: { ...formData.editProduct, barcode: e.target.value } })}
@@ -262,6 +264,7 @@ const CreateRestuarantItem = ({ onBack }) => {
                     <Label className="custom-text">Buy Price <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       type="number"
+                      className='custom-text'
                        style={{backgroundColor:'transparent'}}
                       required
                       value={formData.editProduct.buyPrice}
@@ -272,6 +275,7 @@ const CreateRestuarantItem = ({ onBack }) => {
                     <Label className="custom-text">Sell Price <span style={{ color: '#e57373' }}>*</span></Label>
                     <Input
                       type="number"
+                      className='custom-text'
                       style={{backgroundColor:'transparent'}}
                       required
                       value={formData.editProduct.sellPrice}
@@ -295,11 +299,11 @@ const CreateRestuarantItem = ({ onBack }) => {
         <ModalBody>
           <Form>
             <FormGroup>
-              <Label>Product Name</Label>
+              <Label className='custom-text' >Product Name</Label>
               <Input value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
             </FormGroup>
             <FormGroup>
-              <Label>Categories</Label>
+              <Label className='custom-text'>Categories</Label>
               <Select
                 isMulti
                 options={categoryOptions}

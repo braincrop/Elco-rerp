@@ -11,17 +11,17 @@ import { allTranslation, Translation } from '@/redux/slice/Translation/Translati
 const customSelectStyles = {
   control: (base) => ({
     ...base,
-    backgroundColor: 'transparent',
+    backgroundColor: '#333',
     borderColor: '#3a4551',
     color: '#fff',
   }),
   menu: (base) => ({
     ...base,
-    backgroundColor: 'transparent',
+    backgroundColor: '#333',
   }),
   option: (base, state) => ({
     ...base,
-    backgroundColor: state.isFocused ? '#333' : 'transparent',
+    backgroundColor: state.isFocused ? '#333' : '#333',
     color: '#fff',
   }),
   multiValue: (base) => ({
