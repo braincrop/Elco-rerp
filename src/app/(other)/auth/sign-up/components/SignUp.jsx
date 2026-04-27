@@ -15,7 +15,7 @@ const SignUp = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const [data, setData] = useState({
-    username: '',
+    userName: '',
     email: '',
     password: '',
   })
@@ -25,8 +25,8 @@ const SignUp = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { username, email, password } = data
-    if (!username?.trim() || !email?.trim() || !password?.trim()) {
+    const { userName, email, password } = data
+    if (!userName?.trim() || !email?.trim() || !password?.trim()) {
       Notify('error', 'Please fill all the fields')
       return
     }
@@ -68,7 +68,7 @@ const SignUp = () => {
                       <Label>
                         Name <span style={{ color: '#e57373' }}>*</span>
                       </Label>
-                      <Input name="username" value={data.username} onChange={(e) => handleChange(e)} type="text" placeholder="Enter your Name" />
+                      <Input name="userName" value={data.userName} onChange={(e) => handleChange(e)} type="text" placeholder="Enter your Name" />
                     </FormGroup>
                   </div>
                   <form onSubmit={handleSubmit}>
