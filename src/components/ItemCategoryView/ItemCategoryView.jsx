@@ -154,7 +154,7 @@ const ItemCategoryView = ({ data, onBack }) => {
     <Container>
       <div className="row align-items-center mb-4">
         <div className="col-12 col-md-6 mb-3 mb-md-0">
-          <h2 className="fw-bold text-center text-md-start">Restuarant Item</h2>
+          <h2 className="fw-bold text-center text-md-start custom-text">Restuarant Item</h2>
         </div>
         <div className="col-12 col-md-6">
           <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-md-end gap-2">
