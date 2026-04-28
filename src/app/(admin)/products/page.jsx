@@ -95,7 +95,6 @@ const Page = () => {
     setDeleteModal(true)
   }
   const openViewModal = (product) => {
-    console.log('product', product)
     ViewsetSelectedProduct(product)
     setViewModal(true)
   }
@@ -152,8 +151,20 @@ const Page = () => {
         {!show && (
           <Col xs="12" md="6" className="mb-2 mb-md-0">
             <div className="d-flex flex-column flex-sm-row gap-2">
-              <Input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} style={{backgroundColor:'transparent'}} className="custom-text" />
-              <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} style={{backgroundColor:'transparent'}} className="custom-text">
+              <Input
+                type="text"
+                placeholder="Search products..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{ backgroundColor: 'transparent' }}
+                className="custom-text"
+              />
+              <Input
+                type="select"
+                value={itemsPerPage}
+                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                style={{ backgroundColor: 'transparent' }}
+                className="custom-text">
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>

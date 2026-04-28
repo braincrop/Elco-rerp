@@ -30,9 +30,12 @@ export const GetCategoriesById = async (data) => {
 
 
 export const UpdateCategories = async (data) => {
-  const { dcid, name } = data
+  console.log('data-in-redux', data)
+  const { dcid, updatedData } = data
   try {
-    const response = await axiosInstance.put(`distinct-categories/${dcid}`, { name })
+    const response = await axiosInstance.put(`distinct-categories/${data.dcid}`,{
+      ...updatedData
+    })
     return response
   } catch (error) {
     throw error
