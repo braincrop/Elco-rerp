@@ -64,36 +64,36 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
     }
   }, [])
 
-useEffect(() => {
-  if (modalType === "create" && translation?.length) {
-    const formatted = {}
-    translation.forEach((item) => {
-      formatted[item.lang] = {
-        name: "",
-        productDescription: "",
-      }
-    })
-    setProductInput((prev) => ({
-      ...prev,
-      translations: formatted,
-    }))
-  }
-}, [translation, modalType])
+  useEffect(() => {
+    if (modalType === 'create' && translation?.length) {
+      const formatted = {}
+      translation.forEach((item) => {
+        formatted[item.lang] = {
+          name: '',
+          productDescription: '',
+        }
+      })
+      setProductInput((prev) => ({
+        ...prev,
+        translations: formatted,
+      }))
+    }
+  }, [translation, modalType])
 
   useEffect(() => {
-  if (productInput.name && productInput.translations?.en) {
-    setProductInput((prev) => ({
-      ...prev,
-      translations: {
-        ...prev.translations,
-        en: {
-          ...prev.translations.en,
-          name: productInput.name,
+    if (productInput.name && productInput.translations?.en) {
+      setProductInput((prev) => ({
+        ...prev,
+        translations: {
+          ...prev.translations,
+          en: {
+            ...prev.translations.en,
+            name: productInput.name,
+          },
         },
-      },
-    }))
-  }
-}, [productInput.name])
+      }))
+    }
+  }, [productInput.name])
 
   useEffect(() => {
     if (modalType === 'edit' && singleProduct) {
@@ -252,19 +252,19 @@ useEffect(() => {
             <Label className="custom-text">
               Product Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="name" value={productInput.name} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input name="name" value={productInput.name} onChange={handleChange} style={{ backgroundColor: 'transparent' }} className="custom-text" />
           </FormGroup>
         </Col>
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Memo</Label>
-            <Input name="memo" value={productInput.memo} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input name="memo" value={productInput.memo} onChange={handleChange} style={{ backgroundColor: 'transparent' }} className="custom-text" />
           </FormGroup>
         </Col>
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Product Image</Label>
-            <Input type="file" name="imagePath" onChange={handleImageChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input type="file" name="imagePath" onChange={handleImageChange} style={{ backgroundColor: 'transparent' }} className="custom-text" />
             {productInput.imagePath && <img src={productInput.imagePath} alt="product" width={60} className="mt-1 rounded" />}
           </FormGroup>
         </Col>
@@ -272,7 +272,7 @@ useEffect(() => {
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Product Nf Image</Label>
-            <Input type="file" name="imagePathNf" onChange={handleImageChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input type="file" name="imagePathNf" onChange={handleImageChange} style={{ backgroundColor: 'transparent' }} className="custom-text" />
             {productInput.imagePathNf && <img src={productInput.imagePathNf} alt="product-nf" width={60} className="mt-1 rounded" />}
           </FormGroup>
         </Col>
@@ -280,14 +280,26 @@ useEffect(() => {
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Ingredients</Label>
-            <Input name="ingredients" value={productInput.ingredients} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input
+              name="ingredients"
+              value={productInput.ingredients}
+              onChange={handleChange}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-text"
+            />
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Product Contains</Label>
-            <Input name="productContains" value={productInput.productContains} onChange={handleChange} style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input
+              name="productContains"
+              value={productInput.productContains}
+              onChange={handleChange}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-text"
+            />
           </FormGroup>
         </Col>
         <Col md={3}>
@@ -309,41 +321,74 @@ useEffect(() => {
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Shelf Life</Label>
-            <Input name="shelfLife" value={productInput.shelfLife} onChange={handleChange} placeholder="12 months" style={{backgroundColor:'transparent'}} className="custom-text"/>
+            <Input
+              name="shelfLife"
+              value={productInput.shelfLife}
+              onChange={handleChange}
+              placeholder="12 months"
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-text"
+            />
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Base Price</Label>
-            <Input type="number" name="basePrice" value={productInput.basePrice} onChange={handleChange} style={{backgroundColor:'transparent'}}  className="custom-text"/>
+            <Input
+              type="number"
+              name="basePrice"
+              value={productInput.basePrice}
+              onChange={handleChange}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-text"
+            />
           </FormGroup>
         </Col>
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Sell Price</Label>
-            <Input type="number" name="sellPrice" value={productInput.sellPrice} onChange={handleChange} style={{backgroundColor:'transparent'}}  className="custom-text"/>
+            <Input
+              type="number"
+              name="sellPrice"
+              value={productInput.sellPrice}
+              onChange={handleChange}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-text"
+            />
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">sku</Label>
-            <Input name="sku" value={productInput.sku} onChange={handleChange} style={{backgroundColor:'transparent'}}   className="custom-text"/>
+            <Input name="sku" value={productInput.sku} onChange={handleChange} style={{ backgroundColor: 'transparent' }} className="custom-text" />
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Tax Applied (%)</Label>
-            <Input type="number" name="taxApplied" value={productInput.taxApplied} onChange={handleChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              type="number"
+              name="taxApplied"
+              value={productInput.taxApplied}
+              onChange={handleChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
         </Col>
 
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Product Description</Label>
-            <Input type="textarea" name="productDescription" value={productInput.productDescription} onChange={handleChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              type="textarea"
+              name="productDescription"
+              value={productInput.productDescription}
+              onChange={handleChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
         </Col>
       </Row>
@@ -366,8 +411,8 @@ useEffect(() => {
                 <td>
                   <FormGroup>
                     <Input
-                    className="custom-text"
-                    style={{backgroundColor:'transparent'}}
+                      className="custom-text"
+                      style={{ backgroundColor: 'transparent' }}
                       value={productInput.translations?.[item.lang]?.name || ''}
                       onChange={(e) => handleTranslationChange(item.lang, 'name', e.target.value)}
                     />
@@ -378,7 +423,7 @@ useEffect(() => {
                     <Input
                       type="textarea"
                       className="custom-text"
-                      style={{backgroundColor:'transparent'}}
+                      style={{ backgroundColor: 'transparent' }}
                       value={productInput.translations?.[item.lang]?.productDescription || ''}
                       onChange={(e) => handleTranslationChange(item.lang, 'productDescription', e.target.value)}
                     />
