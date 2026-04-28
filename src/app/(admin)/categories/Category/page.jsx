@@ -3,53 +3,29 @@ import React, { useEffect, useState } from 'react'
 import { Table, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Spinner } from 'reactstrap'
 import { Icon } from '@iconify/react'
 import { useDispatch, useSelector } from 'react-redux'
+import { CreateCatLanguage } from '@/components/createCatLanguage/createCatLanguage'
 import { allCategories, DeleteCategoryData, GetAllCategory, PostCategory, UpdatedCategory } from '@/redux/slice/categories/CategorySlice'
-import { useTheme } from '@/context/BrandingContext'
 
 const Page = () => {
   const dispatch = useDispatch()
   const { category, loading } = useSelector(allCategories)
-  const [modalOpen, setModalOpen] = useState(false)
   const [modalType, setModalType] = useState('')
+  const [show, setShow] = useState(false)
   const [deleteid, setDeleteid] = useState('')
+  const [selectedData,setSelectedData] = useState('')
   const [deleteModal, setDeleteModal] = useState(false)
-  const [categoryInput, setCategoryInput] = useState('')
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null)
-
 
   useEffect(() => {
     dispatch(GetAllCategory())
   }, [])
 
-  const openModal = (type, id = null) => {
+  const openModal = (type, cat,) => {
+    console.log('cat', cat) 
     setModalType(type)
-    setSelectedCategoryId(id)
-    if (type === 'edit' && id !== null) {
-      const selectedCategory = category.find((cat) => cat.dcid === id)
-      setCategoryInput(selectedCategory?.name || '')
-    } else {
-      setCategoryInput('')
+    if (type === 'edit') {
+      setSelectedData(cat)
     }
-    setModalOpen(true)
-  }
-
-  const saveCategory = () => {
-    if (!categoryInput.trim()) return
-    if (modalType === 'create') {
-      dispatch(
-        PostCategory({
-          Name: categoryInput,
-        }),
-      )
-    }
-    if (modalType === 'edit' && selectedCategoryId !== null) {
-      let data = {
-        dcid: selectedCategoryId,
-        name: categoryInput,
-      }
-      dispatch(UpdatedCategory(data))
-    }
-    setModalOpen(false)
+    setShow(true)
   }
 
   const opendeleteModal = (index) => {
@@ -60,59 +36,65 @@ const Page = () => {
     dispatch(DeleteCategoryData(deleteid)).unwrap()
     setDeleteModal(false)
   }
+
   return (
     <Container className="mt-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold text-black">Categories</h2>
-        <Button color="primary" onClick={() => openModal('create')}>
-          <Icon icon="mdi:plus" width="16" height="16" className="me-2" />
-          Create New
-        </Button>
-      </div>
-      <Table bordered hover responsive className="shadow-sm rounded">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Category Name</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
+      {!show && (
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2 className="fw-bold text-black">Categories</h2>
+          <Button color="primary" onClick={() => openModal('create')}>
+            <Icon icon="mdi:plus" width="16" height="16" className="me-2" />
+            Create New
+          </Button>
+        </div>
+      )}
+      {show? (
+        <CreateCatLanguage modalType={modalType} selectedData={selectedData} setShow={setShow} />
+      ) : (
+        <Table bordered hover responsive className="shadow-sm rounded">
+          <thead>
             <tr>
-              <td colSpan="3" className="text-center py-4">
-                <Spinner size="sm" /> Loading...
-              </td>
+              <th>#</th>
+              <th>Category Name</th>
+              <th className="text-center">Actions</th>
             </tr>
-          ) : category?.length > 0 ? (
-            category.map((cat) => (
-              <tr key={cat.dcid}>
-                <td>{cat.dcid}</td>
-                <td>{cat.name}</td>
-                <td className="text-center">
-                  <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
-                    <Button color="warning" size="sm" className="me-1 w-sm-auto" onClick={() => openModal('edit', cat.dcid)}>
-                      <Icon icon="mdi:pencil" width="16" />
-                    </Button>
-                    <Button color="danger" size="sm" onClick={() => opendeleteModal(cat.dcid)} className="me-1 w-sm-auto">
-                      <Icon icon="mdi:delete" width="16" />
-                    </Button>
-                  </div>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan="3" className="text-center py-4">
+                  <Spinner size="sm" /> Loading...
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3" className="text-center text-muted py-4">
-                No categories found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
+            ) : category?.length > 0 ? (
+              category.map((cat) => (
+                <tr key={cat.dcid}>
+                  <td>{cat.dcid}</td>
+                  <td>{cat.name}</td>
+                  <td className="text-center">
+                    <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                      <Button color="warning" size="sm" className="me-1 w-sm-auto" onClick={() => openModal('edit', cat)}>
+                        <Icon icon="mdi:pencil" width="16" />
+                      </Button>
+                      <Button color="danger" size="sm" onClick={() => opendeleteModal(cat.dcid)} className="me-1 w-sm-auto">
+                        <Icon icon="mdi:delete" width="16" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="text-center text-muted py-4">
+                  No categories found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      )}
 
-      {/* Modal */}
-      <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)} centered >
+      {/* <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)} centered >
         <ModalHeader toggle={() => setModalOpen(!modalOpen)}>{modalType === 'create' ? 'Create New Category' : 'Edit Category'}</ModalHeader>
         <ModalBody>
           <FormGroup>
@@ -129,7 +111,7 @@ const Page = () => {
             {modalType === 'create' ? 'Create' : 'Save'}
           </Button>
         </ModalFooter>
-      </Modal>
+      </Modal> */}
 
       <Modal isOpen={deleteModal} toggle={() => setDeleteModal(!deleteModal)} centered>
         <ModalHeader toggle={() => setDeleteModal(!deleteModal)}>Delete Category</ModalHeader>
