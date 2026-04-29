@@ -1,7 +1,13 @@
 'use client'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import Notify from '../../../components/Notify'
-import { WsBranchCheckout, WsUpdateLanguages, WsUpdateproducts, WsUpdateVendiSplash } from '../../../api/WebSocketCommands/WeBSocketCommandHelperApi'
+import {
+  WsBranchCheckout,
+  WsUpdateCategories,
+  WsUpdateLanguages,
+  WsUpdateproducts,
+  WsUpdateVendiSplash,
+} from '../../../api/WebSocketCommands/WeBSocketCommandHelperApi'
 
 export const PostUpdateVendiSplash = createAsyncThunk('Ws/postWsUpdateVendi', async (data, { rejectWithValue }) => {
   try {
@@ -33,6 +39,15 @@ export const PostWsBranchCheckout = createAsyncThunk('Ws/postWsBranchCheckout', 
 export const PostWsUpdateLanguages = createAsyncThunk('Ws/postWsUpdateLanguage', async (data, { rejectWithValue }) => {
   try {
     const response = await WsUpdateLanguages(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
+  }
+})
+
+export const PostWsUpdateCategories = createAsyncThunk('Ws/postWsUpdateCategory', async (data, { rejectWithValue }) => {
+  try {
+    const response = await WsUpdateCategories(data)
     return response
   } catch (error) {
     return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
@@ -113,6 +128,23 @@ export const WebSocketCommandSlice = createSlice({
         }
       })
       .addCase(PostWsUpdateLanguages.rejected, (state, action) => {
+        state.Wsloading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Something went wrong')
+      })
+
+    builder
+      .addCase(PostWsUpdateCategories.pending, (state) => {
+        state.Wsloading = true
+      })
+      .addCase(PostWsUpdateCategories.fulfilled, (state, action) => {
+        state.Wsloading = false
+        Notify('success', 'Category updated successfully')
+        // if (action.payload?.statusCode === '200') {
+        //   state.error = null
+        // }
+      })
+      .addCase(PostWsUpdateCategories.rejected, (state, action) => {
         state.Wsloading = false
         state.error = action.payload?.message || action.error.message
         Notify('error', action.payload?.message || 'Something went wrong')
