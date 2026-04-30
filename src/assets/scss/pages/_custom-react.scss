@@ -30,3 +30,34 @@
 .custom-bg {
   background-color: var(--taplox-secondary-bg) !important;
 }
+
+.custom-file-input {
+  background-color: transparent !important;
+  color: white;
+  border: 1px solid #555;
+}
+
+.custom-file-input::file-selector-button {
+  background-color: transparent  !important; 
+  color: #000;
+  border-right: 1px solid #000;
+  padding: 8px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.custom-file-input-light {
+  background-color: transparent !important;
+  color: #aab8c5;
+  // border: 1px solid #aab8c5;
+}
+
+.custom-file-input-light::file-selector-button {
+  background-color: transparent  !important; 
+  color: #aab8c5;
+  border-right: 1px solid #aab8c5;
+  padding: 8px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+

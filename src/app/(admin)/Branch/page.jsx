@@ -13,44 +13,47 @@ import {
   UpdatedBranch,
 } from '@/redux/slice/Branch/branchSlice'
 import { Spinner } from 'react-bootstrap'
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import Select from 'react-select'
 import { allCategories, GetAllCategory } from '@/redux/slice/categories/CategorySlice'
 import Notify from '@/components/Notify'
 import { AllBranch } from '@/api/branch/branchHelperApi'
 import { allDevices, GetAllDevices } from '@/redux/slice/devicesSlice/DevicesSlice'
-
-const customSelectStyles = {
-  control: (base) => ({
-    ...base,
-    backgroundColor: '#000',
-    borderColor: '#444',
-    color: '#fff',
-  }),
-  menu: (base) => ({
-    ...base,
-    backgroundColor: '#000',
-  }),
-  option: (base, state) => ({
-    ...base,
-    backgroundColor: state.isFocused ? '#333' : '#000',
-    color: '#fff',
-  }),
-  multiValue: (base) => ({
-    ...base,
-    backgroundColor: '#333',
-  }),
-  multiValueLabel: (base) => ({
-    ...base,
-    color: '#fff',
-  }),
-  singleValue: (base) => ({
-    ...base,
-    color: '#fff',
-  }),
-}
+import { useTheme } from '@/context/BrandingContext'
 
 const Page = () => {
+  const { theme } = useTheme()
+  const selectColor = theme?.primaryColor 
+  const customSelectStyles = {
+    control: (base) => ({
+      ...base,
+      backgroundColor: selectColor,
+      borderColor: ' #3a4551',
+      color: '#fff',
+    }),
+    menu: (base) => ({
+      ...base,
+      backgroundColor: selectColor,
+      border:'1px solid #3a4551'
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused ?' #3d4153' : selectColor,
+      color: '#fff',
+    }),
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: selectColor,
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: '#fff',
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: '#fff',
+    }),
+  }
   const router = useRouter()
   const { branch, loading } = useSelector(allBranch)
   const { category } = useSelector(allCategories)
@@ -220,7 +223,7 @@ const Page = () => {
     }))
   }
   const handleCreateDevice = () => {
-    router.push('/Devices/VendiDevice') 
+    router.push('/Devices/VendiDevice')
   }
   // const filteredProducts = useMemo(() => {
   //   return branch.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
@@ -231,10 +234,22 @@ const Page = () => {
     <Container className="mt-5">
       <Row className="mb-4 align-items-center g-2">
         <Col xs="12" sm="6" md="3" lg="2">
-          <Input type="text" placeholder="Search branch..." value={search} onChange={(e) => setSearch(e.target.value)}  style={{backgroundColor:'transparent'}} className="custom-text"/>
+          <Input
+            type="text"
+            placeholder="Search branch..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ backgroundColor: 'transparent' }}
+            className="custom-text"
+          />
         </Col>
         <Col xs="12" sm="6" md="3" lg="2">
-          <Input type="select" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}  style={{backgroundColor:'transparent'}} className="custom-text">
+          <Input
+            type="select"
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+            style={{ backgroundColor: 'transparent' }}
+            className="custom-text">
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -322,7 +337,7 @@ const Page = () => {
             <Label>
               Name <span style={{ color: '#e57373' }}>*</span>
             </Label>
-            <Input name="name" value={BranchInput?.name || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input name="name" value={BranchInput?.name || ''} onChange={handleInputChange} style={{ backgroundColor: 'transparent' }} />
           </FormGroup>
           <FormGroup>
             <Label>
@@ -347,15 +362,26 @@ const Page = () => {
           </FormGroup>
           <FormGroup>
             <Label>Memo</Label>
-            <Input name="memo" value={BranchInput?.memo || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input name="memo" value={BranchInput?.memo || ''} onChange={handleInputChange} style={{ backgroundColor: 'transparent' }} />
           </FormGroup>
           <FormGroup>
             <Label>CompanyId</Label>
-            <Input name="companyId" type="number" value={BranchInput?.companyId || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              name="companyId"
+              type="number"
+              value={BranchInput?.companyId || ''}
+              onChange={handleInputChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
           <FormGroup>
             <Label>OutletAddress</Label>
-            <Input name="outletAddress" value={BranchInput?.outletAddress || ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
+            <Input
+              name="outletAddress"
+              value={BranchInput?.outletAddress || ''}
+              onChange={handleInputChange}
+              style={{ backgroundColor: 'transparent' }}
+            />
           </FormGroup>
         </ModalBody>
         <ModalFooter>

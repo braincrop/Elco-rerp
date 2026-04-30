@@ -7,38 +7,11 @@ import { Row, Col, Form, FormGroup, Label, Input, Button, Table } from 'reactstr
 import Notify from '../../components/Notify'
 import { allCategories, GetAllCategory } from '@/redux/slice/categories/CategorySlice'
 import { allTranslation, Translation } from '@/redux/slice/Translation/TranslationSlice'
+import { useTheme } from '@/context/BrandingContext'
 
-const customSelectStyles = {
-  control: (base) => ({
-    ...base,
-    backgroundColor: '#333',
-    borderColor: '#3a4551',
-    color: '#fff',
-  }),
-  menu: (base) => ({
-    ...base,
-    backgroundColor: '#333',
-  }),
-  option: (base, state) => ({
-    ...base,
-    backgroundColor: state.isFocused ? '#333' : '#333',
-    color: '#fff',
-  }),
-  multiValue: (base) => ({
-    ...base,
-    backgroundColor: '#333',
-  }),
-  multiValueLabel: (base) => ({
-    ...base,
-    color: '#fff',
-  }),
-  singleValue: (base) => ({
-    ...base,
-    color: '#fff',
-  }),
-}
 const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
   const dispatch = useDispatch()
+  const { theme } = useTheme()
   const { translation } = useSelector(allTranslation)
   const { singleProduct, loading } = useSelector(allProducts)
   const { category } = useSelector(allCategories)
@@ -63,6 +36,37 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
       dispatch(GetSingleProduct(selectedProduct?.dpid))
     }
   }, [])
+  const selectColor = theme?.primaryColor
+  const customSelectStyles = {
+    control: (base) => ({
+      ...base,
+      backgroundColor: selectColor,
+      borderColor: ' #3a4551',
+      color: '#fff',
+    }),
+    menu: (base) => ({
+      ...base,
+      backgroundColor: selectColor,
+      border: '1px solid #3a4551',
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused ? ' #3d4153' : selectColor,
+      color: '#fff',
+    }),
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: selectColor,
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: '#fff',
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: '#fff',
+    }),
+  }
 
   useEffect(() => {
     if (modalType === 'create' && translation?.length) {
@@ -264,7 +268,13 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Product Image</Label>
-            <Input type="file" name="imagePath" onChange={handleImageChange} style={{ backgroundColor: 'transparent' }} className="custom-text" />
+            <Input
+              type="file"
+              name="imagePath"
+              onChange={handleImageChange}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-file-input"
+            />
             {productInput.imagePath && <img src={productInput.imagePath} alt="product" width={60} className="mt-1 rounded" />}
           </FormGroup>
         </Col>
@@ -272,7 +282,13 @@ const CreateProduct = ({ setShow, selectedProduct, modalType }) => {
         <Col md={3}>
           <FormGroup>
             <Label className="custom-text">Product Nf Image</Label>
-            <Input type="file" name="imagePathNf" onChange={handleImageChange} style={{ backgroundColor: 'transparent' }} className="custom-text" />
+            <Input
+              type="file"
+              name="imagePathNf"
+              onChange={handleImageChange}
+              style={{ backgroundColor: 'transparent' }}
+              className="custom-file-input"
+            />
             {productInput.imagePathNf && <img src={productInput.imagePathNf} alt="product-nf" width={60} className="mt-1 rounded" />}
           </FormGroup>
         </Col>
