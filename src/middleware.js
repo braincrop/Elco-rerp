@@ -9,7 +9,7 @@ export function middleware(request) {
     return NextResponse.next()
   }
   const token = request.cookies.get('token')?.value
-  const publicRoutes = ['/auth/sign-in', '/auth/sign-up','/auth/reset-password']
+  const publicRoutes = ['/auth/sign-in','/auth/reset-password']
   if (publicRoutes.includes(pathname)) {
     if (token) {
       return NextResponse.redirect(new URL('/dashboards', request.url))
