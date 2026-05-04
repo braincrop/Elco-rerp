@@ -90,13 +90,13 @@ const SignIn = () => {
                       <img src={theme?.logoUrl || LightLogo} height={92} alt="logo light" width={200} />
                     </a>
                   </div>
-                  <h4 className="fw-bold text-dark mb-2">Welcome Back!</h4>
-                  <p className="text-muted">Sign in to your account to continue</p>
+                  <h4 className="fw-bold mb-2 text-white">Welcome Back!</h4>
+                  <p className="text-white">Sign in to your account to continue</p>
                 </div>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <FormGroup>
-                      <Label>
+                      <Label className="text-white">
                         Email <span style={{ color: '#e57373' }}>*</span>
                       </Label>
                       <Input
@@ -112,11 +112,11 @@ const SignIn = () => {
                   </div>
                   
                   <div className="mb-3">
-                    <Link href="/auth/reset-password" className="float-end text-muted  ms-1">
+                    <Link href="/auth/reset-password" className="float-end text-muted ms-1">
                       Forgot password?{' '}
                     </Link>
                     <FormGroup>
-                      <Label>
+                      <Label className="text-white">
                         Password <span style={{ color: '#e57373' }}>*</span>
                       </Label>
                       <Input
