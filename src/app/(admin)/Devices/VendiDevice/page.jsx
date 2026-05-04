@@ -188,8 +188,8 @@ const Page = () => {
             <Label>Is Active</Label>
             <Input type="select" name="isActive" value={DeviceInput?.isActive ?? ''} onChange={handleInputChange} style={{backgroundColor:'transparent'}}>
               <option value="">Select Status</option>
-              <option value="true">True</option>
-              <option value="false">False</option>
+              <option value="true" className='custom-text'>True</option>
+              <option value="false" className='custom-text'>False</option>
             </Input>
           </FormGroup>
           {/* <FormGroup>

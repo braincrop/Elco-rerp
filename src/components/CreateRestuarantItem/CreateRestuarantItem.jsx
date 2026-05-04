@@ -25,67 +25,100 @@ import { allProducts, GetAllProduct, GetSingleProduct, PostProduct } from '@/red
 import { allItemCategory, GetItemCategory } from '@/redux/slice/ItemCategory/ItemCategorySlice'
 import { PostRestuarantItemData } from '@/redux/slice/RestuarantItem/RestuarantItemSlice'
 import Notify from '../Notify'
+import { useTheme } from '@/context/BrandingContext'
 
-const customSelectStyles = {
-  control: (base) => ({
-    ...base,
-    backgroundColor: '#22282e',
-    borderColor: '#3a4551',
-    color: '#fff',
-  }),
+// const customSelectStyles = {
+//   control: (base) => ({
+//     ...base,
+//     backgroundColor: '#22282e',
+//     borderColor: '#3a4551',
+//     color: '#fff',
+//   }),
 
-  valueContainer: (base) => ({
-    ...base,
-    color: '#fff',
-  }),
+//   valueContainer: (base) => ({
+//     ...base,
+//     color: '#fff',
+//   }),
 
-  input: (base) => ({
-    ...base,
-    color: '#fff', // 👈 typing text
-  }),
+//   input: (base) => ({
+//     ...base,
+//     color: '#fff', // 👈 typing text
+//   }),
 
-  placeholder: (base) => ({
-    ...base,
-    color: '#ccc', // 👈 placeholder text
-  }),
+//   placeholder: (base) => ({
+//     ...base,
+//     color: '#ccc', // 👈 placeholder text
+//   }),
 
-  menu: (base) => ({
-    ...base,
-    backgroundColor: '#22282e',
-  }),
+//   menu: (base) => ({
+//     ...base,
+//     backgroundColor: '#22282e',
+//   }),
 
-  option: (base, state) => ({
-    ...base,
-    backgroundColor: state.isFocused ? '#333' : '#22282e',
-    color: '#fff',
-  }),
+//   option: (base, state) => ({
+//     ...base,
+//     backgroundColor: state.isFocused ? '#333' : '#22282e',
+//     color: '#fff',
+//   }),
 
-  multiValue: (base) => ({
-    ...base,
-    backgroundColor: '#333',
-  }),
+//   multiValue: (base) => ({
+//     ...base,
+//     backgroundColor: '#333',
+//   }),
 
-  multiValueLabel: (base) => ({
-    ...base,
-    color: '#fff',
-  }),
+//   multiValueLabel: (base) => ({
+//     ...base,
+//     color: '#fff',
+//   }),
 
-  multiValueRemove: (base) => ({
-    ...base,
-    color: '#fff',
-    ':hover': {
-      backgroundColor: '#555',
-      color: '#fff',
-    },
-  }),
+//   multiValueRemove: (base) => ({
+//     ...base,
+//     color: '#fff',
+//     ':hover': {
+//       backgroundColor: '#555',
+//       color: '#fff',
+//     },
+//   }),
 
-  singleValue: (base) => ({
-    ...base,
-    color: '#fff',
-  }),
-}
+//   singleValue: (base) => ({
+//     ...base,
+//     color: '#fff',
+//   }),
+// }
 
 const CreateRestuarantItem = ({ onBack }) => {
+    const { theme } = useTheme()
+    const selectColor = theme?.primaryColor 
+    const customSelectStyles = {
+      control: (base) => ({
+        ...base,
+        backgroundColor: selectColor,
+        borderColor: ' #3a4551',
+        color: '#fff',
+      }),
+      menu: (base) => ({
+        ...base,
+        backgroundColor: selectColor,
+        border:'1px solid #3a4551'
+      }),
+      option: (base, state) => ({
+        ...base,
+        backgroundColor: state.isFocused ?' #3d4153' : selectColor,
+        color: '#fff',
+      }),
+      multiValue: (base) => ({
+        ...base,
+        backgroundColor: selectColor,
+      }),
+      multiValueLabel: (base) => ({
+        ...base,
+        color: '#fff',
+      }),
+      singleValue: (base) => ({
+        ...base,
+        color: '#fff',
+      }),
+    }
   const dispatch = useDispatch()
   const { branch } = useSelector(allBranch)
   const { itemCat } = useSelector(allItemCategory)
@@ -187,7 +220,7 @@ const CreateRestuarantItem = ({ onBack }) => {
           <Row className="g-3">
             <Col md={4}>
               <Label className="custom-text">Branch</Label>
-              <Input type="select" value={formData.branchId} onChange={(e) => handleChange('branch', e.target.value)}>
+              <Input type="select" value={formData.branchId} onChange={(e) => handleChange('branch', e.target.value)} style={{backgroundColor:selectColor,color:'#fff'}}>
                 <option value="">Select Branch</option>
                 {branchOptions?.map((b) => (
                   <option key={b.value} value={b.value}>

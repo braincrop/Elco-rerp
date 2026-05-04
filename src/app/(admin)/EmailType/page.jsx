@@ -116,7 +116,7 @@ const Page = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="3" className="text-center text-muted ">
+              <td colSpan="12" className="text-center text-muted py-4">
                 No Email found
               </td>
             </tr>

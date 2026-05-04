@@ -16,49 +16,43 @@ import { postVideo } from '../../../api/VideoApi/videoHelperApi'
 import { allDevices, GetAllDevices } from '@/redux/slice/devicesSlice/DevicesSlice'
 import Notify from '@/components/Notify'
 import Link from 'next/link'
+import { useTheme } from '@/context/BrandingContext'
 
-const customStyles = {
-  control: (provided, state) => ({
-    ...provided,
-    backgroundColor: '#282f36', // black background
-    borderColor: state.isFocused ? '#3a4551' : '#3a4551', // white border when focused
-    boxShadow: 'none',
-    '&:hover': {
-      borderColor: '#3a4551',
-    },
-  }),
-  menu: (provided) => ({
-    ...provided,
-    backgroundColor: '#282f36', // black menu background
-    color: '#fff',
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected ? '#282f36' : state.isFocused ? '#282f36' : '#282f36',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#333',
-    },
-  }),
-  multiValue: (provided) => ({
-    ...provided,
-    backgroundColor: '#333', // selected option chip background
-    color: '#fff',
-  }),
-  multiValueLabel: (provided) => ({
-    ...provided,
-    color: '#fff',
-  }),
-  multiValueRemove: (provided) => ({
-    ...provided,
-    color: '#fff',
-    ':hover': {
-      backgroundColor: '#ff0000', // red hover for remove
-      color: 'white',
-    },
-  }),
-}
+
 const Page = () => {
+   const { theme } = useTheme()
+    const selectColor = theme?.primaryColor 
+    const customSelectStyles = {
+      control: (base) => ({
+        ...base,
+        backgroundColor: selectColor,
+        borderColor: ' #3a4551',
+        color: '#fff',
+      }),
+      menu: (base) => ({
+        ...base,
+        backgroundColor: selectColor,
+        border:'1px solid #3a4551'
+      }),
+      option: (base, state) => ({
+        ...base,
+        backgroundColor: state.isFocused ?' #3d4153' : selectColor,
+        color: '#fff',
+      }),
+      multiValue: (base) => ({
+        ...base,
+        backgroundColor: selectColor,
+      }),
+      multiValueLabel: (base) => ({
+        ...base,
+        color: '#fff',
+      }),
+      singleValue: (base) => ({
+        ...base,
+        color: '#fff',
+      }),
+    }
+
   const dispatch = useDispatch()
   const { VendiMachine, loading } = useSelector(allVendiSplashMachine)
   const { devices } = useSelector(allDevices)
@@ -300,7 +294,7 @@ const Page = () => {
                 <td>{new Date(item.endTime).toLocaleString()}</td>
                 <td>
                   {item.vendronDeviceInfoIds?.length > 0 ? (
-                    <span className="badge bg-success">{item?.vendronDeviceInfoIds.join(', ')} Devices</span>
+                    <span className="badge bg-success">{item?.vendronDeviceInfoIds.join(', ')} Device</span>
                   ) : (
                     <span className="badge bg-secondary">Not Assigned</span>
                   )}
@@ -364,11 +358,12 @@ const Page = () => {
             <Label>File</Label>
             <div className="position-relative">
               <Input
+                className='custom-file-input-light'              
                 type="file"
                 name="path"
                 onChange={handleImageChange}
                 disabled={uploadingField === 'path'}
-                style={{ backgroundColor: 'transparent' }}
+                style={{ backgroundColor: 'transparent'}}
               />
               {uploadingField === 'path' && (
                 <div
@@ -430,7 +425,7 @@ const Page = () => {
                   vendronDeviceInfoIds: selectedOptions.map((option) => option.value),
                 }))
               }}
-              styles={customStyles}
+              styles={customSelectStyles}
               classNamePrefix="select"
               placeholder="Select Devices"
             />
@@ -471,7 +466,7 @@ const Page = () => {
                   vendronDeviceInfoIds: selectedOptions.map((option) => option.value),
                 }))
               }}
-              styles={customStyles}
+              styles={customSelectStyles}
               classNamePrefix="select"
               placeholder="Select Devices"
             />
