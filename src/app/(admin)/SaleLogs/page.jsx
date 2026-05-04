@@ -9,7 +9,7 @@ import { allDevices, GetAllDevices } from '@/redux/slice/devicesSlice/DevicesSli
 import { useTheme } from '@/context/BrandingContext'
 // import { GetSalesLogs } from "store/salesSlice"
 
-export function PaymentMethodsUITable({ salelogs }) {
+ const PaymentMethodsUITable = ({ salelogs }) => {
   const paymentMethods =
     salelogs?.filter?.paymentMethodOptions?.map((item, index) => ({
       sr: index + 1,
@@ -97,7 +97,7 @@ export default function SalesLogsHistory() {
   }
   const { devices } = useSelector(allDevices)
   const { salelogs } = useSelector(AllSalelogs)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [filters, setFilters] = useState({
     startDate: '',
     endDate: '',
