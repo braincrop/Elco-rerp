@@ -1,25 +1,36 @@
-'use client';
-import avatar1 from '@/assets/images/users/avatar-1.jpg';
-import IconifyIcon from '@/components/wrapper/IconifyIcon';
-import Image from 'next/image';
+'use client'
+import avatar1 from '@/assets/images/users/avatar-1.jpg'
+import IconifyIcon from '@/components/wrapper/IconifyIcon'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Dropdown, DropdownHeader, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap';
+import { Dropdown, DropdownHeader, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap'
 const ProfileDropdown = () => {
-  const router = useRouter();
-  const logOut = () => {
-    if(typeof window !== 'undefined'){
-      localStorage.removeItem('token');
-      document.cookie = 'token=; Max-Age=0; path=/;'
-      router.replace('/auth/sign-in')
-    }
+  const router = useRouter()
+  const logOut = async () => {
+    if (typeof window === 'undefined') return
+    localStorage.removeItem('token')
+    document.cookie = 'token=; Max-Age=0; path=/;'
+    await router.replace('/auth/sign-in')
   }
-  return <Dropdown className=" topbar-item">
-      <DropdownToggle type="button" className="topbar-button content-none" id="page-header-user-dropdown" 
-      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{backgroundColor:'transparent'}}> 
+  
+  return (
+    <Dropdown className=" topbar-item">
+      <DropdownToggle
+        type="button"
+        className="topbar-button content-none"
+        id="page-header-user-dropdown"
+        data-bs-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        style={{ backgroundColor: 'transparent' }}>
         <span className="d-flex align-items-center">
-          <Image className="rounded-circle" width={32}
-        // height={32}
-        src={avatar1} alt="avatar-3"/>
+          <Image
+            className="rounded-circle"
+            width={32}
+            // height={32}
+            src={avatar1}
+            alt="avatar-3"
+          />
         </span>
       </DropdownToggle>
       <DropdownMenu className=" dropdown-menu-end">
@@ -46,6 +57,7 @@ const ProfileDropdown = () => {
           <span className="align-middle">Logout</span>
         </DropdownItem>
       </DropdownMenu>
-    </Dropdown>;
-};
-export default ProfileDropdown;
+    </Dropdown>
+  )
+}
+export default ProfileDropdown
