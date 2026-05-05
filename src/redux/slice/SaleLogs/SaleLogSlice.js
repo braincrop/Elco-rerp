@@ -13,9 +13,10 @@ export const GetAllSaleLogs = createAsyncThunk('SaleLog/GetAllSalelogs', async (
 })
 
 const initialState = {
-  salelogs: [],
+  salelogs: null,
   loading: false,
   error: null,
+  saleLogsFetched: false,
 }
 
 export const SaleLogSlice = createSlice({
@@ -26,16 +27,21 @@ export const SaleLogSlice = createSlice({
     builder
       .addCase(GetAllSaleLogs.pending, (state) => {
         state.loading = true
+        state.saleLogsFetched = false
       })
+
       .addCase(GetAllSaleLogs.fulfilled, (state, action) => {
         state.loading = false
         state.error = null
-        console.log('GetAllSaleLogs--', action.payload)
-        state.salelogs = action.payload?.data.items || []
+        state.saleLogsFetched = true
+        state.salelogs = action.payload?.data?.items || []
       })
+
       .addCase(GetAllSaleLogs.rejected, (state, action) => {
         state.loading = false
+        state.saleLogsFetched = true
         state.error = action.payload || action.error.message
+        state.salelogs = []
       })
   },
 })
