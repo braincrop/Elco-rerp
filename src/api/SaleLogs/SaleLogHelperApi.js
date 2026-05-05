@@ -3,7 +3,7 @@ import { axiosLocal,axiosInstance } from '../axiosConfig'
 export const GetSaleLogs = async (data) => {
     console.log('data---', data)
   try {
-    const response = await axiosInstance.get('SalesLog/search',{
+    const response = await axiosInstance.get('v1/Payment',{
       params: {
         ...data,
       },
