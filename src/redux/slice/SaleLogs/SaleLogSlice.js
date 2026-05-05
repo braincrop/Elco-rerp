@@ -31,7 +31,7 @@ export const SaleLogSlice = createSlice({
         state.loading = false
         state.error = null
         console.log('GetAllSaleLogs--', action.payload)
-        state.salelogs = action.payload
+        state.salelogs = action.payload?.data.items || []
       })
       .addCase(GetAllSaleLogs.rejected, (state, action) => {
         state.loading = false
