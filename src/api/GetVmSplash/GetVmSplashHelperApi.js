@@ -14,3 +14,17 @@ export const GetAllVmSplash = async (ip) => {
     throw error
   }
 }
+
+export const GetAllMachineProducts = async (ip) => {
+  // console.log("Getting machine products for IP:", ip)
+  try {
+    const response = await socketInstance.get(`v1/MachineSync/GetAllRestaurantItemsByIp/${ip}`,{
+        headers: {
+           "x-api-key": apiKey,
+        },
+    })
+    return response
+  } catch (error) {
+    throw error
+  }
+}

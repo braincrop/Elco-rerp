@@ -166,6 +166,15 @@ import { allDevices, GetAllDevices } from '@/redux/slice/devicesSlice/DevicesSli
 import { useDispatch, useSelector } from 'react-redux'
 import VirtualVmSplash from '@/components/VirtualVMSplash/VirtualVmSplash'
 import { socketInstance } from '@/api/axiosConfig'
+import {
+  AllWebSocketCommandSlice,
+  PostUpdateVendiSplash,
+  PostWsUpdateCategories,
+  PostWsUpdateLanguages,
+  PostWsUpdateproducts,
+} from '@/redux/slice/WebSocketCommands/WebSocketSlice'
+import Notify from '@/components/Notify'
+import { allProducts, GetMachineProducts } from '@/redux/slice/Products/productSlice'
 
 const initialSlots = [
   {
@@ -1171,6 +1180,7 @@ function SplashScreen({ onComplete }) {
 
 export default function Page() {
   const { theme } = useTheme()
+  const { machineProducts, loadingproducts } = useSelector(allProducts)
   const [showSplash, setShowSplash] = useState(true)
   const [videoLoading, setVideoLoading] = useState(false)
   const [showProducts, setShowProducts] = useState(true)
@@ -1186,7 +1196,9 @@ export default function Page() {
     message: 'Machine connected. Select a slot to dispense or edit settings.',
   })
   const dispatch = useDispatch()
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const apiKey = process.env.NEXT_PUBLIC_API_KEY
+
   const stats = useMemo(() => {
     const total = slots.length
     const active = slots.filter((x) => x.active).length
@@ -1195,23 +1207,52 @@ export default function Page() {
     return { total, active, low, stock }
   }, [slots])
 
-  const rows = useMemo(() => {
-    return slots.reduce((acc, slot) => {
-      acc[slot.row] = acc[slot.row] || []
-      acc[slot.row].push(slot)
-      return acc
-    }, {})
-  }, [slots])
+  // const rows = useMemo(() => {
+  //   return slots.reduce((acc, slot) => {
+  //     acc[slot.row] = acc[slot.row] || []
+  //     acc[slot.row].push(slot)
+  //     return acc
+  //   }, {})
+  // }, [slots])
 
   useEffect(() => {
     dispatch(GetAllDevices())
   }, [])
+  const categoryData = machineProducts || []
 
+  useEffect(() => {
+    if (categoryData?.length > 0 && !selectedCategory) {
+      setSelectedCategory(categoryData[0])
+    }
+  }, [categoryData])
+
+  const filteredProducts = selectedCategory?.products || []
+  
   const updateSelectedFromSlots = (updatedSlots, code) => {
     const updated = updatedSlots.find((x) => x.code === code)
     if (updated) setSelectedSlot(updated)
   }
+  const productRows = useMemo(() => {
+    return filteredProducts.reduce((acc, item, index) => {
+      const product = item.product
+      const rowKey = index < 4 ? 'A' : index < 8 ? 'B' : index < 12 ? 'C' : 'D'
+      const slotData = {
+        code: `${product?.product_sku || product?.id}-${index}`,
+        image: product?.product_photo,
+        productName: product?.product_name,
+        price: product?.product_price,
+        stock: product?.stock || 0,
+        capacity: 10,
+        active: true,
+        motorNo: index + 1,
+        row: rowKey,
+      }
+      acc[rowKey] = acc[rowKey] || []
+      acc[rowKey].push(slotData)
 
+      return acc
+    }, {})
+  }, [filteredProducts])
   const localVideo = '/video/3198159-hd_1920_1080_25fps.mp4'
   const GetAllVmSplash = async (ip) => {
     try {
@@ -1222,10 +1263,7 @@ export default function Page() {
           'x-api-key': apiKey,
         },
       })
-
-      console.log('response', response)
       const apiVideo = response?.data?.data
-
       if (apiVideo) {
         setVideoUrl(apiVideo)
       } else {
@@ -1238,14 +1276,14 @@ export default function Page() {
       setVideoLoading(false)
     }
   }
-  const handleInputValueChange = (e) => {
+  const handleInputValueChange =  (e) => {
     const ip = e.target.value
     setSelectedDevice(ip)
     if (ip) {
       GetAllVmSplash(ip)
+      dispatch(GetMachineProducts(ip))
     }
   }
-
   const dispense = async () => {
     if (!selectedSlot) return
     setDispensingCode(selectedSlot.code)
@@ -1285,12 +1323,91 @@ export default function Page() {
   if (showSplash) {
     return <SplashScreen onComplete={() => setShowSplash(false)} />
   }
+  const handleUpdateSplash = async () => {
+    if (!selectedDevice) {
+      Notify('error', 'Please select a device.')
+      return
+    }
+    try {
+      await dispatch(
+        PostUpdateVendiSplash({
+          id: selectedDevice,
+          updatedData: {
+            type: 'string',
+            data: 'string',
+          },
+        }),
+      ).unwrap()
+    } catch (error) {
+      console.log('Error updating splash:', error)
+    }
+  }
+
+  const handleUpdateproducts = async () => {
+    if (!selectedDevice) {
+      Notify('error', 'Please select a device.')
+      return
+    }
+    try {
+      await dispatch(
+        PostWsUpdateproducts({
+          id: selectedDevice,
+          updatedData: {
+            type: 'string',
+            data: 'string',
+          },
+        }),
+      ).unwrap()
+    } catch (error) {
+      console.log('Error updating products:', error)
+    }
+  }
+
+  const handleUpdateLanguages = async () => {
+    if (!selectedDevice) {
+      Notify('error', 'Please select a device.')
+      return
+    }
+    try {
+      await dispatch(
+        PostWsUpdateLanguages({
+          id: selectedDevice,
+          updatedData: {
+            type: 'string',
+            data: 'string',
+          },
+        }),
+      ).unwrap()
+    } catch (error) {
+      console.log('Error updating languages:', error)
+    }
+  }
+
+  const handleUpdateCategory = async () => {
+    if (!selectedDevice) {
+      Notify('error', 'Please select a device.')
+      return
+    }
+    try {
+      await dispatch(
+        PostWsUpdateCategories({
+          id: selectedDevice,
+          updatedData: {
+            type: 'string',
+            data: 'string',
+          },
+        }),
+      ).unwrap()
+    } catch (error) {
+      console.log('Error updating categories:', error)
+    }
+  }
 
   return (
     <div className="vvm-root py-4 py-md-5">
       <style>{vvmStyles}</style>
       <div className="container-fluid vvm-page">
-        <header className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between gap-4 mb-4">
+        <header className="d-flex flex-row align-items-center gap-4 mb-4">
           <div>
             <p className="vvm-eyebrow mb-2">Digital Twin</p>
             <h1 className="vvm-title mb-3">Virtual Vending Machine</h1>
@@ -1299,13 +1416,22 @@ export default function Page() {
               integration.
             </p>
           </div>
-          <div className="d-flex flex-wrap gap-3">
-            <button type="button" className="vvm-btn vvm-btn-soft">
-              <RefreshCw size={17} /> Sync Machine
+          <div className="d-flex flex-wrap gap-2">
+            <button type="button" className="vvm-btn vvm-btn-soft" onClick={handleUpdateSplash}>
+              <RefreshCw size={17} /> Sync Splash
             </button>
-            <button type="button" className="vvm-btn vvm-btn-primary">
+            <button type="button" className="vvm-btn vvm-btn-soft" onClick={handleUpdateLanguages}>
+              <RefreshCw size={17} /> Sync language
+            </button>
+            <button type="button" className="vvm-btn vvm-btn-soft" onClick={handleUpdateproducts}>
+              <RefreshCw size={17} /> Sync Product
+            </button>
+            <button type="button" className="vvm-btn vvm-btn-soft" onClick={handleUpdateCategory}>
+              <RefreshCw size={17} /> Sync Category
+            </button>
+            {/* <button type="button" className="vvm-btn vvm-btn-primary">
               <Settings size={17} /> Settings
-            </button>
+            </button> */}
           </div>
         </header>
 
@@ -1401,15 +1527,13 @@ export default function Page() {
                   }}>
                   {showProducts && (
                     <>
-                      <div className="vvm-glass-inner p-3 p-md-4">
+                      {/* <div className="vvm-glass-inner p-3 p-md-4">
                         {Object.keys(rows).map((row) => (
                           <div key={row} className="mb-4 last-mb-0">
                             <div className="d-flex align-items-center gap-3 mb-2">
                               <span className="vvm-row-label">ROW {row}</span>
-
                               <div className="vvm-line" />
                             </div>
-
                             <div className={row === 'A' || row === 'B' ? 'vvm-slot-grid-small' : 'vvm-slot-grid-large'}>
                               {rows[row].map((slot) => (
                                 <SlotCard
@@ -1424,6 +1548,66 @@ export default function Page() {
                             </div>
                           </div>
                         ))}
+                      </div> */}
+                      <div className="vvm-glass-inner p-3 p-md-4">
+                        {/* DEVICE CHECK FIRST */}
+                        {!selectedDevice ? (
+                          <div className="text-center py-5">
+                            <h5 className="text-warning mb-0">Please select a device</h5>
+                          </div>
+                        ) : (
+                          <>
+                          
+                            <div className="d-flex flex-wrap gap-2 mb-4">
+                              {categoryData.map((category) => (
+                                <button
+                                  key={category.id}
+                                  type="button"
+                                  onClick={() => setSelectedCategory(category)}
+                                  className={`btn rounded-pill px-4 text-capitalize  ${selectedCategory?.id === category.id ? 'btn-primary' : 'btn-outline-light'}`}>
+                                  {category.name}
+                                </button>
+                              ))}
+                            </div>
+                            {/* {selectedCategory && (
+                              <div className="d-flex align-items-center gap-3 mb-3">
+                                <span className="vvm-row-label">{selectedCategory.name}</span>
+                                <div className="vvm-line" />
+                              </div>
+                            )} */}
+                            {loadingproducts ? (
+                              <div className="text-center py-5">
+                                <div className="spinner-border text-light" />
+                                <p className="text-secondary mt-2 mb-0">Loading products...</p>
+                              </div>
+                            ) : selectedCategory && filteredProducts.length > 0 ? (
+                              Object.keys(productRows).map((row) => (
+                                <div key={row} className="mb-4 last-mb-0">
+                                  <div className="d-flex align-items-center gap-3 mb-2">
+                                    <span className="vvm-row-label">ROW {row}</span>
+                                    <div className="vvm-line" />
+                                  </div>
+                                  <div className={row === 'A' || row === 'B' ? 'vvm-slot-grid-small' : 'vvm-slot-grid-large'}>
+                                    {productRows[row].map((slot, index) => (
+                                      <SlotCard
+                                        key={`${slot.code}-${index}`}
+                                        slot={slot}
+                                        selected={selectedSlot?.code === slot.code}
+                                        onClick={setSelectedSlot}
+                                        mode={mode}
+                                        dispensing={dispensingCode === slot.code}
+                                      />
+                                    ))}
+                                  </div>
+                                </div>
+                              ))
+                            ) : selectedCategory ? (
+                              <div className="text-center py-5">
+                                <p className="text-secondary mb-0">No Product Found</p>
+                              </div>
+                            ) : null}
+                          </>
+                        )}
                       </div>
                       <div className="d-flex justify-content-center mt-4">
                         <motion.button whileTap={{ scale: 0.96 }} type="button" onClick={dispense} className="vvm-push-button">

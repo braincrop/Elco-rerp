@@ -10,6 +10,7 @@ import {
   PostBulkUpsertProduct,
   GetProductBySingleId,
 } from '../../../api/products/productHelperApi'
+import { GetAllMachineProducts } from '../../../api/GetVmSplash/GetVmSplashHelperApi'
 
 export const GetAllProduct = createAsyncThunk('Product/AllProduct', async () => {
   try {
@@ -69,10 +70,21 @@ export const DeleteProductData = createAsyncThunk('Product/DeleteProduct', async
   }
 })
 
+export const GetMachineProducts = createAsyncThunk('Product/AllMachineProducts', async (data, { rejectWithValue }) => {
+  try {
+    const response = await GetAllMachineProducts(data)
+    return response.data
+  } catch (error) {
+    return rejectWithValue('Failed to get machine products')
+  }
+})
+
 const initialState = {
   product: [],
   singleProduct: [],
+  machineProducts: [],
   loading: false,
+  loadingproducts: false,
   error: null,
 }
 
@@ -175,6 +187,22 @@ export const ProductSlice = createSlice({
       .addCase(DeleteProductData.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
+      })
+
+       builder
+      .addCase(GetMachineProducts.pending, (state) => {
+        state.loadingproducts = true
+        state.error = null
+        state.machineProducts = []
+      })
+      .addCase(GetMachineProducts.fulfilled, (state, action) => {
+        state.loadingproducts = false
+        state.machineProducts = action.payload?.data || []
+      })
+      .addCase(GetMachineProducts.rejected, (state, action) => {
+        state.loadingproducts = false
+        state.error = action.error.message
+        state.machineProducts = []
       })
   },
 })
