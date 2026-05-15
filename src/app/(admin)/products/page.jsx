@@ -103,9 +103,7 @@ const Page = () => {
     setViewModal(false)
     ViewsetSelectedProduct(null)
   }
-
   const branchOptions = Array.isArray(branch) ? branch.map((b) => ({ value: b.branchId, label: b.name })) : []
-
   const handleChange = (key, value) => {
     const ids = Array.isArray(value) ? value.map((v) => v.value) : []
     setAssignData((prev) => ({ ...prev, branches: ids }))

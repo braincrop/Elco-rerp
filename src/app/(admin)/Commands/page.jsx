@@ -765,7 +765,6 @@ export default function Page() {
       console.log('Error updating categories:', error)
     }
   }
-
   return (
     <div className="vvm-wrapper">
     <div className="vvm-root py-4 py-md-5">
