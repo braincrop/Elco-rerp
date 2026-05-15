@@ -59,8 +59,6 @@ const PaymentMethodsUITable = ({ salelogs }) => {
             <h2>{paymentLogs.reduce((sum, item) => sum + item.total, 0)}</h2>
           </div>
         </div>
-
-        {/* MAIN TABLE */}
         <Table bordered hover responsive className="shadow-sm rounded">
           <thead>
             <tr>
@@ -82,7 +80,6 @@ const PaymentMethodsUITable = ({ salelogs }) => {
               <th>Unsuccessful Items</th>
             </tr>
           </thead>
-
           <tbody>
             {paymentLogs.map((item, index) => (
               <tr key={item.uuId}>
@@ -92,24 +89,16 @@ const PaymentMethodsUITable = ({ salelogs }) => {
                 <td className="text-white">
                   {item.branch?.name} (ID: {item.branch?.id})
                 </td>
-
                 <td className="text-white">{item.buyerDisplay?.personalInfoSummary}</td>
-
                 <td className="text-white">{item.buyerDisplay?.status}</td>
-
                 <td className="text-white">{item.paymentMethodName}</td>
                 <td className="text-white">{item.paymentMethodId}</td>
                 <td className="text-white">{item.subTotal}</td>
                 <td className="text-white">{item.total}</td>
-
                 <td className="text-white">{item.erpSyncStatus === null ? 'Not Synced' : item.erpSyncStatus}</td>
-
                 <td className="text-white">{new Date(item.transactionTime).toLocaleString()}</td>
-
                 <td className="text-white">{item.successfulItemCount}</td>
                 <td className="text-white">{item.unsuccessfulItemCount}</td>
-
-                {/* SUCCESSFUL ITEMS NESTED ARRAY */}
                 <td className="text-white">
                   {item.successfulItems?.length > 0
                     ? item.successfulItems.map((prod, i) => (
@@ -128,8 +117,6 @@ const PaymentMethodsUITable = ({ salelogs }) => {
                       ))
                     : 'No Successful Items'}
                 </td>
-
-                {/* UNSUCCESSFUL ITEMS NESTED ARRAY */}
                 <td className="text-white">
                   {item.unsuccessfulItems?.length > 0
                     ? item.unsuccessfulItems.map((prod, i) => (
@@ -211,8 +198,6 @@ export default function SalesLogsHistory() {
     { value: '3', label: 'Online' },
   ]
 
-  console.log('salelogs', salelogs)
-  console.log('filters', filters)
   useEffect(() => {
     dispatch(GetAllBranch())
   }, [])

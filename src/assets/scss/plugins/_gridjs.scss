@@ -50,10 +50,10 @@
     table-layout: auto !important;
 }
 
-.gridjs-tbody,
-td.gridjs-td {
-    background-color: $table-bg;
-}
+// .gridjs-tbody,
+// td.gridjs-td {
+//     background-color: $table-bg;
+// }
 
 th.gridjs-th {
     border: 1px solid var(--#{$prefix}border-color);
