@@ -197,11 +197,9 @@ export default function SalesLogsHistory() {
     { value: '2', label: 'Card' },
     { value: '3', label: 'Online' },
   ]
-
   useEffect(() => {
     dispatch(GetAllBranch())
   }, [])
-
   const handleChange = (e) => {
     const { name, value } = e.target
     setFilters((prev) => ({ ...prev, [name]: value }))
