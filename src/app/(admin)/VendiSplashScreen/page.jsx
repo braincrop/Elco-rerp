@@ -1,501 +1,210 @@
 'use client'
-import React, { useState, useMemo, useEffect } from 'react'
-import { Table, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Row, Col, Spinner } from 'reactstrap'
-import { Icon } from '@iconify/react'
-import {
-  allVendiSplashMachine,
-  DeleteVendiMachine,
-  GetAllVendiMachine,
-  PostVendiMachine,
-  UpdatedVendiMachine,
-  AssignVendiMachineToDevice,
-} from '@/redux/slice/VendingSplashMachine/VendingSplashMachine'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select'
-import { postVideo } from '../../../api/VideoApi/videoHelperApi'
+import {
+  allVendiSplashMachine, DeleteVendiMachine, GetAllVendiMachine,
+  PostVendiMachine, UpdatedVendiMachine, AssignVendiMachineToDevice,
+} from '@/redux/slice/VendingSplashMachine/VendingSplashMachine'
 import { allDevices, GetAllDevices } from '@/redux/slice/devicesSlice/DevicesSlice'
+import { postVideo } from '@/api/VideoApi/videoHelperApi'
 import Notify from '@/components/Notify'
-import Link from 'next/link'
-import { useTheme } from '@/context/BrandingContext'
+import { getSelectStyles } from '@/utils/selectStyles'
+import DataTable from '@/components/ui/DataTable'
+import Badge from '@/components/ui/Badge'
+import Button from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
+import RowDrawer from '@/components/ui/RowDrawer'
+import Field from '@/components/ui/Field'
+import Toolbar from '@/components/ui/Toolbar'
+import SvgIcon from '@/components/ui/SvgIcon'
 
+const COLUMNS = [
+  { key: 'name',     label: 'Name',    sortable: true },
+  { key: 'memo',     label: 'Memo' },
+  { key: 'path',     label: 'Video',   render: (v) => v ? <a href={v} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>View</a> : '-' },
+  { key: 'startTime', label: 'Start',  render: (v) => v ? new Date(v).toLocaleString() : '-' },
+  { key: 'endTime',   label: 'End',    render: (v) => v ? new Date(v).toLocaleString() : '-' },
+  {
+    key: 'vendronDeviceInfoIds',
+    label: 'Devices',
+    render: (v) => v?.length
+      ? <Badge variant="good">{v.length} device{v.length !== 1 ? 's' : ''}</Badge>
+      : <Badge variant="neutral">Not assigned</Badge>,
+  },
+]
 
-const Page = () => {
-   const { theme } = useTheme()
-    const selectColor = theme?.primaryColor 
-    const customSelectStyles = {
-      control: (base) => ({
-        ...base,
-        backgroundColor: selectColor,
-        borderColor: ' #3a4551',
-        color: '#fff',
-      }),
-      menu: (base) => ({
-        ...base,
-        backgroundColor: selectColor,
-        border:'1px solid #3a4551'
-      }),
-      option: (base, state) => ({
-        ...base,
-        backgroundColor: state.isFocused ?' #3d4153' : selectColor,
-        color: '#fff',
-      }),
-      multiValue: (base) => ({
-        ...base,
-        backgroundColor: selectColor,
-      }),
-      multiValueLabel: (base) => ({
-        ...base,
-        color: '#fff',
-      }),
-      singleValue: (base) => ({
-        ...base,
-        color: '#fff',
-      }),
-    }
+const EMPTY_FORM = { name: '', memo: '', path: '', starttime: '', endtime: '', vendronDeviceInfoIds: [], id: null }
 
+export default function SplashScreenPage() {
   const dispatch = useDispatch()
   const { VendiMachine, loading } = useSelector(allVendiSplashMachine)
   const { devices } = useSelector(allDevices)
-  const [search, setSearch] = useState('')
-  const [itemsPerPage, setItemsPerPage] = useState(5)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [modalType, setModalType] = useState('')
-  const [selectedIndex, setSelectedIndex] = useState(null)
-  const [deleteModal, setDeleteModal] = useState(false)
-  const [showUploadSuccess, setShowUploadSuccess] = useState(false)
-  const [uploadingField, setUploadingField] = useState(null)
-  const [assginDeviceModal, setassginDeviceModal] = useState(false)
-  const [VendiSplashMachine, setVendiSplashMachine] = useState({
-    name: '',
-    memo: '',
-    path: '',
-    starttime: '',
-    endtime: '',
-    vendronDeviceInfoIds: [],
-  })
-  const [AssignDevice, setAssignDevice] = useState({
-    vendronDeviceInfoIds: [],
-  })
+  const selectStyles = getSelectStyles()
 
-  console.log('AssignDevice', AssignDevice)
+  const [search, setSearch] = useState('')
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerMode, setDrawerMode] = useState('create')
+  const [form, setForm] = useState(EMPTY_FORM)
+  const [uploadingField, setUploadingField] = useState(null)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteId, setDeleteId] = useState(null)
+  const [assignModal, setAssignModal] = useState(false)
+  const [assignId, setAssignId] = useState(null)
+  const [assignDevices, setAssignDevices] = useState([])
+
   useEffect(() => {
     dispatch(GetAllVendiMachine())
     dispatch(GetAllDevices())
   }, [])
 
-  const openModal = (type, item = null) => {
-    console.log('item', item)
-    setModalType(type)
-    if (type === 'edit' && item) {
-      setVendiSplashMachine({
-        name: item.name || '',
-        id: item.vmSplashId,
-        path: item.path || '',
-        memo: item.memo || '',
-        starttime: item.startTime || '',
-        endtime: item.endTime || '',
-        vendronDeviceInfoIds: item.vendronDeviceInfoIds || [],
-      })
-    } else {
-      setVendiSplashMachine({
-        name: '',
-        path: '',
-        memo: '',
-        starttime: '',
-        endtime: '',
-        vendronDeviceInfoIds: '',
-      })
-    }
-    setModalOpen(true)
-  }
-  const validateForm = () => {
-    if (!VendiSplashMachine.name?.trim()) {
-      Notify('error', 'Splash Screen name is required')
-      return false
-    }
-    if (!VendiSplashMachine.starttime) {
-      Notify('error', 'Start Time are required')
-      return false
-    }
-    if (!VendiSplashMachine.endtime) {
-      Notify('error', 'End Time are required')
-      return false
-    }
-    const ids = VendiSplashMachine.vendronDeviceInfoIds
-    if (!Array.isArray(ids) || ids.length === 0) {
-      Notify('error', 'Assigned Device are required')
-      return false
-    }
-    return true
-  }
-  const saveVendiScreen = async () => {
-    if (!validateForm()) return
-    if (modalType === 'create') {
-      dispatch(PostVendiMachine(VendiSplashMachine)).unwrap()
-      setModalOpen(false)
-    }
-    if (modalType === 'edit') {
-      await dispatch(
-        UpdatedVendiMachine({
-          id: VendiSplashMachine.id,
-          updatedData: {
-            name: VendiSplashMachine.name,
-            path: VendiSplashMachine.path,
-            memo: VendiSplashMachine.memo,
-            startTime: VendiSplashMachine.starttime,
-            endTime: VendiSplashMachine.endtime,
-            vendronDeviceInfoIds: VendiSplashMachine.vendronDeviceInfoIds,
-          },
-        }),
-      ).unwrap()
-      setModalOpen(false)
-    }
-  }
+  const deviceOptions = devices?.map((d) => ({ value: d.id, label: d.name })) ?? []
 
-  const openDeleteModal = (index) => {
-    setSelectedIndex(index)
-    setDeleteModal(true)
-  }
-  const confirmDelete = async () => {
-    try {
-      await dispatch(DeleteVendiMachine(selectedIndex)).unwrap()
-      setDeleteModal(false)
-      console.log('Deleted successfully!')
-    } catch (error) {
-      console.error('Failed to delete:', error)
-    }
-  }
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setVendiSplashMachine((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
+  const set = (key) => (e) => setForm((p) => ({ ...p, [key]: e.target.value }))
 
   const uploadVideo = async (file, fieldName) => {
     try {
       setUploadingField(fieldName)
-      const formData = new FormData()
-      formData.append('file', file)
-      const res = await postVideo(formData)
-      setVendiSplashMachine((prev) => ({
-        ...prev,
-        [fieldName]: res?.data?.url,
-      }))
-      setShowUploadSuccess(true)
-      setTimeout(() => {
-        setShowUploadSuccess(false)
-      }, 3000)
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await postVideo(fd)
+      setForm((prev) => ({ ...prev, [fieldName]: res?.data?.url }))
     } catch (err) {
-      console.log('received-error', err)
-      Notify('error', err?.message)
-      console.error(err)
+      Notify('error', err?.message || 'Upload failed')
     } finally {
       setUploadingField(null)
     }
   }
 
-  const openAssignBranchesModal = (index) => {
-    console.log('index', index)
-    setSelectedIndex(index)
-    setassginDeviceModal(true)
+  const openCreate = () => {
+    setForm(EMPTY_FORM)
+    setDrawerMode('create')
+    setDrawerOpen(true)
   }
 
-  const handleImageChange = (e) => {
-    const { name, files } = e.target
-    if (files?.length) {
-      uploadVideo(files[0], name)
-    }
+  const openEdit = (row) => {
+    setForm({ name: row.name || '', memo: row.memo || '', path: row.path || '', starttime: row.startTime || '', endtime: row.endTime || '', vendronDeviceInfoIds: row.vendronDeviceInfoIds || [], id: row.vmSplashId })
+    setDrawerMode('edit')
+    setDrawerOpen(true)
   }
-  const HandleAssignDevice = async () => {
-    const data = {
-      vmSplashId: selectedIndex,
-      vendronDeviceInfoIds: AssignDevice.vendronDeviceInfoIds,
-    }
-    await dispatch(AssignVendiMachineToDevice(data)).unwrap()
-    setassginDeviceModal(false)
+
+  const save = async () => {
+    if (!form.name?.trim()) return Notify('error', 'Name is required')
+    if (!form.starttime) return Notify('error', 'Start time is required')
+    if (!form.endtime) return Notify('error', 'End time is required')
+    if (!form.vendronDeviceInfoIds?.length) return Notify('error', 'Select at least one device')
+
+    const action = drawerMode === 'create'
+      ? PostVendiMachine({ name: form.name, memo: form.memo, path: form.path, starttime: form.starttime, endtime: form.endtime, vendronDeviceInfoIds: form.vendronDeviceInfoIds })
+      : UpdatedVendiMachine({ id: form.id, updatedData: { name: form.name, memo: form.memo, path: form.path, startTime: form.starttime, endTime: form.endtime, vendronDeviceInfoIds: form.vendronDeviceInfoIds } })
+
+    try {
+      await dispatch(action).unwrap()
+      setDrawerOpen(false)
+    } catch (err) { Notify('error', 'Operation failed') }
   }
-  const isButtonDisabled = loading || uploadingField !== null
-  // const filteredProducts = useMemo(() => {
-  //   return VendiMachine.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-  // }, [search, VendiMachine])
-  // const paginated = filteredProducts.slice(0, itemsPerPage)
+
+  const filtered = (VendiMachine ?? []).filter((m) => !search || m.name?.toLowerCase().includes(search.toLowerCase()))
 
   return (
-    <Container className="mt-5">
-      <Row className="mb-4 align-items-center">
-        <Col xs="12" md="6" className="mb-2 mb-md-0">
-          <div className="d-flex flex-column flex-sm-row gap-2">
-            <Input
-              type="text"
-              placeholder="Search Machine..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{ backgroundColor: 'transparent' }}
-              className="custom-text"
-            />
-            <Input
-              type="select"
-              value={itemsPerPage}
-              onChange={(e) => setItemsPerPage(Number(e.target.value))}
-              style={{ backgroundColor: 'transparent' }}
-              className="custom-text">
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-            </Input>
-          </div>
-        </Col>
-        <Col xs="12" md="6">
-          <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-md-end gap-2">
-            <Button color="primary" onClick={() => openModal('create')}>
-              <Icon icon="mdi:plus" width={18} className="me-2" />
-              Create New
-            </Button>
-          </div>
-        </Col>
-      </Row>
-      <Table bordered hover responsive className="shadow-sm rounded">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Memo</th>
-            <th>Image Path</th>
-            <th>Created On</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Assigned Devices</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            <tr>
-              <td colSpan={9} className="text-center mt-2">
-                <Spinner size="sm" /> Loading...
-              </td>
-            </tr>
-          ) : VendiMachine?.length > 0 ? (
-            VendiMachine.map((item, index) => (
-              <tr key={item.vmSplashId}>
-                <td>{index + 1}</td>
-                <td>{item.name}</td>
-                <td>{item.memo}</td>
-                <td>
-                  <a href={item.path} target="_blank" rel="noopener noreferrer" className="text-primary fw-semibold text-decoration-underline">
-                    View Video
-                  </a>
-                </td>
-                <td>{new Date(item.createdOn).toLocaleString()}</td>
-                <td>{new Date(item.startTime).toLocaleString()}</td>
-                <td>{new Date(item.endTime).toLocaleString()}</td>
-                <td>
-                  {item.vendronDeviceInfoIds?.length > 0 ? (
-                    <span className="badge bg-success">{item?.vendronDeviceInfoIds.join(', ')} Device</span>
-                  ) : (
-                    <span className="badge bg-secondary">Not Assigned</span>
-                  )}
-                </td>
-                <td className="text-center">
-                  <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
-                    <Button
-                      color="danger"
-                      size="sm"
-                      title="Assign-Device"
-                      className="me-1 w-sm-auto"
-                      onClick={() => openAssignBranchesModal(item.vmSplashId)}>
-                      <Icon icon="mdi:laptop-account" width={16} />
-                    </Button>
-                    <Button color="warning" size="sm" className="text-white w-md-auto" onClick={() => openModal('edit', item)}>
-                      <Icon icon="mdi:pencil" width={16} />
-                    </Button>
-                    <Button color="danger" size="sm" className="text-white w-md-auto" onClick={() => openDeleteModal(item.vmSplashId)}>
-                      <Icon icon="mdi:delete" width={16} />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="9" className="text-center text-muted py-4">
-                No Splash Screen
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
+    <div className="page-content">
+      <div className="page-head">
+        <div>
+          <h1 className="page-title">Splash Screens</h1>
+          <p className="page-sub">Manage splash screen media assigned to vending machines.</p>
+        </div>
+        <Button onClick={openCreate} icon={<SvgIcon id="i-plus" />}>Add Splash Screen</Button>
+      </div>
 
-      <Modal isOpen={modalOpen} centered>
-        <ModalHeader toggle={() => setModalOpen(!modalOpen)}>{modalType === 'create' ? 'Create Splash Screen' : 'Edit Splash Screen'}</ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <Label>
-              Name <span style={{ color: '#e57373' }}>*</span>
-            </Label>
-            <Input
-              type="text"
-              name="name"
-              value={VendiSplashMachine.name || ''}
-              onChange={handleInputChange}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>Memo</Label>
-            <Input
-              type="text"
-              name="memo"
-              value={VendiSplashMachine.memo || ''}
-              onChange={handleInputChange}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>File</Label>
-            <div className="position-relative">
-              <Input
-                className='custom-file-input-light'              
-                type="file"
-                name="path"
-                onChange={handleImageChange}
-                disabled={uploadingField === 'path'}
-                style={{ backgroundColor: 'transparent'}}
-              />
-              {uploadingField === 'path' && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                  }}>
-                  <Spinner size="sm" />
-                </div>
-              )}
-            </div>
-            {showUploadSuccess && !uploadingField && <small className="text-success d-block mt-2">✔ Uploaded Successfully</small>}
-          </FormGroup>
+      <Toolbar onSearch={setSearch} searchPlaceholder="Search splash screens…" />
 
-          <FormGroup>
-            <Label>
-              Start Time <span style={{ color: '#e57373' }}>*</span>
-            </Label>
-            <Input
-              type="datetime-local"
-              name="starttime"
-              value={VendiSplashMachine.starttime || ''}
-              onChange={handleInputChange}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>
-              End Time <span style={{ color: '#e57373' }}>*</span>
-            </Label>
-            <Input
-              type="datetime-local"
-              name="endtime"
-              value={VendiSplashMachine.endtime || ''}
-              onChange={handleInputChange}
-              style={{ backgroundColor: 'transparent' }}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="vendronDeviceInfoIds">
-              Assigned Devices <span style={{ color: '#e57373' }}>*</span>
-            </Label>
-            <Select
-              isMulti
-              isSearchable={true}
-              name="vendronDeviceInfoIds"
-              options={devices?.map((device) => ({
-                value: device.id,
-                label: device.name,
-              }))}
-              value={devices
-                .filter((device) => VendiSplashMachine?.vendronDeviceInfoIds.includes(device.id))
-                .map((device) => ({ value: device.id, label: device.name }))}
-              onChange={(selectedOptions) => {
-                setVendiSplashMachine((prev) => ({
-                  ...prev,
-                  vendronDeviceInfoIds: selectedOptions.map((option) => option.value),
-                }))
-              }}
-              styles={customSelectStyles}
-              classNamePrefix="select"
-              placeholder="Select Devices"
-            />
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={() => setModalOpen(false)}>
-            Cancel
-          </Button>
-          <Button color="primary" onClick={saveVendiScreen} disabled={isButtonDisabled}>
-            {(loading || uploadingField) && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
-            {uploadingField ? 'Uploading...' : loading ? 'Saving...' : modalType === 'create' ? 'Create' : 'Save'}
-          </Button>
-        </ModalFooter>
+      <DataTable
+        columns={[
+          ...COLUMNS,
+          {
+            key: '_actions',
+            label: 'Actions',
+            align: 'right',
+            render: (_, row) => (
+              <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                <Button size="sm" variant="ghost" title="Assign device" onClick={(e) => { e.stopPropagation(); setAssignId(row.vmSplashId); setAssignDevices([]); setAssignModal(true) }}>
+                  <SvgIcon id="i-device" />
+                </Button>
+                <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); openEdit(row) }} title="Edit">
+                  <SvgIcon id="i-edit" />
+                </Button>
+                <Button size="sm" variant="danger-outline" onClick={(e) => { e.stopPropagation(); setDeleteId(row.vmSplashId); setDeleteModal(true) }} title="Delete">
+                  <SvgIcon id="i-trash" />
+                </Button>
+              </div>
+            ),
+          },
+        ]}
+        data={filtered}
+        rowKey="vmSplashId"
+        loading={loading}
+        onRowClick={openEdit}
+        emptyText="No splash screens found"
+      />
+
+      <RowDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={drawerMode === 'create' ? 'Add Splash Screen' : 'Edit Splash Screen'}
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setDrawerOpen(false)}>Cancel</Button>
+            <Button onClick={save} busy={loading || !!uploadingField}>{uploadingField ? 'Uploading…' : drawerMode === 'create' ? 'Create' : 'Save'}</Button>
+          </>
+        }
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <Field label="Name" required><input value={form.name} onChange={set('name')} /></Field>
+          <Field label="Memo"><input value={form.memo} onChange={set('memo')} /></Field>
+          <Field label="Video File">
+            <input type="file" name="path" onChange={(e) => e.target.files?.[0] && uploadVideo(e.target.files[0], 'path')} disabled={!!uploadingField} />
+            {uploadingField && <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>Uploading…</span>}
+          </Field>
+          <Field label="Start Time" required><input type="datetime-local" value={form.starttime} onChange={set('starttime')} /></Field>
+          <Field label="End Time" required><input type="datetime-local" value={form.endtime} onChange={set('endtime')} /></Field>
+          <Field label="Assigned Devices" required>
+            <Select isMulti options={deviceOptions}
+              value={deviceOptions.filter((o) => form.vendronDeviceInfoIds?.includes(o.value))}
+              onChange={(opts) => setForm((p) => ({ ...p, vendronDeviceInfoIds: opts.map((o) => o.value) }))}
+              styles={selectStyles} placeholder="Select devices…" />
+          </Field>
+        </div>
+      </RowDrawer>
+
+      <Modal
+        open={assignModal}
+        onClose={() => setAssignModal(false)}
+        title="Assign Device"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setAssignModal(false)}>Cancel</Button>
+            <Button onClick={async () => { await dispatch(AssignVendiMachineToDevice({ vmSplashId: assignId, vendronDeviceInfoIds: assignDevices.map((d) => d.value) })).unwrap(); setAssignModal(false) }}>Assign</Button>
+          </>
+        }
+      >
+        <Field label="Devices">
+          <Select isMulti options={deviceOptions} value={assignDevices} onChange={setAssignDevices} styles={selectStyles} placeholder="Select devices…" />
+        </Field>
       </Modal>
 
-      <Modal isOpen={assginDeviceModal} centered>
-        <ModalHeader>Assign Device</ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <Label for="vendronDeviceInfoIds">
-              Assigned Devices <span style={{ color: '#e57373' }}>*</span>
-            </Label>
-            <Select
-              isMulti
-              isSearchable={true}
-              name="vendronDeviceInfoIds"
-              options={devices?.map((device) => ({
-                value: device.id,
-                label: device.name,
-              }))}
-              value={devices
-                .filter((device) => AssignDevice?.vendronDeviceInfoIds.includes(device.id))
-                .map((device) => ({ value: device.id, label: device.name }))}
-              onChange={(selectedOptions) => {
-                setAssignDevice((prev) => ({
-                  ...prev,
-                  vendronDeviceInfoIds: selectedOptions.map((option) => option.value),
-                }))
-              }}
-              styles={customSelectStyles}
-              classNamePrefix="select"
-              placeholder="Select Devices"
-            />
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={() => setassginDeviceModal(false)}>
-            Cancel
-          </Button>
-          <Button color="danger" onClick={HandleAssignDevice}>
-            Assign
-          </Button>
-        </ModalFooter>
+      <Modal
+        open={deleteModal}
+        onClose={() => setDeleteModal(false)}
+        title="Delete Splash Screen"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setDeleteModal(false)}>Cancel</Button>
+            <Button variant="danger-outline" onClick={async () => { try { await dispatch(DeleteVendiMachine(deleteId)).unwrap() } catch (e) {} setDeleteModal(false) }}>Delete</Button>
+          </>
+        }
+      >
+        <p style={{ margin: 0, color: 'var(--ink-2)' }}>Are you sure you want to delete this splash screen?</p>
       </Modal>
-
-      <Modal isOpen={deleteModal} centered>
-        <ModalHeader>Delete Splash Screen</ModalHeader>
-        <ModalBody>Are you sure you want to delete this Splash Screen?</ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={() => setDeleteModal(false)}>
-            Cancel
-          </Button>
-          <Button color="danger" onClick={confirmDelete}>
-            Delete
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </Container>
+    </div>
   )
 }
-
-export default Page

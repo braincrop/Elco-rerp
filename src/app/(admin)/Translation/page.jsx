@@ -1,40 +1,43 @@
 'use client'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Table, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, Spinner, FormGroup, Label } from 'reactstrap'
-import { Icon } from '@iconify/react'
-import CreateLanguage from '../../../components/CreateLanguage/createLanguage'
 import Select from 'react-select'
+import CreateLanguage from '../../../components/CreateLanguage/createLanguage'
 import { allTranslation, AssignTranslationToBranch, Translation, TranslationDelete } from '@/redux/slice/Translation/TranslationSlice'
 import { allBranch, GetAllBranch } from '@/redux/slice/Branch/branchSlice'
+import DataTable from '@/components/ui/DataTable'
+import Button from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
+import Field from '@/components/ui/Field'
+import SvgIcon from '@/components/ui/SvgIcon'
 
 const customSelectStyles = {
   control: (base) => ({
     ...base,
-    backgroundColor: '#000',
-    borderColor: '#444',
-    color: '#fff',
+    backgroundColor: 'var(--surface)',
+    borderColor: 'var(--line)',
+    color: 'var(--ink)',
   }),
   menu: (base) => ({
     ...base,
-    backgroundColor: '#000',
+    backgroundColor: 'var(--surface)',
   }),
   option: (base, state) => ({
     ...base,
-    backgroundColor: state.isFocused ? '#333' : '#000',
-    color: '#fff',
+    backgroundColor: state.isFocused ? 'var(--line)' : 'var(--surface)',
+    color: 'var(--ink)',
   }),
   multiValue: (base) => ({
     ...base,
-    backgroundColor: '#333',
+    backgroundColor: 'var(--line)',
   }),
   multiValueLabel: (base) => ({
     ...base,
-    color: '#fff',
+    color: 'var(--ink)',
   }),
   singleValue: (base) => ({
     ...base,
-    color: '#fff',
+    color: 'var(--ink)',
   }),
 }
 
@@ -76,7 +79,6 @@ const Page = () => {
     setSelectedUser(user)
     setView('form')
   }
-
   const openDelete = (id) => {
     setDeleteId(id)
     setDeleteModal(true)
@@ -84,6 +86,7 @@ const Page = () => {
   const openAssignModal = (index) => {
     setAssignModal(true)
     setAssignVal(index)
+    setassignBranches([])
   }
   const confirmDelete = async () => {
     await dispatch(TranslationDelete(deleteId)).unwrap()
@@ -92,116 +95,99 @@ const Page = () => {
   const handleAssignTranslation = () => {
     const data = {
       translationId: assignVal,
-      branchIds: assignBranches
+      branchIds: assignBranches,
     }
     dispatch(AssignTranslationToBranch(data)).unwrap()
     setAssignModal(false)
   }
 
+  const columns = [
+    { key: 'name', label: 'Language Name', render: (val) => val || '-' },
+    { key: 'lang', label: 'Language Code', render: (val) => val || '-' },
+    {
+      key: 'actions',
+      label: 'Action',
+      align: 'center',
+      render: (_, row) => (
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+          <Button variant="ghost" size="sm" icon={<SvgIcon id="i-key" />} onClick={() => openAssignModal(row.translationId)} title="Assign Branches" />
+          <Button variant="ghost" size="sm" icon={<SvgIcon id="i-edit" />} onClick={() => openEdit(row)} />
+          <Button variant="danger-outline" size="sm" icon={<SvgIcon id="i-trash" />} onClick={() => openDelete(row.lang)} />
+        </div>
+      ),
+    },
+  ]
+
   return (
-    <Container className="mt-5">
+    <div className="page-content">
       {view === 'list' && (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="fw-bold custom-text">Translation</h2>
-            <Button color="primary" onClick={openCreate}>
+          <div className="page-head">
+            <div>
+              <h1 className="page-title">Translation</h1>
+              <p className="page-sub">Manage language translations</p>
+            </div>
+            <Button variant="primary" icon={<SvgIcon id="i-plus" />} onClick={openCreate}>
               Add New
             </Button>
           </div>
-          <Table  bordered hover responsive className="shadow-sm rounded">
-            <thead className=''>
-              <tr>
-                <th>Language Name</th>
-                <th>Language Code</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="6" className="text-center py-4">
-                    <Spinner size="sm" className="me-2" />
-                    Loading language...
-                  </td>
-                </tr>
-              ) : translation?.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="text-center">
-                    No Data Found
-                  </td>
-                </tr>
-              ) : (
-                translation?.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.name || '-'}</td>
-                    <td>{item.lang || '-'}</td>
-                    <td>
-                      <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
-                        <Button
-                          size="sm"
-                          color="info"
-                          className="me-1 w-sm-auto"
-                          onClick={() => openAssignModal(item.translationId)}
-                          title="Assign Branches">
-                          <Icon icon="mdi:account-key" />
-                        </Button>
-                        <Button size="sm" color="warning" className="me-1 w-sm-auto" onClick={() => openEdit(item)}>
-                          <Icon icon="mdi:pencil" />
-                        </Button>
-                        <Button size="sm" color="danger" className="me-1 w-sm-auto" onClick={() => openDelete(item.lang)}>
-                          <Icon icon="mdi:delete" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </Table>
+
+          <div className="card">
+            <div className="card-pad">
+              <DataTable
+                columns={columns}
+                data={translation || []}
+                rowKey="translationId"
+                loading={loading}
+                emptyText="No Translation Found"
+              />
+            </div>
+          </div>
         </>
       )}
+
       {view === 'form' && <CreateLanguage mode={mode} initialData={selectedUser} onBack={backToList} />}
-      <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)} centered>
-        <ModalHeader>Delete User</ModalHeader>
-        <ModalBody>Are you sure?</ModalBody>
-        <ModalFooter>
-          <Button onClick={() => setDeleteModal(false)}>Cancel</Button>
-          <Button color="danger" onClick={confirmDelete}>
-            Delete
-          </Button>
-        </ModalFooter>
+
+      <Modal
+        open={deleteModal}
+        onClose={() => setDeleteModal(false)}
+        title="Delete Translation"
+        size="sm"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setDeleteModal(false)}>Cancel</Button>
+            <Button variant="danger-outline" onClick={confirmDelete}>Delete</Button>
+          </>
+        }
+      >
+        <p style={{ color: 'var(--ink-2)' }}>Are you sure you want to delete this translation?</p>
       </Modal>
 
-      <Modal isOpen={AssignModal} centered toggle={() => setAssignModal(false)}>
-        <ModalHeader toggle={() => setAssignModal(false)}>
-          <Icon icon="mdi:playlist-edit" className="me-2" />
-          Assign Branches
-        </ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <Label>Available Branches</Label>
-            <Select
-              isMulti
-              options={Branches}
-              value={Branches?.filter((option) => (assignBranches || []).some((v) => String(v) === String(option.value)))}
-              onChange={(selectedOptions) => setassignBranches(selectedOptions ? selectedOptions.map((o) => o.value) : [])}
-              styles={customSelectStyles}
-              placeholder="Select Branches..."
-            />
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" outline onClick={() => setAssignModal(false)}>
-            Cancel
-          </Button>
-          <Button color="primary" disabled={loading} onClick={handleAssignTranslation}>
-            {loading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
-            <Icon icon="mdi:check-circle-outline" className="me-1" />
-            Assign
-          </Button>
-        </ModalFooter>
+      <Modal
+        open={AssignModal}
+        onClose={() => setAssignModal(false)}
+        title="Assign Branches"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setAssignModal(false)}>Cancel</Button>
+            <Button variant="primary" busy={loading} icon={<SvgIcon id="i-check" />} onClick={handleAssignTranslation}>
+              Assign
+            </Button>
+          </>
+        }
+      >
+        <Field label="Available Branches">
+          <Select
+            isMulti
+            options={Branches}
+            value={Branches?.filter((option) => (assignBranches || []).some((v) => String(v) === String(option.value)))}
+            onChange={(selectedOptions) => setassignBranches(selectedOptions ? selectedOptions.map((o) => o.value) : [])}
+            styles={customSelectStyles}
+            placeholder="Select Branches..."
+          />
+        </Field>
       </Modal>
-    </Container>
+    </div>
   )
 }
 

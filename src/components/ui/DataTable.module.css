@@ -1,0 +1,99 @@
+.wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+/* Header */
+.th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.th.right,
+.td.right { text-align: right; }
+
+.th.sortable { cursor: pointer; user-select: none; }
+.th.sortable:hover { color: var(--ink); }
+
+.thInner {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sortIcon { color: var(--ink-4); }
+.th.sortable:hover .sortIcon { color: var(--ink-2); }
+
+/* Body */
+.td {
+  padding: 11px 14px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+tr:last-child .td { border-bottom: 0; }
+
+.clickable { cursor: pointer; }
+.clickable:hover .td { background: var(--surface-2); }
+
+.rowSelected .td { background: var(--accent-2); }
+
+/* Density */
+.compact .td  { padding: 7px 14px; }
+.spacious .td { padding: 15px 14px; }
+
+/* Checkbox column */
+.checkCol {
+  width: 40px;
+  padding: 0 8px 0 14px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.checkbox {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+/* Empty / loading state */
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--line-2);
+  border-top-color: var(--accent);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

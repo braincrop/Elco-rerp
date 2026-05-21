@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Alert } from 'reactstrap'
 
 export default function ClientToast() {
   const [toasts, setToasts] = useState([])
@@ -20,27 +19,26 @@ export default function ClientToast() {
   }, [])
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 25,
-        right: 20,
-        zIndex: 9999,
-        minWidth: 280,
-      }}
-    >
+    <div style={{ position: 'fixed', top: 25, right: 20, zIndex: 9999, minWidth: 280 }}>
       {toasts.map((toast) => (
-        <Alert
+        <div
           key={toast.id}
-          color={toast.status === 'success' ? 'success' : 'danger'}
-          className="mb-2 shadow"
-          style={toast.status === 'success' ? {backgroundColor:'#08bb67',color:'#fff '} : {backgroundColor:'#d31313',color:'#fff '}}
+          style={{
+            marginBottom: 8,
+            padding: '10px 16px',
+            borderRadius: 8,
+            background: toast.status === 'success' ? '#08bb67' : '#d31313',
+            color: '#fff',
+            boxShadow: '0 4px 12px rgba(0,0,0,.15)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            fontSize: 14,
+          }}
         >
-          <strong className="me-2">
-            {toast.status === 'success' ? '✅' : '⚠️'}
-          </strong>
+          <strong>{toast.status === 'success' ? '✅' : '⚠️'}</strong>
           {toast.message}
-        </Alert>
+        </div>
       ))}
     </div>
   )

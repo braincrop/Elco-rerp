@@ -1,118 +1,118 @@
 export const MENU_ITEMS = [
   {
-    key: 'menu',
-    label: 'MENU',
-    isTitle: true,
-  },
-  {
     key: 'dashboards',
-    label: 'dashboard',
-    icon: 'solar:widget-2-outline',
+    label: 'Dashboard',
+    icon: 'i-dashboard',
     url: '/dashboards',
-    badge: {
-      text: 'New',
-      variant: 'primary',
-    },
+    group: 'workspace',
   },
   {
     key: 'categories',
     label: 'Categories',
-    icon: 'iconamoon:category-thin',
+    icon: 'i-tag',
     url: '/categories/Category',
+    group: 'catalog',
     role: ['PowerUser'],
   },
   {
     key: 'products',
     label: 'Products',
-    icon: 'solar:box-linear',
+    icon: 'i-box',
     url: '/products',
+    group: 'catalog',
     role: ['PowerUser'],
   },
   {
     key: 'branch',
     label: 'Branch',
-    icon: 'solar:buildings-linear',
+    icon: 'i-branch',
     url: '/Branch',
+    group: 'catalog',
     role: ['PowerUser'],
   },
   {
     key: 'assigned-items',
     label: 'Assigned Items',
-    icon: 'solar:checklist-linear',
+    icon: 'i-list',
     url: '/AssignedItems',
+    group: 'catalog',
     role: ['PowerUser'],
   },
   {
     key: 'employees',
     label: 'Employees',
-    icon: 'solar:users-group-two-rounded-linear',
+    icon: 'i-users',
     url: '/Employees',
+    group: 'operations',
   },
   {
     key: 'reservation',
     label: 'Reservation',
-    icon: 'solar:calendar-linear',
+    icon: 'i-cal',
     url: '/Reservation',
+    group: 'operations',
   },
   {
     key: 'coupons',
     label: 'Coupons',
-    icon: 'solar:ticket-sale-linear',
+    icon: 'i-tag',
     url: '/Coupons',
-  },
-  {
-    key: 'vendi-splash-screen',
-    label: 'Vendi Splash Screen',
-    icon: 'solar:monitor-linear',
-    url: '/VendiSplashScreen',
-    role: ['PowerUser'],
+    group: 'operations',
   },
   {
     key: 'app-subscriber',
     label: 'App Subscriber',
-    icon: 'solar:users-group-rounded-linear',
+    icon: 'i-users',
     url: '/AppSubscriber',
+    group: 'operations',
   },
   {
     key: 'sms-service',
     label: 'SMS Service',
-    icon: 'solar:chat-round-linear',
+    icon: 'i-sms',
     url: '/SmsService',
+    group: 'operations',
   },
   {
     key: 'mobile-notification',
     label: 'Mobile Notification',
-    icon: 'solar:bell-linear',
+    icon: 'i-bell',
     url: '/mobile-notification',
-     role: ['PowerUser'],
+    group: 'operations',
+    role: ['PowerUser'],
   },
   {
-    key: 'logs',
-    label: 'Logs',
-    icon: 'solar:document-text-linear',
-    url: '/logs',
-     role: ['PowerUser'],
+    key: 'vendi-splash-screen',
+    label: 'Splash Screen',
+    icon: 'i-screen',
+    url: '/VendiSplashScreen',
+    group: 'content',
+    role: ['PowerUser'],
   },
   {
-    key: 'sales-logs',
-    label: 'Sales Logs',
-    icon: 'solar:graph-up-linear',
-    url: '/SaleLogs',
-     role: ['PowerUser'],
-  },
-  {
-    key: 'app-build',
-    label: 'App Build',
-    icon: 'solar:settings-line-duotone',
-    url: '/app-build',
-     role: ['PowerUser'],
+    key: 'language',
+    label: 'Language',
+    icon: 'i-globe',
+    url: '/language',
+    group: 'content',
+    role: ['PowerUser'],
+    children: [
+      {
+        key: 'add-language',
+        label: 'Add Translation',
+        url: '/Translation',
+        parentKey: 'language',
+        role: ['PowerUser'],
+      },
+    ],
   },
   {
     key: 'devices',
-     role: ['PowerUser'],
-    label: 'Device',
-    icon: 'solar:server-square-linear',
+    label: 'Devices',
+    icon: 'i-device',
     url: '/device',
+    group: 'operations',
+    role: ['PowerUser'],
     children: [
       {
         key: 'vendi-device',
@@ -136,26 +136,35 @@ export const MENU_ITEMS = [
     ],
   },
   {
-    key: 'language',
-    label: 'Language',
-    icon: 'ion:language-sharp',
-     role: ['PowerUser'],
-    url: '/language',
-    children: [
-      {
-        key: 'add-language',
-        label: 'Add Translation',
-        url: '/Translation',
-        parentKey: 'language',
-        role: ['PowerUser'],
-      },
-    ],
+    key: 'sales-logs',
+    label: 'Sales Logs',
+    icon: 'i-chart',
+    url: '/SaleLogs',
+    group: 'management',
+    role: ['PowerUser'],
+  },
+  {
+    key: 'logs',
+    label: 'Logs',
+    icon: 'i-doc',
+    url: '/logs',
+    group: 'management',
+    role: ['PowerUser'],
+  },
+  {
+    key: 'app-build',
+    label: 'App Build',
+    icon: 'i-cog',
+    url: '/app-build',
+    group: 'management',
+    role: ['PowerUser'],
   },
   {
     key: 'user-management',
     label: 'User Management',
-    icon: 'solar:user-circle-linear',
+    icon: 'i-user',
     url: '/user-management',
+    group: 'management',
     role: ['Admin'],
     children: [
       {
@@ -171,20 +180,20 @@ export const MENU_ITEMS = [
         role: ['Admin'],
         url: '/Roles',
         parentKey: 'user-management',
-      
       },
     ],
   },
   {
     key: 'email-management',
     label: 'Email Management',
-     role: ['Admin'],
-    icon: 'solar:letter-opened-linear',
+    icon: 'i-mail',
     url: '/email-management',
+    group: 'management',
+    role: ['Admin'],
     children: [
       {
         key: 'types',
-        label: 'Types',
+        label: 'Email Types',
         url: '/EmailType',
         parentKey: 'email-management',
       },
@@ -196,179 +205,12 @@ export const MENU_ITEMS = [
       },
     ],
   },
-
-  // ====================error===============
-
-  // {
-  //   key: 'error-pages',
-  //   label: 'Error Pages',
-  //   icon: 'solar:danger-outline',
-  //   children: [{
-  //     key: '404-error',
-  //     label: '404 Error',
-  //     url: '/error-pages/pages-404',
-  //     parentKey: 'error'
-  //   }, {
-  //     key: '404-error(alt)',
-  //     label: '404 Error (alt)',
-  //     url: '/pages-404-alt',
-  //     parentKey: 'error'
-  //   }]
-  // },
-  // ====================base-ui===============
-  // {
-  //   key: 'ui-kit',
-  //   label: 'UI Kit...',
-  //   isTitle: true
-  // }, {
-  //   key: 'base-ui',
-  //   label: 'Base UI',
-  //   icon: 'solar:leaf-outline',
-  //   children: [{
-  //     key: 'accordion',
-  //     label: 'Accordion',
-  //     url: '/base-ui/accordion',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'alerts',
-  //     label: 'Alerts',
-  //     url: '/base-ui/alerts',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'avatar',
-  //     label: 'Avatar',
-  //     url: '/base-ui/avatar',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'badge',
-  //     label: 'Badge',
-  //     url: '/base-ui/badge',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'breadcrumb',
-  //     label: 'Breadcrumb',
-  //     url: '/base-ui/breadcrumb',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'buttons',
-  //     label: 'Buttons',
-  //     url: '/base-ui/buttons',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'cards',
-  //     label: 'Cards',
-  //     url: '/base-ui/cards',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'carousel',
-  //     label: 'Carousel',
-  //     url: '/base-ui/carousel',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'collapse',
-  //     label: 'Collapse',
-  //     url: '/base-ui/collapse',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'dropdown',
-  //     label: 'Dropdown',
-  //     url: '/base-ui/dropdown',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'list-group',
-  //     label: 'List Group',
-  //     url: '/base-ui/list-group',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'modals',
-  //     label: 'Modals',
-  //     url: '/base-ui/modals',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'tabs',
-  //     label: 'Tabs',
-  //     url: '/base-ui/tabs',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'offcanvas',
-  //     label: 'Offcanvas',
-  //     url: '/base-ui/offcanvas',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'pagination',
-  //     label: 'Pagination',
-  //     url: '/base-ui/pagination',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'placeholders',
-  //     label: 'Placeholders',
-  //     url: '/base-ui/placeholders',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'popovers',
-  //     label: 'Popovers',
-  //     url: '/base-ui/popovers',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'progress',
-  //     label: 'Progress',
-  //     url: '/base-ui/progress',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'spinners',
-  //     label: 'spinners',
-  //     url: '/base-ui/spinners',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'toasts',
-  //     label: 'Toasts',
-  //     url: '/base-ui/toasts',
-  //     parentKey: 'base-ui'
-  //   }, {
-  //     key: 'tooltips',
-  //     label: 'Tooltips',
-  //     url: '/base-ui/tooltips',
-  //     parentKey: 'base-ui'
-  //   }]
-  // },
-  // ====================apex===============
-  // {
-  //   key: 'apex',
-  //   label: 'Apex charts',
-  //   icon: 'solar:chart-square-outline',
-  //   url: '/apex-chart'
-  // },
-  // ====================forms===============
-  // {
-  //   key: 'forms',
-  //   label: 'Forms',
-  //   icon: 'solar:box-outline',
-  //   children: [{
-  //     key: 'basic',
-  //     label: 'Basic Element',
-  //     url: '/forms/basic',
-  //     parentKey: 'forms'
-  //   }, {
-  //     key: 'flat-picker',
-  //     label: 'Flatepicker',
-  //     url: '/forms/flat-picker',
-  //     parentKey: 'forms'
-  //   }, {
-  //     key: 'validation',
-  //     label: 'Validation',
-  //     url: '/forms/validation',
-  //     parentKey: 'forms'
-  //   }, {
-  //     key: 'file-uploads',
-  //     label: 'File Upload',
-  //     url: '/forms/file-uploads',
-  //     parentKey: 'forms'
-  //   }, {
-  //     key: 'editors',
-  //     label: 'Editors',
-  //     url: '/forms/editors',
-  //     parentKey: 'forms'
-  //   }]
-  // },
-  // ====================tables===============
 ]
+
+export const GROUP_LABELS = {
+  workspace:  'Workspace',
+  catalog:    'Catalog',
+  operations: 'Operations',
+  content:    'Content',
+  management: 'Management',
+}

@@ -1,15 +1,14 @@
-import React from 'react';
+﻿import React from 'react';
 import AllApexChart from './component/AllApexChart';
 import IconifyIcon from '@/components/wrapper/IconifyIcon';
 import Link from 'next/link';
-import { Col, Row } from 'react-bootstrap';
 export const metadata = {
   title: 'ApexChart '
 };
 const page = () => {
   return <>
-      <Row>
-        <Col xs={12}>
+      <div style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
+        <div>
           <div className="page-title-box">
             <h4 className="mb-0">Chart</h4>
             <ol className="breadcrumb mb-0">
@@ -24,8 +23,8 @@ const page = () => {
               <li className="breadcrumb-item active">Chart</li>
             </ol>
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
       <AllApexChart />
     </>;
 };

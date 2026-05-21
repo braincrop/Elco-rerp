@@ -1,86 +1,50 @@
-'use client';
-import React, { useEffect } from 'react';
-import Image from 'next/image';
-import DarkLogo from '@/assets/images/logo-dark.png';
-import LightLogo from '@/assets/images/logo-light.png';
-import Link from 'next/link';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import TextFormInput from '@/components/from/TextFormInput';
-import { Card, CardBody, Col, Row } from 'react-bootstrap';
+'use client'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
+import { useTheme } from '@/context/BrandingContext'
+import LightLogo from '@/assets/images/Logo-primidigitals 1 (1).png'
+import styles from './lockscreen.module.css'
+
 const LockScreen = () => {
-  useEffect(() => {
-    document.body.classList.add('authentication-bg');
-    return () => {
-      document.body.classList.remove('authentication-bg');
-    };
-  }, []);
-  const messageSchema = yup.object({
-    name: yup.string().required('Please enter Name'),
-    email: yup.string().email().required('Please enter Email'),
-    password: yup.string().required('Please enter password')
-  });
-  const {
-    handleSubmit,
-    control
-  } = useForm({
-    resolver: yupResolver(messageSchema)
-  });
-  return <>
-      <div className="">
-        <div className="account-pages py-5">
-          <div className="container">
-            <Row className="justify-content-center">
-              <Col md={6} lg={5}>
-                <Card className="border-0 shadow-lg">
-                  <CardBody className=" p-5">
-                    <div className="text-center">
-                      <div className="mx-auto mb-4 text-center auth-logo">
-                        <Link href="" className="logo-dark">
-                          <Image src={DarkLogo} height={32} alt="logo dark" />
-                        </Link>
-                        <Link href="" className="logo-light">
-                          <Image src={LightLogo} height={28} alt="logo light" />
-                        </Link>
-                      </div>
-                      <h4 className="fw-bold text-dark mb-2">Hi ! Gaston</h4>
-                      <p className="text-muted">Enter your password to access the admin.</p>
-                    </div>
-                    <form onSubmit={handleSubmit(() => {})} className="mt-4">
-                      <div className="mb-3">
-                        <label className="form-label" htmlFor="example-password">
-                          Password
-                        </label>
-                        <TextFormInput control={control} name="password" placeholder="Enter your password" className="bg-light bg-opacity-50 border-light py-2" />
-                      </div>
-                      <div className="mb-3">
-                        <div className="form-check">
-                          <input type="checkbox" className="form-check-input" id="checkbox-signin" />
-                          <label className="form-check-label" htmlFor="checkbox-signin">
-                            I accept Terms and Condition
-                          </label>
-                        </div>
-                      </div>
-                      <div className="mb-1 text-center d-grid">
-                        <button className="btn btn-dark btn-lg fw-medium" type="submit">
-                          Sign In
-                        </button>
-                      </div>
-                    </form>
-                  </CardBody>
-                </Card>
-                <p className="text-center mt-4 text-white text-opacity-50">
-                  Not you? return&nbsp;
-                  <Link href="/auth/sign-up" className="text-decoration-none text-white fw-bold">
-                    Sign Up
-                  </Link>
-                </p>
-              </Col>
-            </Row>
-          </div>
+  const { theme } = useTheme()
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
+  return (
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <div className={styles.logoWrap}>
+          {theme?.logoUrl
+            ? <img src={theme.logoUrl} alt="logo" className={styles.logo} />
+            : <Image src={LightLogo} alt="logo" width={140} height={56} className={styles.logo} />
+          }
         </div>
+        <h1 className={styles.title}>Locked</h1>
+        <p className={styles.sub}>Enter your password to continue</p>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.fieldWrap}>
+            <label className={styles.label} htmlFor="password">Password</label>
+            <input id="password" name="password" type="password" className={styles.input}
+              value={password} onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••" autoComplete="current-password" />
+          </div>
+          <button type="submit" className={styles.submit}>
+            Unlock
+          </button>
+        </form>
+
+        <p className={styles.footer}>
+          Not you?{' '}
+          <Link href="/auth/sign-in" className={styles.link}>Sign in</Link>
+        </p>
       </div>
-    </>;
-};
-export default LockScreen;
+    </div>
+  )
+}
+
+export default LockScreen

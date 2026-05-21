@@ -1,0 +1,29 @@
+.seg {
+  display: inline-flex;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  gap: 2px;
+}
+
+.seg__btn {
+  height: 26px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-3);
+  border-radius: calc(var(--radius-sm) - 2px);
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.seg__btn:hover {
+  color: var(--ink);
+}
+
+.active {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-1);
+}

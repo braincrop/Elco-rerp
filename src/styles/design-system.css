@@ -1,0 +1,104 @@
+/* ═══════════════════════════════════════════════════════════════════
+   LAYER 0 — System invariants
+   Semantic colors and geometry. Never overridden by brand or theme.
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --good: oklch(0.55 0.10 155);
+  --warn: oklch(0.65 0.13 70);
+  --bad:  oklch(0.55 0.15 28);
+  --info: oklch(0.55 0.10 230);
+
+  --radius:    10px;
+  --radius-sm:  6px;
+  --radius-lg: 14px;
+
+  --shadow-1: 0 1px 0 rgba(20,16,8,.04), 0 1px 2px rgba(20,16,8,.04);
+  --shadow-2: 0 1px 0 rgba(20,16,8,.04), 0 8px 24px -8px rgba(20,16,8,.12);
+  --shadow-3: 0 12px 36px -10px rgba(20,16,8,.20);
+
+  --sidebar-w:    240px;
+  --sidebar-w-sm:  80px;
+  --topbar-h:      56px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LAYER 1 — Brand tokens
+   Set by BrandingContext from tenant API. Vendral defaults below.
+   Components never read these directly — only Layer 2 reads Layer 1.
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --brand-primary:       #1a1814;
+  --brand-accent:        oklch(0.45 0.10 265);
+  --brand-accent-light:  oklch(0.75 0.10 265);
+  --brand-bg:            #f5f3ee;
+  --brand-surface:       #faf8f3;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LAYER 2 — Applied tokens, LIGHT mode (default)
+   All component styles consume these. Never read Layer 1 directly.
+   ═══════════════════════════════════════════════════════════════════ */
+:root,
+[data-theme="light"] {
+  /* Surfaces */
+  --bg:        var(--brand-bg);
+  --surface:   #ffffff;
+  --surface-2: var(--brand-surface);
+
+  /* Borders — tinted to match background hue automatically */
+  --line:   color-mix(in srgb, var(--brand-bg), #000 12%);
+  --line-2: color-mix(in srgb, var(--brand-bg), #000 22%);
+
+  /* Text scale — dark ink on light background */
+  --ink:   var(--brand-primary);
+  --ink-2: color-mix(in srgb, var(--brand-primary), #fff 55%);
+  --ink-3: color-mix(in srgb, var(--brand-primary), #fff 72%);
+  --ink-4: color-mix(in srgb, var(--brand-primary), #fff 83%);
+
+  /* Accent — base brand value is dark enough for light backgrounds */
+  --accent:   var(--brand-accent);
+  --accent-2: color-mix(in oklch, var(--brand-accent) 14%, white);
+
+  /* Semantic backgrounds — light tints */
+  --good-bg: oklch(0.95 0.03 155);
+  --warn-bg: oklch(0.95 0.04 70);
+  --bad-bg:  oklch(0.95 0.03 28);
+  --info-bg: oklch(0.95 0.02 230);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LAYER 2 — Applied tokens, DARK mode
+   Only values that differ from light mode are listed here.
+   ═══════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  /* Surfaces — brand-bg contributes a tiny hue hint to the dark base */
+  --bg:        color-mix(in srgb, var(--brand-bg) 4%, #0c0d12 96%);
+  --surface:   #15171e;
+  --surface-2: #1c1f28;
+
+  /* Borders */
+  --line:   #262a35;
+  --line-2: #363c4c;
+
+  /* Text scale — FLIPPED to light text on dark; locked regardless of brand */
+  --ink:   #f0eee5;
+  --ink-2: #bfbfb5;
+  --ink-3: #8d8c81;
+  --ink-4: #5d5c54;
+
+  /* Accent — must be lighter for readability on dark surfaces.
+     Uses brand-accent-light when provided; falls back to color-mix. */
+  --accent:   var(--brand-accent-light, color-mix(in oklch, var(--brand-accent), white 35%));
+  --accent-2: color-mix(in oklch, var(--brand-accent) 25%, #1c1f28 75%);
+
+  /* Semantic backgrounds — darkened versions */
+  --good-bg: oklch(0.22 0.04 155);
+  --warn-bg: oklch(0.25 0.05 70);
+  --bad-bg:  oklch(0.23 0.05 28);
+  --info-bg: oklch(0.22 0.04 230);
+
+  /* Deeper shadows on dark backgrounds */
+  --shadow-1: 0 1px 0 rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.25);
+  --shadow-2: 0 1px 0 rgba(0,0,0,.25), 0 8px 24px -8px rgba(0,0,0,.50);
+  --shadow-3: 0 12px 36px -10px rgba(0,0,0,.60);
+}

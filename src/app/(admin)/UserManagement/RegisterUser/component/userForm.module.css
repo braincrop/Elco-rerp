@@ -1,0 +1,80 @@
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: 5px;
+}
+
+.req { color: var(--bad); }
+
+.hint {
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-top: 4px;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-2); }
+.input:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.pwWrap { position: relative; }
+
+.eyeBtn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .grid3 { grid-template-columns: 1fr; }
+}

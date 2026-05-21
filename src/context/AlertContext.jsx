@@ -1,9 +1,15 @@
 'use client'
 
 import { createContext, useContext, useState } from 'react'
-import { Alert } from 'reactstrap'
 
 const AlertContext = createContext()
+
+const typeToVar = (type) => {
+  if (type === 'success') return { bg: 'var(--good-bg)', color: 'var(--good)' }
+  if (type === 'error')   return { bg: 'var(--bad-bg)',  color: 'var(--bad)'  }
+  if (type === 'warning') return { bg: 'var(--warn-bg)', color: 'var(--warn)' }
+  return { bg: 'var(--info-bg)', color: 'var(--info)' }
+}
 
 export function AlertProvider({ children }) {
   const [alert, setAlert] = useState(null)
@@ -16,22 +22,22 @@ export function AlertProvider({ children }) {
   return (
     <AlertContext.Provider value={{ showAlert }}>
       {alert && (
-        <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 9999 }}>
-          <Alert color={typeToColor(alert.type)} fade>
+        <div style={{ position: 'fixed', top: 16, right: 16, zIndex: 9999, minWidth: 280 }}>
+          <div style={{
+            padding: '10px 16px',
+            borderRadius: 8,
+            background: typeToVar(alert.type).bg,
+            color: typeToVar(alert.type).color,
+            border: `1px solid currentColor`,
+            fontSize: 14,
+          }}>
             {alert.message}
-          </Alert>
+          </div>
         </div>
       )}
       {children}
     </AlertContext.Provider>
   )
-}
-
-const typeToColor = (type) => {
-  if (type === 'success') return 'success'
-  if (type === 'error') return 'danger'
-  if (type === 'warning') return 'warning'
-  return 'info'
 }
 
 export const useAlert = () => useContext(AlertContext)

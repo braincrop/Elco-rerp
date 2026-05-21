@@ -1,0 +1,64 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.inline .label { flex: none; min-width: 120px; }
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.req {
+  color: var(--bad);
+  margin-left: 2px;
+}
+
+.control :global(input),
+.control :global(select),
+.control :global(textarea) {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  line-height: 1.5;
+}
+
+.control :global(input:focus),
+.control :global(select:focus),
+.control :global(textarea:focus) {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-2);
+}
+
+.control :global(input::placeholder),
+.control :global(textarea::placeholder) {
+  color: var(--ink-4);
+}
+
+.control :global(select) {
+  cursor: pointer;
+}
+
+.control :global(textarea) {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.helper { font-size: 11.5px; color: var(--ink-3); margin: 0; }
+.error  { font-size: 11.5px; color: var(--bad); margin: 0; }

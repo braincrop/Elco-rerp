@@ -1,23 +1,20 @@
-import Footer from '@/components/layout/Footer'
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react'
-import { Container } from 'react-bootstrap'
+
 const TopNavigationBar = dynamic(() => import('@/components/layout/TopNavigationBar/page'))
 const VerticalNavigationBar = dynamic(() => import('@/components/layout/VerticalNavigationBar/page'))
-const AdminLayout = ({ children }) => {
 
-  
+const AdminLayout = ({ children }) => {
   return (
-    <div className="wrapper">
-      <Suspense>
-        <TopNavigationBar />
-      </Suspense>
+    <div className="app">
       <VerticalNavigationBar />
-      <div className="page-content">
-        <Container fluid>{children}</Container>
-        <Footer />
+      <div className="app-main">
+        <TopNavigationBar />
+        <div className="page-content">
+          {children}
+        </div>
       </div>
     </div>
   )
 }
+
 export default AdminLayout

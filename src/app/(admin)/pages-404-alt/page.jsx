@@ -1,15 +1,14 @@
-import React from 'react';
+﻿import React from 'react';
 import Link from 'next/link';
-import { Card, CardBody, Col, Row } from 'react-bootstrap';
 export const metadata = {
   title: '404 '
 };
 const page = () => {
   return <>
-      <Row className=" justify-content-center">
-        <Col xl={5}>
-          <Card>
-            <CardBody className=" px-3 py-5">
+      <div className=" justify-content-center" style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
+        <div>
+          <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+            <div className=" px-3 py-5" style={{padding:"16px"}}>
               <div className="p-4">
                 <div className="mx-auto mb-4 text-center">
                   <h1 className="mb-3 fw-bold fs-60">404</h1>
@@ -25,10 +24,10 @@ const page = () => {
                   </div>
                 </div>
               </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+            </div>
+          </div>
+        </div>
+      </div>
     </>;
 };
 export default page;

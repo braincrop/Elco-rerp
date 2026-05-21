@@ -1,167 +1,155 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Table, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Spinner } from 'reactstrap'
-import { Icon } from '@iconify/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AllEmailType, DeleteEmailTypeData, GetAllEmails, PostEmails, UpdatedEmailType } from '@/redux/slice/EmailType/EmailTypeSlice'
 import Notify from '@/components/Notify'
+import DataTable from '@/components/ui/DataTable'
+import Button from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
+import RowDrawer from '@/components/ui/RowDrawer'
+import Field from '@/components/ui/Field'
+import SvgIcon from '@/components/ui/SvgIcon'
 
 const Page = () => {
   const dispatch = useDispatch()
-  const { EmailType,loading } = useSelector(AllEmailType)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [modalType, setModalType] = useState('')
+  const { EmailType, loading } = useSelector(AllEmailType)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerMode, setDrawerMode] = useState('create')
   const [deleteid, setDeleteid] = useState('')
   const [deleteModal, setDeleteModal] = useState(false)
-  const [Emailtype, setEmailtype] = useState({
-    name: '',
-    memo: '',
-  })
- 
+  const [Emailtype, setEmailtype] = useState({ name: '', memo: '' })
 
   useEffect(() => {
     dispatch(GetAllEmails())
   }, [])
 
-  const openModal = (type, id = null) => {
-    setModalType(type)
+  const openDrawer = (type, id = null) => {
+    setDrawerMode(type)
     if (type === 'edit' && id !== null) {
-      setEmailtype({
-        id: id.emailTypeId || '',
-        name: id.name || '',
-        memo: id.memo || '',
-      })
+      setEmailtype({ id: id.emailTypeId || '', name: id.name || '', memo: id.memo || '' })
     } else {
-      setEmailtype('')
+      setEmailtype({ name: '', memo: '' })
     }
-    setModalOpen(true)
-  }
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setEmailtype((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-  const saveEmails = () => {
-    if (!Emailtype.name){
-        Notify('error', 'Name is required')
-        return
-    }
-    if(!Emailtype.memo){
-        Notify('error', 'Memo is required')
-        return
-    }
-    if (modalType === 'create') {
-      dispatch(
-        PostEmails(Emailtype)).unwrap()
-    }
-    if (modalType === 'edit') {
-      const id = Emailtype.id
-      dispatch(UpdatedEmailType({ id: id, updatedData: Emailtype })).unwrap()
-    }
-    setModalOpen(false)
+    setDrawerOpen(true)
   }
 
-  const opendeleteModal = (index) => {
-    setDeleteid(index)
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setEmailtype((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const saveEmails = () => {
+    if (!Emailtype.name) { Notify('error', 'Name is required'); return }
+    if (!Emailtype.memo) { Notify('error', 'Memo is required'); return }
+    if (drawerMode === 'create') {
+      dispatch(PostEmails(Emailtype)).unwrap()
+    }
+    if (drawerMode === 'edit') {
+      const id = Emailtype.id
+      dispatch(UpdatedEmailType({ id, updatedData: Emailtype })).unwrap()
+    }
+    setDrawerOpen(false)
+  }
+
+  const openDeleteModal = (id) => {
+    setDeleteid(id)
     setDeleteModal(true)
   }
+
   const deleteCategory = () => {
     dispatch(DeleteEmailTypeData(deleteid)).unwrap()
     setDeleteModal(false)
   }
+
+  const columns = [
+    { key: 'index', label: '#', render: (_, __, idx) => idx + 1, width: '50px' },
+    { key: 'name', label: 'Name' },
+    { key: 'memo', label: 'Memo' },
+    {
+      key: 'actions',
+      label: 'Actions',
+      align: 'center',
+      render: (_, row) => (
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+          <Button variant="ghost" size="sm" icon={<SvgIcon id="i-edit" />} onClick={() => openDrawer('edit', row)} />
+          <Button variant="danger-outline" size="sm" icon={<SvgIcon id="i-trash" />} onClick={() => openDeleteModal(row.emailTypeId)} />
+        </div>
+      ),
+    },
+  ]
+
   return (
-    <Container className="mt-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold custom-text">Emails</h2>
-        <Button color="primary" onClick={() => openModal('create')}>
-          <Icon icon="mdi:plus" width="16" height="16" className="me-2" />
+    <div className="page-content">
+      <div className="page-head">
+        <div>
+          <h1 className="page-title">Email Types</h1>
+          <p className="page-sub">Manage email categories</p>
+        </div>
+        <Button variant="primary" icon={<SvgIcon id="i-plus" />} onClick={() => openDrawer('create')}>
           Create New
         </Button>
       </div>
-      <Table bordered hover responsive className="shadow-sm rounded">
-        <thead className="align-middle">
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Memo</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            <tr>
-              <td colSpan="6" className="text-center py-4">
-                <Spinner size="sm" /> Loading...
-              </td>
-            </tr>
-          ) : EmailType?.length > 0 ? (
-            EmailType.map((cat,index) => (
-              <tr key={cat.emailTypeId}>
-                <td>{index +1}</td>
-                <td>{cat.name}</td>
-                <td>{cat.memo}</td>
-                <td className="text-center">
-                  <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
-                    <Button color="warning" size="sm" className="me-1 w-sm-auto" onClick={() => openModal('edit', cat)}>
-                      <Icon icon="mdi:pencil" width="16" />
-                    </Button>
-                    <Button color="danger" size="sm" onClick={() => opendeleteModal(cat.emailTypeId)} className="me-1 w-sm-auto">
-                      <Icon icon="mdi:delete" width="16" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="12" className="text-center text-muted py-4">
-                No Email found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
 
-      <Modal isOpen={modalOpen} toggle={() => setModalOpen(!modalOpen)} centered>
-        <ModalHeader toggle={() => setModalOpen(!modalOpen)}>{modalType === 'create' ? 'Add Email Category' : 'Edit Email Category'}</ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <Label>Name <span style={{ color: '#e57373' }}>*</span></Label>
-            <Input type="text" value={Emailtype.name || ''} name="name" onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
-          </FormGroup>
-          <FormGroup>
-            <Label>Memo <span style={{ color: '#e57373' }}>*</span></Label>
-            <Input type="text" value={Emailtype.memo || ''} name="memo" onChange={handleInputChange} style={{backgroundColor:'transparent'}}/>
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={() => setModalOpen(false)}>
-            Cancel
-          </Button>
-          <Button color="primary" onClick={saveEmails} disabled={loading}>
-            {loading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
-            {modalType === 'create' ? 'Create' : 'Save'}
-          </Button>
-        </ModalFooter>
-      </Modal>
+      <div className="card">
+        <div className="card-pad">
+          <DataTable
+            columns={columns}
+            data={EmailType || []}
+            rowKey="emailTypeId"
+            loading={loading}
+            emptyText="No Email Type Found"
+          />
+        </div>
+      </div>
 
-      <Modal isOpen={deleteModal} toggle={() => setDeleteModal(!deleteModal)} centered>
-        <ModalHeader toggle={() => setDeleteModal(!deleteModal)}>Delete Email</ModalHeader>
-        <ModalBody>
-          <p>Are you sure you want to delete this Email Type?</p>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={() => setDeleteModal(false)}>
-            Cancel
-          </Button>
-          <Button color="danger" onClick={deleteCategory}>
-            Delete
-          </Button>
-        </ModalFooter>
+      <RowDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={drawerMode === 'create' ? 'Add Email Category' : 'Edit Email Category'}
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setDrawerOpen(false)}>Cancel</Button>
+            <Button variant="primary" busy={loading} onClick={saveEmails}>
+              {drawerMode === 'create' ? 'Create' : 'Save'}
+            </Button>
+          </>
+        }
+      >
+        <Field label="Name" required>
+          <input
+            className="field-input"
+            type="text"
+            name="name"
+            value={Emailtype.name || ''}
+            onChange={handleInputChange}
+          />
+        </Field>
+        <Field label="Memo" required>
+          <input
+            className="field-input"
+            type="text"
+            name="memo"
+            value={Emailtype.memo || ''}
+            onChange={handleInputChange}
+          />
+        </Field>
+      </RowDrawer>
+
+      <Modal
+        open={deleteModal}
+        onClose={() => setDeleteModal(false)}
+        title="Delete Email Type"
+        size="sm"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setDeleteModal(false)}>Cancel</Button>
+            <Button variant="danger-outline" onClick={deleteCategory}>Delete</Button>
+          </>
+        }
+      >
+        <p style={{ color: 'var(--ink-2)' }}>Are you sure you want to delete this Email Type?</p>
       </Modal>
-    </Container>
+    </div>
   )
 }
 

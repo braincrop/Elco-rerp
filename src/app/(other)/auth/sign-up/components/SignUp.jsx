@@ -1,133 +1,79 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
-import DarkLogo from '@/assets/images/logo-dark.png'
-import LightLogo from '@/assets/images/logo-light.png'
-import TextFormInput from '@/components/from/TextFormInput'
-import { Card, CardBody, Col, Row } from 'react-bootstrap'
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Registration } from '@/redux/slice/Authentication/AuthenticationSlice'
 import Notify from '@/components/Notify'
 import { useRouter } from 'next/navigation'
-import { Registration } from '@/redux/slice/Authentication/AuthenticationSlice'
+import { useTheme } from '@/context/BrandingContext'
+import LightLogo from '@/assets/images/Logo-primidigitals 1 (1).png'
+import styles from './signup.module.css'
+
 const SignUp = () => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const [data, setData] = useState({
-    userName: '',
-    email: '',
-    password: '',
-  })
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setData({ ...data, [name]: value })
-  }
+  const { theme } = useTheme()
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState({ userName: '', email: '', password: '' })
+
+  const handleChange = (e) => setData((p) => ({ ...p, [e.target.name]: e.target.value }))
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { userName, email, password } = data
-    if (!userName?.trim() || !email?.trim() || !password?.trim()) {
-      Notify('error', 'Please fill all the fields')
-      return
-    }
+    if (!userName?.trim() || !email?.trim() || !password?.trim()) return Notify('error', 'Please fill all the fields')
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      Notify('error', 'Please enter a valid email address')
-      return
-    }
+    if (!emailRegex.test(email)) return Notify('error', 'Please enter a valid email address')
     try {
+      setLoading(true)
       await dispatch(Registration(data)).unwrap()
       router.push('/auth/sign-in')
-    } catch (error) {
-      console.log('Registration failed:', error)
+    } catch {
+      setLoading(false)
     }
   }
-  return (
-    <>
-      <div className="account-pages" style={{ paddingTop: '150px' }}>
-        <div className="container">
-          <Row className=" justify-content-center">
-            <Col md={6} lg={5}>
-              <Card className=" border-0 shadow-lg">
-                <CardBody className=" p-5">
-                  <div className="text-center">
-                    <div className="mx-auto mb-4 text-center auth-logo">
-                      <Link href="/dashboards" className="logo-dark">
-                        <Image src={DarkLogo} height={32} alt="logo dark" />
-                      </Link>
-                      <Link href="/" className="logo-light">
-                        <Image src={LightLogo} height={28} alt="logo light" />
-                      </Link>
-                    </div>
-                    <h4 className="fw-bold text-dark mb-2">Sign Up</h4>
-                    <p className="text-muted">New to our platform? Sign up now! It only takes a minute.</p>
-                  </div>
 
-                  <div className="mb-3">
-                    <FormGroup>
-                      <Label>
-                        Name <span style={{ color: '#e57373' }}>*</span>
-                      </Label>
-                      <Input name="userName" value={data.userName} onChange={(e) => handleChange(e)} type="text" placeholder="Enter your Name" />
-                    </FormGroup>
-                  </div>
-                  <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <FormGroup>
-                      <Label>
-                        Email <span style={{ color: '#e57373' }}>*</span>
-                      </Label>
-                      <Input
-                        name="email"
-                        label="Email"
-                        value={data.email}
-                        onChange={(e) => handleChange(e)}
-                        type="text"
-                        placeholder="Enter your Email"
-                      />
-                    </FormGroup>
-                  </div>
-                  <div className="mb-3">
-                    <FormGroup>
-                      <Label>
-                        Password <span style={{ color: '#e57373' }}>*</span>
-                      </Label>
-                      <Input
-                        name="password"
-                        type="password"
-                        value={data.password}
-                        onChange={(e) => handleChange(e)}
-                        placeholder="Enter your Password"
-                      />
-                    </FormGroup>
-                  </div>
-                  {/* <div className="mb-3">
-                    <div className="form-check">
-                      <input type="checkbox" className="form-check-input" id="checkbox-signin" />
-                      <label className="form-check-label" htmlFor="checkbox-signin">
-                        I accept Terms and Condition
-                      </label>
-                    </div>
-                  </div> */}
-                  <div className="mb-1 text-center d-grid">
-                    <button className="btn btn-dark btn-lg fw-medium" type='submit'>
-                      Sign Up
-                    </button>
-                  </div>
-                  </form>
-                </CardBody>
-              </Card>
-              <p className="text-center mt-4 text-white text-opacity-50">
-                I already have an account&nbsp;
-                <Link href="/auth/sign-in" className="text-decoration-none text-white fw-bold">
-                  Sign In
-                </Link>
-              </p>
-            </Col>
-          </Row>
+  return (
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <div className={styles.logoWrap}>
+          {theme?.logoUrl
+            ? <img src={theme.logoUrl} alt="logo" className={styles.logo} />
+            : <Image src={LightLogo} alt="logo" width={140} height={56} className={styles.logo} />
+          }
         </div>
+        <h1 className={styles.title}>Create account</h1>
+        <p className={styles.sub}>Sign up for a new account</p>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.fieldWrap}>
+            <label className={styles.label} htmlFor="userName">Name</label>
+            <input id="userName" name="userName" type="text" className={styles.input}
+              value={data.userName} onChange={handleChange} placeholder="Your name" autoComplete="name" />
+          </div>
+          <div className={styles.fieldWrap}>
+            <label className={styles.label} htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" className={styles.input}
+              value={data.email} onChange={handleChange} placeholder="you@example.com" autoComplete="email" />
+          </div>
+          <div className={styles.fieldWrap}>
+            <label className={styles.label} htmlFor="password">Password</label>
+            <input id="password" name="password" type="password" className={styles.input}
+              value={data.password} onChange={handleChange} placeholder="••••••••" autoComplete="new-password" />
+          </div>
+          <button type="submit" className={styles.submit} disabled={loading}>
+            {loading ? <span className={styles.btnSpinner} /> : 'Sign up'}
+          </button>
+        </form>
+
+        <p className={styles.footer}>
+          Already have an account?{' '}
+          <Link href="/auth/sign-in" className={styles.link}>Sign in</Link>
+        </p>
       </div>
-    </>
+    </div>
   )
 }
+
 export default SignUp

@@ -1,8 +1,7 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { Card, CardBody, CardHeader, CardTitle, Col, Row } from 'react-bootstrap';
 function generateDayWiseTimeSeries(baseval, count, yrange) {
   let i = 0;
   const series = [];
@@ -180,20 +179,20 @@ const AllLineCharts = () => {
     }]
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className=" mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Line with Data Labels
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={lineWithDataLabelOpts} series={lineWithDataLabelOpts.series} type="line" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const GradientLineChart = () => {
@@ -282,20 +281,20 @@ const GradientLineChart = () => {
     }]
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Gradient Line Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={374} options={gradientLineChartOpts} series={gradientLineChartOpts.series} type="line" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const StackedChart = () => {
@@ -353,20 +352,20 @@ const StackedChart = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Stacked Area
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={422} options={stackedChartOpts} series={stackedChartOpts.series} type="area" className="apex-charts" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const BasicColumnChart = () => {
@@ -438,20 +437,20 @@ const BasicColumnChart = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Basic Column Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={396} options={basicChartOpts} series={basicChartOpts.series} type="bar" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const ColumnChartWithDataLabels = () => {
@@ -560,20 +559,20 @@ const ColumnChartWithDataLabels = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Column Chart with Datalabels
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={dataLabelsChartOpts} series={dataLabelsChartOpts.series} type="bar" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const LineAreaChart = () => {
@@ -631,20 +630,20 @@ const LineAreaChart = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Mixed Chart - Line &amp; Area
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={lineAreaChartOpts} series={lineAreaChartOpts.series} type="line" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const BasicBarChart = () => {
@@ -681,20 +680,20 @@ const BasicBarChart = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Basic Bar Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={basicChartOpts} series={basicChartOpts.series} type="bar" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const BarWithNegativeValueChart = () => {
@@ -772,20 +771,20 @@ const BarWithNegativeValueChart = () => {
     // },
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Bar with Negative Values
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={negativeValueChartOpts} series={negativeValueChartOpts.series} type="bar" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const LineColumnAndAreaChart = () => {
@@ -871,20 +870,20 @@ const LineColumnAndAreaChart = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Line, Column &amp; Area Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={lineColumnAreaChartOpts} series={lineColumnAreaChartOpts.series} type="line" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const ScatterXYChart = () => {
@@ -937,20 +936,20 @@ const ScatterXYChart = () => {
     }]
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Scatter (XY) Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={scatterXYOpts} series={scatterXYOpts.series} type="scatter" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const DatetimeScatterChart = () => {
@@ -1029,20 +1028,20 @@ const DatetimeScatterChart = () => {
     }]
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Scatter Chart - Datetime
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={380} options={dateTimeOpts} series={dateTimeOpts.series} type="scatter" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const SimpleCandlestickChart = () => {
@@ -1075,20 +1074,20 @@ const SimpleCandlestickChart = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Simple Candlestick Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={400} options={simpleChartOpts} series={simpleChartOpts.series} type="candlestick" className="apex-charts" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const SimplePieChart = () => {
@@ -1122,20 +1121,20 @@ const SimplePieChart = () => {
     }]
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Simple Pie Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={320} options={simplePieOpts} series={simplePieOpts.series} type="pie" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const GradientDonutChart = () => {
@@ -1172,20 +1171,20 @@ const GradientDonutChart = () => {
     }
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Gradient Donut Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <ReactApexChart height={320} options={gradientDonutOpts} series={gradientDonutOpts.series} type="donut" />
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const PatternedDonutChart = () => {
@@ -1247,22 +1246,22 @@ const PatternedDonutChart = () => {
     }]
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Patterned Donut Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <div id="apex-pie-3" className="apex-charts">
                 <ReactApexChart height={320} options={patternedDonutOpts} series={patternedDonutOpts.series} type="donut" />
               </div>
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const BasicChart = () => {
@@ -1283,22 +1282,22 @@ const BasicChart = () => {
     labels: ['CRICKET']
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Basic RadialBar Chart
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <div id="apex-radialbar-1" className="apex-charts">
                 <ReactApexChart height={320} options={basicRadialBarOpts} series={basicRadialBarOpts.series} type="radialBar" />
               </div>
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const MultipleRadialBarsChart = () => {
@@ -1328,22 +1327,22 @@ const MultipleRadialBarsChart = () => {
     labels: ['Apples', 'Oranges', 'Bananas', 'Berries']
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Multiple RadialBars
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <div id="apex-radialbar-2" className="apex-charts">
                 <ReactApexChart height={320} options={multipleRadialBarsOpts} series={multipleRadialBarsOpts.series} type="radialBar" />
               </div>
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const StrokedCircularGaugeChart = () => {
@@ -1399,22 +1398,22 @@ const StrokedCircularGaugeChart = () => {
     }]
   };
   return <>
-      <Col xl={6}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Stroked Circular Guage
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
               <div id="apex-radialbar-3" className="apex-charts">
                 <ReactApexChart height={380} options={strokedCircularGuageOpts} series={strokedCircularGuageOpts.series} type="radialBar" />
               </div>
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const SparklineCharts = () => {
@@ -1541,57 +1540,57 @@ const SparklineCharts = () => {
     }
   };
   return <>
-      <Col xs={12}>
-        <Card>
-          <CardHeader>
-            <CardTitle as={'h4'} className="mb-0">
+      <div>
+        <div style={{background:"var(--surface)",border:"1px solid var(--line)",borderRadius:"var(--radius)",overflow:"hidden"}}>
+          <div style={{padding:"12px 16px",borderBottom:"1px solid var(--line)",fontWeight:600}}>
+            <h6>
               Sparkline Charts
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
+            </h6>
+          </div>
+          <div style={{padding:"16px"}}>
             <div dir="ltr">
-              <Row className=" pt-3">
-                <Col md={4}>
+              <div className=" pt-3" style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
+                <div>
                   <div id="spark1" className="apex-charts mb-sm-0 mb-4">
                     <ReactApexChart height={160} options={SparklineChartsOpts1} series={SparklineChartsOpts1.series} type="area" />
                   </div>
-                </Col>
-                <Col md={4}>
+                </div>
+                <div>
                   <div id="spark2" className="apex-charts mb-sm-0 mb-4">
                     <ReactApexChart height={160} options={SparklineChartsOpts2} series={SparklineChartsOpts2.series} type="area" />
                   </div>
-                </Col>
-                <Col md={4}>
+                </div>
+                <div>
                   <div id="spark3" className="apex-charts mb-sm-0 mb-4">
                     <ReactApexChart height={160} options={SparklineChartsOpts3} series={SparklineChartsOpts3.series} type="area" />
                   </div>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
-          </CardBody>
-        </Card>
-      </Col>
+          </div>
+        </div>
+      </div>
     </>;
 };
 const AllApexChart = () => {
   return <>
-      <Row>
+      <div style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
         <AllLineCharts />
         <GradientLineChart />
-      </Row>
-      <Row>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
         <StackedChart />
         <BasicColumnChart />
-      </Row>
-      <Row>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
         <ColumnChartWithDataLabels />
         <LineAreaChart />
-      </Row>
-      <Row>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
         <BasicBarChart />
         <BarWithNegativeValueChart />
-      </Row>
-      <Row>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:"16px"}}>
         <LineColumnAndAreaChart />
         <ScatterXYChart />
         <DatetimeScatterChart />
@@ -1603,7 +1602,7 @@ const AllApexChart = () => {
         <MultipleRadialBarsChart />
         <StrokedCircularGaugeChart />
         <SparklineCharts />
-      </Row>
+      </div>
     </>;
 };
 export default AllApexChart;

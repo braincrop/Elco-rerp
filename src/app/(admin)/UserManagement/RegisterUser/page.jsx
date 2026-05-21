@@ -2,43 +2,45 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Table, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap'
-import { Icon } from '@iconify/react'
 import { AllUser, AllUserManagement, DeleteUserInfo } from '@/redux/slice/UserManegement/UserManagementSlice'
 import UserForm from './component/UserForm'
-import { Spinner } from 'react-bootstrap'
-import Select from 'react-select'
 import { decodeJwt } from '@/utils/decodeJwt'
 import { allRoles, AssignMultipleRole, GetAllRoles } from '@/redux/slice/Role/RoleSlice'
 import Notify from '@/components/Notify'
+import Select from 'react-select'
+import DataTable from '@/components/ui/DataTable'
+import Button from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
+import Field from '@/components/ui/Field'
+import SvgIcon from '@/components/ui/SvgIcon'
 
 const customSelectStyles = {
   control: (base) => ({
     ...base,
-    backgroundColor: '#000',
-    borderColor: '#444',
-    color: '#fff',
+    backgroundColor: 'var(--surface)',
+    borderColor: 'var(--line)',
+    color: 'var(--ink)',
   }),
   menu: (base) => ({
     ...base,
-    backgroundColor: '#000',
+    backgroundColor: 'var(--surface)',
   }),
   option: (base, state) => ({
     ...base,
-    backgroundColor: state.isFocused ? '#333' : '#000',
-    color: '#fff',
+    backgroundColor: state.isFocused ? 'var(--line)' : 'var(--surface)',
+    color: 'var(--ink)',
   }),
   multiValue: (base) => ({
     ...base,
-    backgroundColor: '#333',
+    backgroundColor: 'var(--line)',
   }),
   multiValueLabel: (base) => ({
     ...base,
-    color: '#fff',
+    color: 'var(--ink)',
   }),
   singleValue: (base) => ({
     ...base,
-    color: '#fff',
+    color: 'var(--ink)',
   }),
 }
 
@@ -54,10 +56,7 @@ const Page = () => {
   const [tokenEmail, setTokenEmail] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [AssignModal, setAssignModal] = useState(false)
-  const [assignData, setAssignData] = useState({
-    userId: '',
-    roleIds: [],
-  })
+  const [assignData, setAssignData] = useState({ userId: '', roleIds: [] })
 
   useEffect(() => {
     dispatch(AllUser())
@@ -98,146 +97,125 @@ const Page = () => {
     setSelectedUser(user)
     setView('form')
   }
-
   const openDelete = (id) => {
     setDeleteId(id)
     setDeleteModal(true)
   }
-
   const confirmDelete = async () => {
     await dispatch(DeleteUserInfo(deleteId)).unwrap()
     setDeleteModal(false)
   }
-
   const openAssignModal = (index) => {
-    setAssignData({ userId: index })
+    setAssignData({ userId: index, roleIds: [] })
     setSelectedIndex(index)
     setAssignModal(true)
   }
-const AssignRole = async () => {
-  const id = assignData.roleIds
-  if (!Array.isArray(id) || id.length === 0) {
-    Notify('error', 'Select At least one role')
-    return
+  const AssignRole = async () => {
+    const id = assignData.roleIds
+    if (!Array.isArray(id) || id.length === 0) {
+      Notify('error', 'Select at least one role')
+      return
+    }
+    try {
+      await dispatch(AssignMultipleRole(assignData)).unwrap()
+      setAssignModal(false)
+      await dispatch(AllUser()).unwrap()
+    } catch (error) {
+      console.error('Assign role error:', error)
+    }
   }
-  try {
-    await dispatch(AssignMultipleRole(assignData)).unwrap()
-    setAssignModal(false)
-    await dispatch(AllUser()).unwrap()
-  } catch (error) {
-    console.error('Assign role error:', error)
-  }
-}
 
+  const columns = [
+    { key: 'userName', label: 'Name', render: (val) => val || '-' },
+    { key: 'email', label: 'Email', render: (val) => val || '-' },
+    { key: 'phoneNumber', label: 'Phone', render: (val) => val || '-' },
+    { key: 'role', label: 'Role', render: (val) => (Array.isArray(val) ? val[0] : val) || '-' },
+    {
+      key: 'actions',
+      label: 'Action',
+      align: 'center',
+      render: (_, row) => (
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+          <Button variant="ghost" size="sm" icon={<SvgIcon id="i-key" />} onClick={() => openAssignModal(row.id)} title="Assign Role" />
+          <Button variant="ghost" size="sm" icon={<SvgIcon id="i-edit" />} onClick={() => openEdit(row)} />
+          <Button variant="danger-outline" size="sm" icon={<SvgIcon id="i-trash" />} onClick={() => openDelete(row.id)} />
+        </div>
+      ),
+    },
+  ]
 
   return (
-    <Container className="mt-5">
+    <div className="page-content">
       {view === 'list' && (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="fw-bold custom-text">Users</h2>
-            <Button color="primary" onClick={openCreate}>
+          <div className="page-head">
+            <div>
+              <h1 className="page-title">Users</h1>
+              <p className="page-sub">Manage registered users</p>
+            </div>
+            <Button variant="primary" icon={<SvgIcon id="i-plus" />} onClick={openCreate}>
               Create User
             </Button>
           </div>
-          <Table bordered hover responsive className="shadow-sm rounded">
-            <thead className="">
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Role</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="6" className="text-center py-4">
-                    <Spinner size="sm" className="me-2" />
-                    Loading Users...
-                  </td>
-                </tr>
-              ) : users?.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="text-center">
-                    No Data Found
-                  </td>
-                </tr>
-              ) : (
-                filteredUsers?.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.userName || '-'}</td>
-                    <td>{user.email || '-'}</td>
-                    <td>{user.phoneNumber || '-'}</td>
-                    <td>{user.role[0] || '-'}</td>
-                    <td>
-                      <div className="d-flex flex-column flex-sm-row justify-content-center gap-2">
-                        <Button size="sm" color="info" className="me-1 w-sm-auto" onClick={() => openAssignModal(user.id)} title="Assign Role">
-                          <Icon icon="mdi:account-key" />
-                        </Button>
-                        <Button size="sm" color="warning" className="me-1 w-sm-auto" onClick={() => openEdit(user)}>
-                          <Icon icon="mdi:pencil" />
-                        </Button>
-                        <Button size="sm" color="danger" className="me-1 w-sm-auto" onClick={() => openDelete(user.id)}>
-                          <Icon icon="mdi:delete" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </Table>
+
+          <div className="card">
+            <div className="card-pad">
+              <DataTable
+                columns={columns}
+                data={filteredUsers}
+                rowKey="id"
+                loading={loading}
+                emptyText="No Users Found"
+              />
+            </div>
+          </div>
         </>
       )}
+
       {view === 'form' && <UserForm mode={mode} initialData={selectedUser} onBack={backToList} />}
-      <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)} centered>
-        <ModalHeader>Delete User</ModalHeader>
-        <ModalBody>Are you sure?</ModalBody>
-        <ModalFooter>
-          <Button onClick={() => setDeleteModal(false)}>Cancel</Button>
-          <Button color="danger" onClick={confirmDelete}>
-            Delete
-          </Button>
-        </ModalFooter>
+
+      <Modal
+        open={deleteModal}
+        onClose={() => setDeleteModal(false)}
+        title="Delete User"
+        size="sm"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setDeleteModal(false)}>Cancel</Button>
+            <Button variant="danger-outline" onClick={confirmDelete}>Delete</Button>
+          </>
+        }
+      >
+        <p style={{ color: 'var(--ink-2)' }}>Are you sure you want to delete this user?</p>
       </Modal>
 
-      <Modal isOpen={AssignModal} centered toggle={() => setAssignModal(false)}>
-        <ModalHeader toggle={() => setAssignModal(false)}>
-          <Icon icon="mdi:playlist-edit" className="me-2" />
-          Assign Roles
-        </ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <Label>Available Roles</Label>
-            <Select
-              isMulti
-              options={RoleOption}
-              value={RoleOption?.filter((option) => (assignData?.roleIds || []).includes(option.value))}
-              onChange={(selectedOptions) =>
-                setAssignData({
-                  ...assignData,
-                  roleIds: selectedOptions.map((option) => option.value),
-                })
-              }
-              styles={customSelectStyles}
-              placeholder="Select categories..."
-            />
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" outline onClick={() => setAssignModal(false)}>
-            Cancel
-          </Button>
-          <Button color="primary" onClick={AssignRole} disabled={loading}>
-            {loading && <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />}
-            <Icon icon="mdi:check-circle-outline" className="me-1" />
-            Assign
-          </Button>
-        </ModalFooter>
+      <Modal
+        open={AssignModal}
+        onClose={() => setAssignModal(false)}
+        title="Assign Roles"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setAssignModal(false)}>Cancel</Button>
+            <Button variant="primary" busy={loading} onClick={AssignRole} icon={<SvgIcon id="i-check" />}>
+              Assign
+            </Button>
+          </>
+        }
+      >
+        <Field label="Available Roles">
+          <Select
+            isMulti
+            options={RoleOption}
+            value={RoleOption?.filter((option) => (assignData?.roleIds || []).includes(option.value))}
+            onChange={(selectedOptions) =>
+              setAssignData({ ...assignData, roleIds: selectedOptions.map((option) => option.value) })
+            }
+            styles={customSelectStyles}
+            placeholder="Select roles..."
+          />
+        </Field>
       </Modal>
-    </Container>
+    </div>
   )
 }
 

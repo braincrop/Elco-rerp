@@ -1,58 +1,48 @@
 'use client'
-import Footer from '@/components/layout/Footer'
 import dynamic from 'next/dynamic'
-import React, { useEffect } from 'react'
-// import Chart from './components/Chart';
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import KpiCard from '@/components/ui/KpiCard'
+import styles from './dashboard.module.css'
+
 const Chart = dynamic(() => import('./components/Chart'), { ssr: false })
-import User from './components/User'
-import Link from 'next/link'
-import IconifyIcon from '@/components/wrapper/IconifyIcon'
-import { Col, Row } from 'react-bootstrap'
-import Cards from './components/Cards'
-import { useRouter } from 'next/navigation';
+const User  = dynamic(() => import('./components/User'),  { ssr: false })
 
-// export const metadata = {
-//   title: 'Analytics',
-// }
+const KPI_DATA = [
+  { label: 'Clicks',  value: '15,352', delta: 3.02,  deltaLabel: 'vs last month', sparkline: [8,12,9,15,11,14,16,13,15] },
+  { label: 'Sales',   value: '8,764',  delta: -1.15, deltaLabel: 'vs last month', sparkline: [10,9,11,8,7,9,8,7,8] },
+  { label: 'Events',  value: '5,123',  delta: 4.78,  deltaLabel: 'vs last month', sparkline: [4,6,5,7,6,8,7,9,8] },
+  { label: 'Users',   value: '12,945', delta: 2.35,  deltaLabel: 'vs last month', sparkline: [10,11,10,12,11,13,12,13,13] },
+]
 
-const Page = () => {
+export default function DashboardPage() {
   const router = useRouter()
 
   useEffect(() => {
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token')
-    if (!token) router.replace('/auth/sign-in')
-  }
-}, [])
+    if (typeof window !== 'undefined' && !localStorage.getItem('token')) {
+      router.replace('/auth/sign-in')
+    }
+  }, [])
 
   return (
-    <>
-      <Row>
-        <Col xs={12}>
-          <div className="page-title-box">
-            <h4 className="mb-0 custom-text">Dashboard</h4>
-            <ol className="breadcrumb mb-0">
-              <li className="breadcrumb-item">
-                <Link href="/">Taplox</Link>
-              </li>
-              <div
-                className="mx-1"
-                style={{
-                  height: 24,
-                  paddingRight: '8px',
-                }}>
-                <IconifyIcon icon="bx:chevron-right" height={16} width={16} />
-              </div>
-              <li className="breadcrumb-item active">Dashboard</li>
-            </ol>
-          </div>
-        </Col>
-      </Row>
-      <Cards />
-      <Chart />
-      <User />
-      <Footer />
-    </>
+    <div className="page-content">
+      <div className="page-head">
+        <div>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="page-sub">Welcome back &mdash; here&apos;s what&apos;s happening today.</p>
+        </div>
+      </div>
+
+      <div className="kpis">
+        {KPI_DATA.map((kpi) => (
+          <KpiCard key={kpi.label} {...kpi} />
+        ))}
+      </div>
+
+      <div className={styles.grid}>
+        <Chart />
+        <User />
+      </div>
+    </div>
   )
 }
-export default Page

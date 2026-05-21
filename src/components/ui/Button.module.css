@@ -1,0 +1,79 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.btn:disabled,
+.busy {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.iconSlot {
+  display: flex;
+  align-items: center;
+}
+
+/* Variants */
+.primary {
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+}
+.primary:hover { opacity: 0.85; }
+
+.ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+}
+.ghost:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.accent {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+}
+.accent:hover { opacity: 0.85; }
+
+.danger-outline {
+  background: transparent;
+  color: var(--bad);
+  border: 1px solid var(--bad);
+}
+.danger-outline:hover { background: var(--bad-bg); }
+
+/* Sizes */
+.sm {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* Busy spinner */
+.spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
