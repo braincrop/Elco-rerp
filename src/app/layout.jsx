@@ -1,7 +1,7 @@
 import '@/assets/scss/style.scss'
 import AppProvidersWrapper from '@/components/wrapper/AppProvidersWrapper'
 import { DEFAULT_PAGE_TITLE } from '@/context/constants'
-import { Roboto } from 'next/font/google'
+import { Roboto,Inter,DM_Sans,Plus_Jakarta_Sans } from 'next/font/google'
 import { ReduxProvider } from './ReduxProvider'
 import ClientToast from '@/components/ClientToast'
 import { ThemeProvider } from '../context/BrandingContext'
@@ -13,6 +13,13 @@ const roboto = Roboto({
   subsets: ['latin'],
   weight: ['100', '300', '400', '500', '700', '900'],
 })
+const inter = Inter({
+  display: 'swap',
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '500', '700', '900'],
+})
+
 export async function generateMetadata() {
   const branding = await getBrandingByClientId() 
   return {
@@ -35,7 +42,7 @@ export default async function RootLayout({ children }) {
       <head>
         <link rel="icon" href={branding.faviconUrl} type="image/x-icon" />
       </head>
-      <body className={roboto.className} data-bs-theme="dark">
+      <body className={inter.className} data-bs-theme="dark">
         <ThemeProvider>
           <ReduxProvider>
             <ClientToast />
