@@ -1,7 +1,7 @@
 'use client'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import Notify from '@/components/Notify'
-import { DeleteUser, GetAllUser, RegisterUser, UpdateUser } from '../../../api/UserManagement/UserManagementHelperApi'
+import { DeleteUser, GetAllUser, GetSingleUser, RegisterUser, UpdateUser } from '../../../api/UserManagement/UserManagementHelperApi'
 import { AssignRole } from '@/api/Roles/RoleHelperApi'
 
 export const AllUser = createAsyncThunk('UserManagement/AllUser', async (_, { rejectWithValue }) => {
@@ -13,8 +13,17 @@ export const AllUser = createAsyncThunk('UserManagement/AllUser', async (_, { re
   }
 })
 
+export const GetUser = createAsyncThunk('UserManagement/GetSingleUser', async (data, { rejectWithValue }) => {
+  try {
+    const response = await GetSingleUser(data)
+    return response.data
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
+  }
+})
+
+
 export const PostUser = createAsyncThunk('UserManagement/PostUser', async (data, { rejectWithValue }) => {
-  console.log('data-in-redux', data)
   try {
     const response = await RegisterUser(data)
     return response
@@ -43,6 +52,7 @@ export const DeleteUserInfo = createAsyncThunk('UserManagement/Delete', async (d
 
 const initialState = {
   users: [],
+  singleUser: [],
   loading: false,
   error: null,
 }
@@ -64,6 +74,20 @@ export const UserManagement = createSlice({
         state.loading = false
         state.error = action.payload?.message || action.error.message
       })
+
+       builder
+      .addCase(GetUser.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(GetUser.fulfilled, (state, action) => {
+        state.loading = false
+        state.singleUser = action.payload.data
+      })
+      .addCase(GetUser.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload?.message || action.error.message
+      })
+
     builder
       .addCase(PostUser.pending, (state) => {
         state.loading = true

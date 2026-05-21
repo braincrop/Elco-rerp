@@ -12,7 +12,9 @@ const ProfileDropdown = () => {
     document.cookie = 'token=; Max-Age=0; path=/;'
     await router.replace('/auth/sign-in')
   }
-  
+   const ChangeRoute = () => {
+    router.push('/AccountSetting')
+  }
   return (
     <Dropdown className=" topbar-item">
       <DropdownToggle
@@ -35,7 +37,7 @@ const ProfileDropdown = () => {
       </DropdownToggle>
       <DropdownMenu className=" dropdown-menu-end">
         <DropdownHeader>Welcome!</DropdownHeader>
-        <DropdownItem href="">
+        <DropdownItem onClick={ChangeRoute}>
           <IconifyIcon icon="solar:user-outline" className="align-middle me-2 fs-18" />
           <span className="align-middle">My Account</span>
         </DropdownItem>

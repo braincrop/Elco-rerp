@@ -9,6 +9,16 @@ export const GetAllUser = async () => {
     throw error
   }
 }
+
+export const GetSingleUser = async (id) => {
+  try {
+    const response = await axiosInstance.get(`users/${id}`)
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
 export const RegisterUser = async (data) => {
   try {
     const response = await axiosInstance.post('users', data)
