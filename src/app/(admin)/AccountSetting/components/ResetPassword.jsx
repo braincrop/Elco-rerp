@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button, Alert, Progress } from 'reactstrap'
 import { Icon } from '@iconify/react'
+import { getDecodedToken } from '@/utils/decodeJwt'
+import { useDispatch } from 'react-redux'
+import { ResetUserPassword } from '@/redux/slice/Authentication/AuthenticationSlice'
 
 function getStrength(password) {
   let score = 0
@@ -15,12 +18,13 @@ const strengthLabel = ['', 'Weak', 'Fair', 'Good', 'Strong']
 const strengthColor = ['', 'danger', 'warning', 'info', 'success']
 
 const ResetPassword = () => {
-  const [form, setForm] = useState({ current: '', newPass: '', confirm: '' })
+  const [form, setForm] = useState({ password: '', confirmPassword: '' })
   const [show, setShow] = useState({ current: false, newPass: false, confirm: false })
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
-
-  const strength = getStrength(form.newPass)
+  // const tokenID = useMemo(() => getDecodedToken() || null, [])
+  const strength = getStrength(form.password)
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -29,17 +33,17 @@ const ResetPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.current) return setError('Please enter your current password.')
-    if (form.newPass.length < 8) return setError('New password must be at least 8 characters.')
-    if (form.newPass !== form.confirm) return setError('Passwords do not match.')
+    if (form.password.length < 8) return setError('New password must be at least 8 characters.')
+    if (form.password !== form.confirmPassword) return setError('Passwords do not match.')
+    // dispatch(ResetUserPassword())
     setSuccess(true)
-    setForm({ current: '', newPass: '', confirm: '' })
+    setForm({password: '', confirmPassword: '' })
   }
 
   const ToggleBtn = ({ field }) => (
     <button
       type="button"
-      className="btn btn-link text-muted p-0 position-absolute end-0 top-50 translate-middle-y me-3"
+      className="btn btn-link text-muted p-0 position-absolute end-0 top-50 translate-middle-y me-4"
       onClick={() => setShow({ ...show, [field]: !show[field] })}
       style={{ zIndex: 5 }}>
       <Icon icon={show[field] ? 'mdi:eye-off' : 'mdi:eye'} width={18} />
@@ -79,43 +83,25 @@ const ResetPassword = () => {
         </CardHeader>
         <CardBody className="p-4">
           <Form onSubmit={handleSubmit}>
-            <FormGroup className="mb-3">
-              <Label className="custom-text fw-medium" style={{ fontSize: 12 }}>
-                CURRENT PASSWORD
-              </Label>
-              <div className="position-relative">
-                <Input
-                  type={show.current ? 'text' : 'password'}
-                  name="current"
-                  value={form.current}
-                  onChange={handleChange}
-                  style={{ backgroundColor: 'transparent' }}
-                  className="rounded-2 pe-5"
-                  placeholder="Enter current password"
-                />
-                <ToggleBtn field="current" />
-              </div>
-            </FormGroup>
-
             <FormGroup className="mb-1">
               <Label className="custom-text fw-medium" style={{ fontSize: 12 }}>
                 NEW PASSWORD
               </Label>
               <div className="position-relative">
                 <Input
-                  type={show.newPass ? 'text' : 'password'}
-                  name="newPass"
-                  value={form.newPass}
+                  type={show.password ? 'text' : 'password'}
+                  name="password"
+                  value={form.password}
                   onChange={handleChange}
                   style={{ backgroundColor: 'transparent' }}
                   className="rounded-2 pe-5"
                   placeholder="Enter new password"
                 />
-                <ToggleBtn field="newPass" />
+                <ToggleBtn field="password" />
               </div>
             </FormGroup>
 
-            {form.newPass && (
+            {form.password && (
               <div className="mb-3">
                 <Progress value={(strength / 4) * 100} color={strengthColor[strength]} className="rounded-pill mb-1" style={{ height: 4 }} />
                 <small className={`text-${strengthColor[strength]}`}>Password strength: {strengthLabel[strength]}</small>
@@ -128,17 +114,17 @@ const ResetPassword = () => {
               </Label>
               <div className="position-relative">
                 <Input
-                  type={show.confirm ? 'text' : 'password'}
+                  type={show.confirmPassword ? 'text' : 'password'}
                   style={{ backgroundColor: 'transparent' }}
-                  name="confirm"
-                  value={form.confirm}
+                  name="confirmPassword"
+                  value={form.confirmPassword}
                   onChange={handleChange}
-                  className={`rounded-2 pe-5 ${form.confirm && form.newPass !== form.confirm ? 'is-invalid' : form.confirm ? 'is-valid' : ''}`}
+                  className={`rounded-2 pe-5 ${form.confirmPassword && form.password !== form.confirmPassword ? 'is-invalid' : form.confirmPassword ? 'is-valid' : ''}`}
                   placeholder="Confirm new password"
                 />
-                <ToggleBtn field="confirm" />
+                <ToggleBtn field="confirmPassword" />
               </div>
-              {form.confirm && form.newPass !== form.confirm && <small className="text-danger">Passwords do not match</small>}
+              {form.confirmPassword && form.password !== form.confirmPassword && <small className="text-danger">Passwords do not match</small>}
             </FormGroup>
 
             <div className="rounded-3 p-3 mb-4">
@@ -146,10 +132,10 @@ const ResetPassword = () => {
                 Password requirements:
               </p>
               {[
-                ['mdi:check', 'At least 8 characters', form.newPass.length >= 8],
-                ['mdi:check', 'One uppercase letter', /[A-Z]/.test(form.newPass)],
-                ['mdi:check', 'One number', /[0-9]/.test(form.newPass)],
-                ['mdi:check', 'One special character', /[^A-Za-z0-9]/.test(form.newPass)],
+                ['mdi:check', 'At least 8 characters', form.password.length >= 8],
+                ['mdi:check', 'One uppercase letter', /[A-Z]/.test(form.password)],
+                ['mdi:check', 'One number', /[0-9]/.test(form.password)],
+                ['mdi:check', 'One special character', /[^A-Za-z0-9]/.test(form.password)],
               ].map(([icon, label, met], i) => (
                 <div key={i} className={`d-flex align-items-center gap-2 mb-1 ${met ? 'text-success' : 'text-muted'}`} style={{ fontSize: 13 }}>
                   <Icon icon={met ? 'mdi:check-circle' : 'mdi:circle-outline'} width={15} />

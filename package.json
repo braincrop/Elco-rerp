@@ -34,6 +34,7 @@
     "next": "^14.2.6",
     "next-auth": "^4.24.10",
     "preline": "^2.5.1",
+    "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
     "react-bootstrap": "^2.10.6",

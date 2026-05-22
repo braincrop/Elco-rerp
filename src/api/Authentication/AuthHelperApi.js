@@ -17,3 +17,15 @@ export const ForgotUserPass = async (data) => {
   const response = await loginInstance.post('users/reset-password-simple', data)
   return response.data
 }
+
+export const ResetUserPass = async (data) => {
+  console.log('ResetUserPass data:', data);
+  const response = await loginInstance.post(`Auth/ResetPassword/${data.email}/${data.encodedToken}`, data.body)
+  return response.data
+}
+
+export const SendPasswordLink = async (data) => {
+  const response = await loginInstance.post(`/Auth/SendResetPasswordLink/${data.email}`)
+  return response.data
+}
+

@@ -3,25 +3,34 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import DarkLogo from '@/assets/images/Logo-primidigitals 1 (1).png'
 import LightLogo from '@/assets/images/Logo-primidigitals 1 (1).png'
-import Image from 'next/image'
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { Card, CardBody, Col, Row } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Notify from '@/components/Notify'
-import { allUser, ForgotPassword, SendPasswordLi } from '@/redux/slice/Authentication/AuthenticationSlice'
+import { ForgotPassword, ResetUserPassword, SendPasswordLi } from '@/redux/slice/Authentication/AuthenticationSlice'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useTheme } from '@/context/BrandingContext'
-const ResetPassword = () => {
+import { useSearchParams } from 'next/navigation';
+
+
+const VerifyPassword = () => {
   const { theme } = useTheme()
-  const { loading } = useSelector(allUser)
   const dispatch = useDispatch()
+  const searchParams = useSearchParams()
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
+  const email = searchParams.get('email')
+  const token = searchParams.get('token')
+  const encodedToken = encodeURIComponent(token)
   const [data, setData] = useState({
-    email: '',
+    password: '',
+    confirmPassword: '',
   })
- 
+
+  console.log('email:', email)
+  console.log('token:', token)
+  console.log('encodedToken:', encodedToken)
 
   useEffect(() => {
     document.body.classList.add('authentication-bg')
@@ -29,23 +38,50 @@ const ResetPassword = () => {
       document.body.classList.remove('authentication-bg')
     }
   }, [])
+
   const handleChange = (e) => {
     const { name, value } = e.target
-    setData({ ...data, [name]: value.toLowerCase() })
+    setData({ ...data, [name]: value })
   }
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!data.email?.trim()) {
-      Notify('error', 'Please Enter Email Address')
-      return
+
+  const handleConfirmPassword = async () => {
+    const passwordRegex = /^(?=.*[!@#$%^&*])(?=.*\d).{6,}$/;
+    if (!email || !token) {
+      Notify("error", "Email or token is missing.");
+      return;
+    } else if (!data.password || !data.confirmPassword) {
+      Notify("error", "Please fill in both password fields.");
+      return;
+    } else if (data.password !== data.confirmPassword) {
+      Notify("error", "Passwords do not match.");
+      return;
+    } else if (!passwordRegex.test(data.password)) {
+      Notify(
+        "error",
+        "Password must be at least 6 characters long, contain at least one special character, and one number."
+      );
+      return;
     }
-    try {
-      await dispatch(SendPasswordLi(data)).unwrap()
-      setData({ email: '' })
-    } catch (error) {
-      console.log('failed to send password link:', error)
+    const sendData = {
+      email,
+      encodedToken,
+      body: {
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      },
     }
-  }
+    dispatch(
+      ResetUserPassword(sendData)
+    ).then((res) => {
+      if (res?.payload?.success) {
+        // Notify("success", res?.payload?.message || "Password reset successful.");
+        router.replace('/auth/sign-in');
+      } else {
+        // Notify("error", res?.payload?.message || "Password reset failed.");
+        console.error("Password reset failed:", res);
+      }
+    });
+  };
 
   return (
     <div className="account-pages">
@@ -60,38 +96,37 @@ const ResetPassword = () => {
                       <img src={theme?.logoUrl || LightLogo} height={62} alt="logolight" />
                     </a>
                   </div>
-                  <h4 className="fw-bold text-dark mb-2">Forgot Password</h4>
-                  <p className="text-muted">Enter your registered email address below to receive password reset instructions..</p>
+                  <h4 className="fw-bold text-dark mb-2">Verify Password</h4>
                 </div>
-                <form onSubmit={handleSubmit} className="mt-4">
+              
                   <div className="mb-3">
                     <FormGroup>
                       <Label>
-                        Email <span style={{ color: '#e57373' }}>*</span>
+                       Password <span style={{ color: '#e57373' }}>*</span>
                       </Label>
                       <Input
-                        name="email"
-                        label="Email"
+                        name="password"
+                        label="Password"
                         style={{ backgroundColor: 'transparent' }}
-                        value={data.email}
+                        value={data.password}
                         onChange={(e) => handleChange(e)}
                         type="text"
-                        placeholder="Enter your Email"
+                        placeholder="Enter your Password"
                       />
                     </FormGroup>
                   </div>
-                  {/* <div className="mb-3">
+                  <div className="mb-3">
                     <FormGroup className="position-relative">
                       <Label>
-                        Password <span style={{ color: '#e57373' }}>*</span>
+                        Confirm Password <span style={{ color: '#e57373' }}>*</span>
                       </Label>
                       <Input
-                        name="newPassword"
+                        name="confirmPassword"
                         style={{ backgroundColor: 'transparent' }}
                         type={showPassword ? 'text' : 'password'}
-                        value={data.newPassword}
+                        value={data.confirmPassword}
                         onChange={handleChange}
-                        placeholder="Enter your Password"
+                        placeholder="Enter your Confirm Password"
                       />
                       <span
                         onClick={() => setShowPassword(!showPassword)}
@@ -104,14 +139,14 @@ const ResetPassword = () => {
                         }}>
                         <Icon icon={showPassword ? 'mdi:eye-off' : 'mdi:eye'} size={25} />
                       </span>
-                    </FormGroup> */}
-                  {/* </div> */}
+                    </FormGroup>
+                  </div>
                   <div className="d-grid">
-                    <button className="btn btn-dark btn-lg fw-medium" type="submit">
+                    <button className="btn btn-dark btn-lg fw-medium" onClick={handleConfirmPassword} type="button">
                       Verify
                     </button>
                   </div>
-                </form>
+            
               </CardBody>
             </Card>
             {/* <p className="text-center mt-4 text-white text-opacity-50">
@@ -126,4 +161,4 @@ const ResetPassword = () => {
     </div>
   )
 }
-export default ResetPassword
+export default VerifyPassword
