@@ -14,6 +14,11 @@ export const LoginUser = async (data) => {
 }
 
 export const ForgotUserPass = async (data) => {
-  const response = await loginInstance.post('users/reset-password-simple', data)
+  const response = await loginInstance.post('Auth/password/forgot', data)
+  return response.data
+}
+
+export const ResetUserPass = async (data) => {
+  const response = await loginInstance.post('Auth/password/reset', data)
   return response.data
 }

@@ -1,6 +1,5 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import SvgIcon from '@/components/ui/SvgIcon'
@@ -9,7 +8,6 @@ import styles from './TopNavigationBar.module.css'
 import avatar from '@/assets/images/users/avatar-1.jpg'
 
 const ProfileMenu = () => {
-  const router = useRouter()
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -19,10 +17,10 @@ const ProfileMenu = () => {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  const logOut = async () => {
+  const logOut = () => {
     localStorage.removeItem('token')
     document.cookie = 'token=; Max-Age=0; path=/;'
-    await router.replace('/auth/sign-in')
+    window.location.replace('/auth/sign-in')
   }
 
   return (

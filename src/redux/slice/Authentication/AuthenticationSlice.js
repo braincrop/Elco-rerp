@@ -1,7 +1,7 @@
 'use client'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import Notify from '@/components/Notify'
-import { ForgotUserPass, LoginUser, RegisterUser } from '../../../api/Authentication/AuthHelperApi'
+import { ForgotUserPass, LoginUser, RegisterUser, ResetUserPass } from '../../../api/Authentication/AuthHelperApi'
 
 export const Registration = createAsyncThunk('Auth/Registration', async (data, { rejectWithValue }) => {
   try {
@@ -30,10 +30,22 @@ export const ForgotPassword = createAsyncThunk('Auth/ForgotPassword', async (dat
   }
 })
 
+export const ResetPassword = createAsyncThunk('Auth/ResetPassword', async (data, { rejectWithValue }) => {
+  try {
+    const response = await ResetUserPass(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Reset failed' })
+  }
+})
+
 const initialState = {
   devices: [],
   loading: false,
   error: null,
+  twoFactorRequired: false,
+  tempToken: null,
+  twoFactorProvider: null,
 }
 
 export const Authentication = createSlice({
@@ -61,7 +73,7 @@ export const Authentication = createSlice({
       })
       .addCase(ForgotPassword.fulfilled, (state, action) => {
         state.loading = false
-        Notify('success', action.payload?.message || 'Forgot password successfully')
+        Notify('success', action.payload?.message || 'Reset link sent — check your inbox')
       })
       .addCase(ForgotPassword.rejected, (state, action) => {
         state.loading = false
@@ -70,17 +82,36 @@ export const Authentication = createSlice({
       })
 
     builder
+      .addCase(ResetPassword.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(ResetPassword.fulfilled, (state, action) => {
+        state.loading = false
+        Notify('success', action.payload?.message || 'Password reset successfully')
+      })
+      .addCase(ResetPassword.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Reset failed — link may have expired')
+      })
+
+    builder
       .addCase(Login.pending, (state) => {
         state.loading = true
       })
       .addCase(Login.fulfilled, (state, action) => {
         state.loading = false
-        if(typeof window !== 'undefined'){
-           localStorage.setItem('token', action.payload?.token)
-           document.cookie = `token=${action.payload?.token}; path=/; sameSite=lax;`
+        if (action.payload?.requiresTwoFactor) {
+          state.twoFactorRequired = true
+          state.tempToken = action.payload.tempToken ?? null
+          state.twoFactorProvider = action.payload.provider ?? null
+        } else if (typeof window !== 'undefined') {
+          state.twoFactorRequired = false
+          state.tempToken = null
+          state.twoFactorProvider = null
+          localStorage.setItem('token', action.payload?.token)
+          document.cookie = `token=${action.payload?.token}; path=/; sameSite=lax;`
         }
-        // console.log('dataa--', action.payload)
-        //  Notify('success', action.payload?.message || 'Login successfully')
       })
       .addCase(Login.rejected, (state, action) => {
         state.loading = false

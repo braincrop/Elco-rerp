@@ -6,6 +6,7 @@ import styles from './settings.module.css'
 
 const NAV = [
   { href: '/settings/profile',       label: 'Profile',        icon: 'i-user' },
+  { href: '/settings/account',       label: 'Account',        icon: 'i-id' },
   { href: '/settings/security',      label: 'Security',       icon: 'i-lock' },
   { href: '/settings/notifications', label: 'Notifications',  icon: 'i-bell' },
   { href: '/settings/preferences',   label: 'Preferences',    icon: 'i-sliders' },
