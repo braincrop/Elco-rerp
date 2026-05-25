@@ -1,7 +1,17 @@
 'use client'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import Notify from '@/components/Notify'
-import { ForgotUserPass, LoginUser, RegisterUser, ResetUserPass, SendPasswordLink } from '../../../api/Authentication/AuthHelperApi'
+import {
+  Enable2FAAuth,
+  ForgotUserPass,
+  LoginUser,
+  Manage2FAType,
+  RegisterUser,
+  ResetUserPass,
+  Send2FACode,
+  Send2FAType,
+  SendPasswordLink,
+} from '../../../api/Authentication/AuthHelperApi'
 
 export const Registration = createAsyncThunk('Auth/Registration', async (data, { rejectWithValue }) => {
   try {
@@ -48,8 +58,37 @@ export const SendPasswordLi = createAsyncThunk('Auth/SendPasswordLink', async (d
   }
 })
 
+export const Post2FAType = createAsyncThunk('Auth/Manage2FAType', async (data, { rejectWithValue }) => {
+  try {
+    const response = await Manage2FAType(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
+  }
+})
+
+export const Enable2fA = createAsyncThunk('Auth/Enable2FA', async (data, { rejectWithValue }) => {
+  try {
+    const response = await Enable2FAAuth(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
+  }
+})
+
+
+export const Send2fA = createAsyncThunk('Auth/Send2FA', async (data, { rejectWithValue }) => {
+  try {
+    const response = await Send2FACode(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
+  }
+})
+
 const initialState = {
   devices: [],
+  TFAtype: [],
   loading: false,
   error: null,
 }
@@ -87,7 +126,7 @@ export const Authentication = createSlice({
         Notify('error', action.payload?.message || 'Something went wrong')
       })
 
-       builder
+    builder
       .addCase(ResetUserPassword.pending, (state) => {
         state.loading = true
       })
@@ -101,7 +140,7 @@ export const Authentication = createSlice({
         Notify('error', action.payload?.message || 'Something went wrong')
       })
 
-       builder
+    builder
       .addCase(SendPasswordLi.pending, (state) => {
         state.loading = true
       })
@@ -115,6 +154,50 @@ export const Authentication = createSlice({
         Notify('error', action.payload?.message || 'Something went wrong')
       })
 
+    builder
+      .addCase(Post2FAType.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(Post2FAType.fulfilled, (state, action) => {
+        state.loading = false
+        state.TFAtype = action.payload|| []
+        Notify('success', action.payload?.message || 'Reset password successfully')
+      })
+      .addCase(Post2FAType.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Something went wrong')
+      })
+
+       builder
+      .addCase(Enable2fA.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(Enable2fA.fulfilled, (state, action) => {
+        state.loading = false
+        // state.TFAtype = action.payload?.data || []
+        Notify('success', action.payload?.message || 'Reset password successfully')
+      })
+      .addCase(Enable2fA.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Something went wrong')
+      })
+
+        builder
+      .addCase(Send2fA.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(Send2fA.fulfilled, (state, action) => {
+        state.loading = false
+        // state.TFAtype = action.payload?.data || []
+        Notify('success', action.payload?.message || 'Something went wrong')
+      })
+      .addCase(Send2fA.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Something went wrong')
+      })
 
 
     builder
@@ -123,9 +206,9 @@ export const Authentication = createSlice({
       })
       .addCase(Login.fulfilled, (state, action) => {
         state.loading = false
-        if(typeof window !== 'undefined'){
-           localStorage.setItem('token', action.payload?.token)
-           document.cookie = `token=${action.payload?.token}; path=/; sameSite=lax;`
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', action.payload?.token)
+          document.cookie = `token=${action.payload?.token}; path=/; sameSite=lax;`
         }
         // console.log('dataa--', action.payload)
         //  Notify('success', action.payload?.message || 'Login successfully')

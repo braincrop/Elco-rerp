@@ -11,6 +11,9 @@ import { useDispatch } from 'react-redux'
 import Notify from '@/components/Notify'
 import { useRouter } from 'next/navigation'
 import { Registration } from '@/redux/slice/Authentication/AuthenticationSlice'
+
+
+
 const SignUp = () => {
   const dispatch = useDispatch()
   const router = useRouter()

@@ -27,11 +27,11 @@ export const ThemeProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    if (theme?.secondaryColor) {
-      document.documentElement.style.setProperty('--custom-text-color', theme.textColor)
+    if (theme?.primaryColor) {
+      document.documentElement.style.setProperty('--custom-text-color', theme.primaryColor)
       document.documentElement.style.setProperty('--custom-bg-color', theme.primaryColor)
       document.documentElement.style.setProperty('--custom-modal-bg', theme.primaryColor)
-      document.body.style.backgroundColor = theme.backgroundColor
+      document.body.style.backgroundColor = theme.surfaceColor
     }
   }, [theme])
 
