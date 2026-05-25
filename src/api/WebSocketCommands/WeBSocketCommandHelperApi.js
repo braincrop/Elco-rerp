@@ -43,3 +43,13 @@ export const WsUpdateLanguages = async (data) => {
   })
   return response.data
 }
+
+export const WsDispense = async ({ id, motorNo, slotCode }) => {
+  const response = await socketInstance.post(`ws/${id}/dispense`, { motorNo, slotCode })
+  return response.data
+}
+
+export const WsTestMotor = async ({ id, motorNo, slotCode }) => {
+  const response = await socketInstance.post(`ws/${id}/test-motor`, { motorNo, slotCode })
+  return response.data
+}

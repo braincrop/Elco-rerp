@@ -3,6 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import Notify from '../../../components/Notify'
 import {
   WsBranchCheckout,
+  WsDispense,
+  WsTestMotor,
   WsUpdateCategories,
   WsUpdateLanguages,
   WsUpdateproducts,
@@ -51,6 +53,24 @@ export const PostWsUpdateCategories = createAsyncThunk('Ws/postWsUpdateCategory'
     return response
   } catch (error) {
     return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
+  }
+})
+
+export const PostWsDispense = createAsyncThunk('Ws/dispense', async (data, { rejectWithValue }) => {
+  try {
+    const response = await WsDispense(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Dispense failed' })
+  }
+})
+
+export const PostWsTestMotor = createAsyncThunk('Ws/testMotor', async (data, { rejectWithValue }) => {
+  try {
+    const response = await WsTestMotor(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Test motor failed' })
   }
 })
 
@@ -140,14 +160,35 @@ export const WebSocketCommandSlice = createSlice({
       .addCase(PostWsUpdateCategories.fulfilled, (state, action) => {
         state.Wsloading = false
         Notify('success', 'Category updated successfully')
-        // if (action.payload?.statusCode === '200') {
-        //   state.error = null
-        // }
       })
       .addCase(PostWsUpdateCategories.rejected, (state, action) => {
         state.Wsloading = false
         state.error = action.payload?.message || action.error.message
         Notify('error', action.payload?.message || 'Something went wrong')
+      })
+
+    builder
+      .addCase(PostWsDispense.pending, (state) => { state.Wsloading = true })
+      .addCase(PostWsDispense.fulfilled, (state) => {
+        state.Wsloading = false
+        Notify('success', 'Dispense command sent')
+      })
+      .addCase(PostWsDispense.rejected, (state, action) => {
+        state.Wsloading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Dispense failed')
+      })
+
+    builder
+      .addCase(PostWsTestMotor.pending, (state) => { state.Wsloading = true })
+      .addCase(PostWsTestMotor.fulfilled, (state) => {
+        state.Wsloading = false
+        Notify('success', 'Motor test command sent')
+      })
+      .addCase(PostWsTestMotor.rejected, (state, action) => {
+        state.Wsloading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Motor test failed')
       })
   },
 })
