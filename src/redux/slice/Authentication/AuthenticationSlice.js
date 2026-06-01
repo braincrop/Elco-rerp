@@ -5,6 +5,7 @@ import {
   Enable2FAAuth,
   ForgotUserPass,
   LoginUser,
+  LoginWith2FA,
   Manage2FAType,
   RegisterUser,
   ResetUserPass,
@@ -25,6 +26,15 @@ export const Registration = createAsyncThunk('Auth/Registration', async (data, {
 export const Login = createAsyncThunk('Auth/Login', async (data, { rejectWithValue }) => {
   try {
     const response = await LoginUser(data)
+    return response
+  } catch (error) {
+    return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
+  }
+})
+
+export const LoginWithTwoFactor = createAsyncThunk('Auth/LoginWithTwoFactor', async (data, { rejectWithValue }) => {
+  try {
+    const response = await LoginWith2FA(data)
     return response
   } catch (error) {
     return rejectWithValue(error.response?.data || { message: 'Something went wrong' })
@@ -76,7 +86,6 @@ export const Enable2fA = createAsyncThunk('Auth/Enable2FA', async (data, { rejec
   }
 })
 
-
 export const Send2fA = createAsyncThunk('Auth/Send2FA', async (data, { rejectWithValue }) => {
   try {
     const response = await Send2FACode(data)
@@ -89,6 +98,7 @@ export const Send2fA = createAsyncThunk('Auth/Send2FA', async (data, { rejectWit
 const initialState = {
   devices: [],
   TFAtype: [],
+  backupCode: [],
   loading: false,
   error: null,
 }
@@ -160,8 +170,8 @@ export const Authentication = createSlice({
       })
       .addCase(Post2FAType.fulfilled, (state, action) => {
         state.loading = false
-        state.TFAtype = action.payload|| []
-        Notify('success', action.payload?.message || 'Reset password successfully')
+        state.TFAtype = action.payload || []
+        Notify('success', action.payload?.message || '')
       })
       .addCase(Post2FAType.rejected, (state, action) => {
         state.loading = false
@@ -169,14 +179,16 @@ export const Authentication = createSlice({
         Notify('error', action.payload?.message || 'Something went wrong')
       })
 
-       builder
+    builder
       .addCase(Enable2fA.pending, (state) => {
         state.loading = true
       })
       .addCase(Enable2fA.fulfilled, (state, action) => {
         state.loading = false
         // state.TFAtype = action.payload?.data || []
-        Notify('success', action.payload?.message || 'Reset password successfully')
+        console.log('Backup codes from API response:', action.payload)
+        state.backupCode = action.payload.backupCodes || []
+        Notify('success', action.payload?.message || 'Two-Factor Authentication enabled successfully')
       })
       .addCase(Enable2fA.rejected, (state, action) => {
         state.loading = false
@@ -184,7 +196,7 @@ export const Authentication = createSlice({
         Notify('error', action.payload?.message || 'Something went wrong')
       })
 
-        builder
+    builder
       .addCase(Send2fA.pending, (state) => {
         state.loading = true
       })
@@ -198,7 +210,6 @@ export const Authentication = createSlice({
         state.error = action.payload?.message || action.error.message
         Notify('error', action.payload?.message || 'Something went wrong')
       })
-
 
     builder
       .addCase(Login.pending, (state) => {
@@ -214,6 +225,25 @@ export const Authentication = createSlice({
         //  Notify('success', action.payload?.message || 'Login successfully')
       })
       .addCase(Login.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload?.message || action.error.message
+        Notify('error', action.payload?.message || 'Login failed')
+      })
+
+    builder
+      .addCase(LoginWithTwoFactor.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(LoginWithTwoFactor.fulfilled, (state, action) => {
+        state.loading = false
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', action.payload?.token)
+          document.cookie = `token=${action.payload?.token}; path=/; sameSite=lax;`
+        }
+        // console.log('dataa--', action.payload)
+         Notify('success', action.payload?.message || 'Login successfully')
+      })
+      .addCase(LoginWithTwoFactor.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload?.message || action.error.message
         Notify('error', action.payload?.message || 'Login failed')

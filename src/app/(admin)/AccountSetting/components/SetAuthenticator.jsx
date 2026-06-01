@@ -5,8 +5,8 @@ import { Icon } from '@iconify/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { allUser, Enable2fA, Post2FAType } from '@/redux/slice/Authentication/AuthenticationSlice'
 
-const handleDownloadCodes = () => {
-  const backupCodes = ['8392-1847', '2938-4756', '1029-3847', '5647-8392', '9182-3746', '4756-2938']
+const handleDownloadCodes = (backupCode) => {
+    const backupCodes = ['8392-1847', '2938-4756', '1029-3847', '5647-8392', '9182-3746', '4756-2938']
 
   const content = `Rerp-System - BACKUP CODES
 =====================
@@ -14,7 +14,7 @@ Generated: ${new Date().toLocaleDateString()}
 
 Keep these codes safe. Each code can only be used once.
 
-${backupCodes.map((code, i) => `${i + 1}. ${code}`).join('\n')}
+${backupCode?.map((code, i) => `${i + 1}. ${code}`).join('\n')}
 
 =====================
 Do not share these codes with anyone.`
@@ -32,15 +32,16 @@ const SetAuthenticator = () => {
   const [selectedMethod, setSelectedMethod] = useState('')
   const [step, setStep] = useState(1)
   const [code, setCode] = useState('')
-  const { TFAtype } = useSelector(allUser)
+  const { TFAtype, backupCode } = useSelector(allUser)
   const dispatch = useDispatch()
   const [enabled, setEnabled] = useState(false)
   const [emailCode, setEmailCode] = useState('')
   const [emailSent, setEmailSent] = useState(false)
   const [loading, setLoading] = useState(false)
-  const secretKey = TFAtype?.data || 'JBSW Y3DP'
-  const otpAuthUrl = `otpauth://totp/Rerp-System?secret=${secretKey}&issuer=Rerp-System`
+  const otpAuthUrl = TFAtype?.qrUri || 'qrcode-placeholder'
 
+  // console.log('TFAtype from Redux:', TFAtype.qrUri)
+  console.log('Backup codes from Redux:', backupCode)
   const handleSelectMethod = async (method) => {
     setSelectedMethod(method)
     setStep(1)
@@ -50,7 +51,7 @@ const SetAuthenticator = () => {
 
     try {
       setLoading(true)
-      dispatch(Post2FAType({ twoFactorType: method }))
+      dispatch(Post2FAType({ provider: method }))
     } catch (err) {
       console.error(err)
     } finally {
@@ -62,7 +63,7 @@ const SetAuthenticator = () => {
   const handleSendEmailCode = async () => {
     try {
       setLoading(true)
-      dispatch(Post2FAType({ twoFactorType: selectedMethod }))
+      dispatch(Post2FAType({ provider: selectedMethod }))
       console.log('API call: send email OTP')
       setEmailSent(true)
     } catch (err) {
@@ -78,9 +79,8 @@ const SetAuthenticator = () => {
     try {
       setLoading(true)
       const daata = {
-        twoFactorType: selectedMethod,
-        twoFactorCode: emailCode,
-        enable: true,
+        provider: selectedMethod,
+        code: emailCode,
       }
       console.log('Data to send for enabling 2FA:', daata)
       dispatch(Enable2fA(daata))
@@ -101,9 +101,8 @@ const SetAuthenticator = () => {
     try {
       setLoading(true)
       const daata = {
-        twoFactorType: selectedMethod,
-        twoFactorCode: code,
-        enable: true,
+        provider: selectedMethod,
+        code: code,
       }
       console.log('Data to send for enabling 2FA:', daata)
       dispatch(Enable2fA(daata))
@@ -126,9 +125,6 @@ const SetAuthenticator = () => {
     setEmailSent(false)
   }
 
-  // ════════════════════════════════════════════════════════════════
-  // ENABLED STATE
-  // ════════════════════════════════════════════════════════════════
   if (enabled) {
     return (
       <div>
@@ -171,7 +167,7 @@ const SetAuthenticator = () => {
                   Save these codes somewhere safe. Each can be used once if you lose access to your Authenticator.
                 </p>
                 <Row className="g-2">
-                  {['8392-1847', '2938-4756', '1029-3847', '5647-8392', '9182-3746', '4756-2938'].map((c, i) => (
+                  {backupCode?.map((c, i) => (
                     <Col xs={6} key={i}>
                       <div className="bg-white border rounded-2 text-center py-2 fw-semibold" style={{ fontSize: 13, fontFamily: 'monospace' }}>
                         {c}
@@ -179,7 +175,7 @@ const SetAuthenticator = () => {
                     </Col>
                   ))}
                 </Row>
-                <Button color="outline-secondary" size="sm" className="rounded-2 mt-3" onClick={handleDownloadCodes}>
+                <Button color="outline-secondary" size="sm" className="rounded-2 mt-3" onClick={() => handleDownloadCodes(backupCode)}>
                   <Icon icon="mdi:download" width={14} className="me-1" />
                   Download Codes
                 </Button>
@@ -293,7 +289,7 @@ const SetAuthenticator = () => {
                   Code sent! Check your email inbox.
                 </Alert>
               )}
-             
+
               <FormGroup className="mb-4">
                 <Label className="text-muted fw-medium" style={{ fontSize: 12 }}>
                   VERIFICATION CODE
